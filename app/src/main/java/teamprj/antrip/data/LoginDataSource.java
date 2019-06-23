@@ -8,10 +8,10 @@ import java.io.IOException;
  */
 public class LoginDataSource {
 
-    public Result<LoggedInUser> login(String username, String password) {
+    public Result<LoggedInUser> login(String email, String password) {
 
         try {
-            // TODO: handle loggedInUser authentication
+            // TODO: loggedInUser 인증 처리
             LoggedInUser fakeUser =
                     new LoggedInUser(
                             java.util.UUID.randomUUID().toString(),
@@ -23,6 +23,6 @@ public class LoginDataSource {
     }
 
     public void logout() {
-        // TODO: revoke authentication
+        // TODO: 인증 취소
     }
 }
