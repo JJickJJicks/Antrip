@@ -1,5 +1,6 @@
 package teamprj.antrip;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -73,6 +75,10 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(getApplicationContext(), "상단바 Setting 누름", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            finish();
             return true;
         }
 
@@ -85,18 +91,22 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_search) {
+            Toast.makeText(getApplicationContext(), "Default 도시 검색 화면", Toast.LENGTH_LONG).show();
+            // 도시 검색부
+        } else if (id == R.id.nav_profile) {
+            Toast.makeText(getApplicationContext(), "내 정보 보기", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_travel) {
+            Toast.makeText(getApplicationContext(), "내 여행 정보", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_notice) {
+            Toast.makeText(getApplicationContext(), "공지사항", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_contact) {
+            Toast.makeText(getApplicationContext(), "문의하기", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_manage) {
+            Toast.makeText(getApplicationContext(), "설정화면", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

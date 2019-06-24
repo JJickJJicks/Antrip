@@ -14,37 +14,42 @@
   ~ limitations under the License.
   -->
 
-<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <PreferenceCategory app:title="@string/login_header">
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+        <Preference
+            app:key="login_account"
+            app:title="@string/login_account_title"/>
 
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="auto_login"
+            android:title="@string/auto_login_title"/>
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory app:title="@string/travel_header">
+
+        <Preference
+            app:key="downloaded_travel"
+            app:title="@string/downloaded_travel_title"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/service_header">
 
         <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
+            app:key="alert"
+            app:title="@string/alert_title" />
 
         <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+            app:dependency="alert"
+            app:key="add_alert"
+            app:summaryOff="@string/add_alert_summary_off"
+            app:summaryOn="@string/add_alert_summary_on"
+            app:title="@string/add_alert_title" />
 
     </PreferenceCategory>
 
