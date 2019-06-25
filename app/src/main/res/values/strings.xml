@@ -9,7 +9,6 @@
     <string name="invalid_email">유효한 이메일이 아닙니다</string>
     <string name="invalid_password">비밀번호는 5자 이상이어야합니다.</string>
     <string name="login_failed">로그인 실패</string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -19,7 +18,6 @@
     <string name="menu_contact">문의하기</string>
     <string name="menu_manage">설정</string>
     <string name="menu_notice">공지사항</string>
-    <string name="title_activity_settings">MainActivity</string>
 
     <!-- Preference Titles -->
     <string name="travel_header">여행</string>
@@ -33,7 +31,7 @@
     <string name="add_alert_title">공지사항 알람 받기</string>
     <string name="add_alert_summary_on">여행 정보 외의 공지사항 알림도 받습니다</string>
     <string name="add_alert_summary_off">여행 정보 외에는 어떠한 알림도 받지 않습니다</string>
-    <string name="action_sign_up">회원가입</string>
+    <string name="action_sign_up">아직 계정이 없으신가요? 회원가입</string>
     <string name="menu_travel">내 여행</string>
     <string name="menu_search">검색하기</string>
     <string name="empty_travel">다운로드한 여행이 없습니다</string>
@@ -41,4 +39,8 @@
     <string name="login_account_title">로그인 정보</string>
     <string name="auto_login_title">자동 로그인</string>
     <string name="menu_communicate">커뮤니케이션</string>
+    <string name="logout_title">로그아웃</string>
+    <string name="open_source_title">오픈소스 라이선스</string>
+    <string name="system_header">시스템</string>
+    <string name="action_sign_up_short">회원가입</string>
 </resources>

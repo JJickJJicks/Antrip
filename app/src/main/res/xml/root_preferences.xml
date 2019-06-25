@@ -28,6 +28,10 @@
             android:key="auto_login"
             android:title="@string/auto_login_title"/>
 
+        <Preference
+            app:key="logout"
+            app:title="@string/logout_title"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/travel_header">
@@ -52,5 +56,18 @@
             app:title="@string/add_alert_title" />
 
     </PreferenceCategory>
+    <PreferenceCategory app:title="@string/system_header">
+        <Preference
+            app:key="notice"
+            app:title="@string/menu_notice"/>
 
+        <Preference
+            app:key="contact"
+            app:title="@string/menu_contact"/>
+
+        <Preference
+            app:key="open_source"
+            app:title="@string/open_source_title"/>
+
+    </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

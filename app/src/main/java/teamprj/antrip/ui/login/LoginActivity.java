@@ -1,17 +1,8 @@
 package teamprj.antrip.ui.login;
 
 import android.app.Activity;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -23,10 +14,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import teamprj.antrip.MainActivity;
 import teamprj.antrip.R;
-import teamprj.antrip.ui.login.LoginViewModel;
-import teamprj.antrip.ui.login.LoginViewModelFactory;
+import teamprj.antrip.SignupActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -118,6 +114,13 @@ public class LoginActivity extends AppCompatActivity {
                 loginViewModel.login(emailEditText.getText().toString(), passwordEditText.getText().toString());
             }
         });
+    }
+
+    public void mOnPopupClick(View v){
+        //데이터 담아서 팝업(액티비티) 호출
+        Intent intent = new Intent(this, SignupActivity.class);
+        intent.putExtra("data", "Test Popup");
+        startActivityForResult(intent, 1);
     }
 
     private void updateUiWithUser(LoggedInUserView model) {

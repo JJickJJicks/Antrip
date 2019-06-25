@@ -3,7 +3,7 @@
     <string name="app_name">Antrip</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_up">Sign up</string>
+    <string name="action_sign_up">Don\'t have an account? Sign up</string>
     <string name="add_alert_summary_off">You will not receive any notifications other than travel information</string>
     <string name="add_alert_summary_on">You also receive announcements other than travel information</string>
     <string name="add_alert_title">Receive announcement push alarm</string>
@@ -27,12 +27,14 @@
     <string name="downloaded_travel_title">Downloaded Travel</string>
     <string name="service_header">Service</string>
     <string name="alert_title">Receive push alarm</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_settings">MainActivity</string>
     <string name="welcome">Welcome !</string>
     <string name="empty_travel">No downloaded travel</string>
     <string name="login_account_title">Login Information</string>
     <string name="login_header">Login</string>
     <string name="auto_login_title">Auto Login</string>
     <string name="menu_communicate">Communication</string>
+    <string name="open_source_title">Open source license</string>
+    <string name="logout_title">Logout</string>
+    <string name="system_header">System</string>
+    <string name="action_sign_up_short">Sign up</string>
 </resources>
