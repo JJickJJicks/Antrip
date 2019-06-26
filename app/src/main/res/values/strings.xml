@@ -49,4 +49,5 @@
     <string name="prompt_temp">임시 구현</string>
     <string name="action_search_account_short">계정찾기</string>
     <string name="action_search_account">비밀번호를 잊으셨나요?</string>
+    <string name="app_license" translatable="false">License</string>
 </resources>

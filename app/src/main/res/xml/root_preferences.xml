@@ -63,11 +63,19 @@
 
         <Preference
             app:key="contact"
-            app:title="@string/menu_contact" />
+            app:title="@string/menu_contact">
+            <intent
+                android:action="android.intent.action.SENDTO"
+                android:data="mailto:wng2641@naver.com" />
+        </Preference>
 
         <Preference
             app:key="open_source"
-            app:title="@string/open_source_title" />
+            app:title="@string/open_source_title" >
+            <intent
+                android:targetClass="teamprj.antrip.LicenseActivity"
+                android:targetPackage="teamprj.antrip" />
+        </Preference>
 
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
