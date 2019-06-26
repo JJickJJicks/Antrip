@@ -1,15 +1,15 @@
 package teamprj.antrip.ui.login;
 
+import android.util.Patterns;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import android.util.Patterns;
-
+import teamprj.antrip.R;
 import teamprj.antrip.data.LoginRepository;
 import teamprj.antrip.data.Result;
 import teamprj.antrip.data.model.LoggedInUser;
-import teamprj.antrip.R;
 
 public class LoginViewModel extends ViewModel {
 

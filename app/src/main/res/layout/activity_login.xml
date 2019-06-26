@@ -19,15 +19,15 @@
         android:layout_marginTop="96dp"
         android:layout_marginEnd="24dp"
 
-        android:importantForAutofill="no"
-        tools:targetApi="o"
-
         android:hint="@string/prompt_email"
+        android:importantForAutofill="no"
+
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/password"
@@ -37,17 +37,17 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
 
-        android:importantForAutofill="no"
-        tools:targetApi="o"
-
         android:hint="@string/prompt_password"
         android:imeActionLabel="@string/action_sign_in_short"
+
         android:imeOptions="actionDone"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailText" />
+        app:layout_constraintTop_toBottomOf="@+id/emailText"
+        tools:targetApi="o" />
 
     <Button
         android:id="@+id/login"
@@ -88,13 +88,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:onClick="signupClick"
         android:text="@string/action_sign_up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login"
-        app:layout_constraintVertical_bias="0.046"
-        android:onClick="signupClick"/>
+        app:layout_constraintVertical_bias="0.046" />
 
     <TextView
         android:id="@+id/search"

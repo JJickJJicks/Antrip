@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AccountSearchActivity"
+        <activity
+            android:name=".AccountSearchActivity"
             android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".SignupActivity"

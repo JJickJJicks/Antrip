@@ -1,7 +1,8 @@
 package teamprj.antrip.data;
 
-import teamprj.antrip.data.model.LoggedInUser;
 import java.io.IOException;
+
+import teamprj.antrip.data.model.LoggedInUser;
 
 /**
  * 로그인 자격 증명을 사용하여 인증을 처리하고 사용자 정보를 검색하는 클래스입니다.

@@ -1,8 +1,8 @@
 package teamprj.antrip.ui.login;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.annotation.NonNull;
 
 import teamprj.antrip.data.LoginDataSource;
 import teamprj.antrip.data.LoginRepository;

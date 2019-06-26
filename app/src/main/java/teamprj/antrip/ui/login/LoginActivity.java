@@ -117,13 +117,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void signupClick(View v){
+    public void signupClick(View v) {
         //데이터 담아서 팝업(액티비티) 호출
         Intent intent = new Intent(this, SignupActivity.class);
         startActivityForResult(intent, 1);
     }
 
-    public void searchClick(View v){
+    public void searchClick(View v) {
         //데이터 담아서 팝업(액티비티) 호출
         Intent intent = new Intent(this, AccountSearchActivity.class);
         startActivityForResult(intent, 1);

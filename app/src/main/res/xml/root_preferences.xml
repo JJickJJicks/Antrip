@@ -21,16 +21,16 @@
 
         <Preference
             app:key="login_account"
-            app:title="@string/login_account_title"/>
+            app:title="@string/login_account_title" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="auto_login"
-            android:title="@string/auto_login_title"/>
+            android:title="@string/auto_login_title" />
 
         <Preference
             app:key="logout"
-            app:title="@string/logout_title"/>
+            app:title="@string/logout_title" />
 
     </PreferenceCategory>
 
@@ -38,7 +38,7 @@
 
         <Preference
             app:key="downloaded_travel"
-            app:title="@string/downloaded_travel_title"/>
+            app:title="@string/downloaded_travel_title" />
 
     </PreferenceCategory>
 
@@ -59,15 +59,15 @@
     <PreferenceCategory app:title="@string/system_header">
         <Preference
             app:key="notice"
-            app:title="@string/menu_notice"/>
+            app:title="@string/menu_notice" />
 
         <Preference
             app:key="contact"
-            app:title="@string/menu_contact"/>
+            app:title="@string/menu_contact" />
 
         <Preference
             app:key="open_source"
-            app:title="@string/open_source_title"/>
+            app:title="@string/open_source_title" />
 
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
