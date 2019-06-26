@@ -12,7 +12,7 @@
     tools:context=".ui.login.LoginActivity">
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/emailText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -47,7 +47,7 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintTop_toBottomOf="@+id/emailText" />
 
     <Button
         android:id="@+id/login"
@@ -94,5 +94,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login"
         app:layout_constraintVertical_bias="0.046"
-        android:onClick="mOnPopupClick"/>
+        android:onClick="signupClick"/>
+
+    <TextView
+        android:id="@+id/search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:onClick="searchClick"
+        android:text="@string/action_search_account"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login"
+        app:layout_constraintVertical_bias="0.129" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import teamprj.antrip.AccountSearchActivity;
 import teamprj.antrip.MainActivity;
 import teamprj.antrip.R;
 import teamprj.antrip.SignupActivity;
@@ -35,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText emailEditText = findViewById(R.id.email);
+        final EditText emailEditText = findViewById(R.id.emailText);
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
@@ -116,10 +117,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void mOnPopupClick(View v){
+    public void signupClick(View v){
         //데이터 담아서 팝업(액티비티) 호출
         Intent intent = new Intent(this, SignupActivity.class);
-        intent.putExtra("data", "Test Popup");
+        startActivityForResult(intent, 1);
+    }
+
+    public void searchClick(View v){
+        //데이터 담아서 팝업(액티비티) 호출
+        Intent intent = new Intent(this, AccountSearchActivity.class);
         startActivityForResult(intent, 1);
     }
 

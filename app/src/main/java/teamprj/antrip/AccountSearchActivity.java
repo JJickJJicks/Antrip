@@ -6,14 +6,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 
-public class SignupActivity extends Activity {
+public class AccountSearchActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //타이틀바 없애기
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_account_search);
     }
 
     //확인 버튼 클릭

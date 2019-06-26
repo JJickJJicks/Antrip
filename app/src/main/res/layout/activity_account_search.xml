@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@android:style/Theme.Dialog"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
@@ -21,7 +20,7 @@
             android:layout_height="53dp"
             android:background="@color/colorPrimary"
             android:gravity="center"
-            android:text="@string/action_sign_up_short"
+            android:text="@string/action_search_account_short"
             android:textColor="#fff"
             android:textSize="20sp" />
     </LinearLayout>
@@ -32,66 +31,11 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <EditText
-            android:id="@+id/emailText"
+        <TextView
+            android:id="@+id/tempText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-
-            android:importantForAutofill="no"
-            tools:targetApi="o"
-
-            android:hint="@string/prompt_email"
-            android:inputType="textEmailAddress" />
-
-        <EditText
-            android:id="@+id/pwText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-
-            android:importantForAutofill="no"
-            tools:targetApi="o"
-
-            android:hint="@string/prompt_password"
-            android:inputType="textPassword" />
-
-        <EditText
-            android:id="@+id/pwcheckText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-
-            android:importantForAutofill="no"
-            tools:targetApi="o"
-
-            android:hint="@string/prompt_password_check"
-            android:inputType="textPassword" />
-
-        <EditText
-            android:id="@+id/nameText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-
-            android:importantForAutofill="no"
-            tools:targetApi="o"
-
-            android:hint="@string/prompt_name"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/birthText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-
-            android:importantForAutofill="no"
-            tools:targetApi="o"
-
-            android:hint="@string/prompt_birth"
-            android:inputType="date" />
-
+            android:text="@string/prompt_temp" />
     </LinearLayout>
     <!-- Notice -->
 
@@ -115,7 +59,7 @@
             android:gravity="center"
             android:onClick="mOnClose"
             android:padding="16dp"
-            android:text="@string/action_sign_up_short"
+            android:text="@string/action_search_account_short"
             android:textColor="@android:color/black"
             android:textSize="15sp" />
     </LinearLayout>

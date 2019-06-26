@@ -2,7 +2,7 @@
     <string name="app_name">Antrip</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
+    <string name="prompt_password">비밀번호</string>
     <string name="action_sign_in">로그인</string>
     <string name="action_sign_in_short">로그인</string>
     <string name="welcome">어서오세요 !</string>
@@ -43,4 +43,10 @@
     <string name="open_source_title">오픈소스 라이선스</string>
     <string name="system_header">시스템</string>
     <string name="action_sign_up_short">회원가입</string>
+    <string name="prompt_password_check">비밀번호 확인</string>
+    <string name="prompt_birth">생일</string>
+    <string name="prompt_name">닉네임, 이름</string>
+    <string name="prompt_temp">임시 구현</string>
+    <string name="action_search_account_short">계정찾기</string>
+    <string name="action_search_account">비밀번호를 잊으셨나요?</string>
 </resources>

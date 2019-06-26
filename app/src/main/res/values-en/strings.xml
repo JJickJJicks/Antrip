@@ -37,4 +37,10 @@
     <string name="logout_title">Logout</string>
     <string name="system_header">System</string>
     <string name="action_sign_up_short">Sign up</string>
+    <string name="prompt_password_check">Check Password</string>
+    <string name="prompt_birth">Birthday</string>
+    <string name="prompt_name">Nickname, Name</string>
+    <string name="prompt_temp">temporary</string>
+    <string name="action_search_account_short">Search Account</string>
+    <string name="action_search_account">Forgot password?</string>
 </resources>
