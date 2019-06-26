@@ -10,14 +10,20 @@ import teamprj.antrip.data.model.LoggedInUser;
 public class LoginDataSource {
 
     public Result<LoggedInUser> login(String email, String password) {
+        // TODO: 로그인 Data 로드 부분 (Fake 대신 실 DB 연결 필요)
+        Fakedata fakedata = new Fakedata();
+        String realemail = fakedata.email;
+        String realpw = fakedata.password;
+        String name = fakedata.name;
 
         try {
-            // TODO: loggedInUser 인증 처리
-            LoggedInUser fakeUser =
-                    new LoggedInUser(
-                            java.util.UUID.randomUUID().toString(),
-                            "Jane Doe");
-            return new Result.Success<>(fakeUser);
+            if (email.equals(realemail) && password.equals(realpw)) {
+                LoggedInUser fakeUser = new LoggedInUser(java.util.UUID.randomUUID().toString(), name);
+                return new Result.Success<>(fakeUser);
+            }
+            else
+                return new Result.Error(new Exception());
+
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
         }

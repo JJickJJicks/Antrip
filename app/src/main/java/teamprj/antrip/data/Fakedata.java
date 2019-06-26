@@ -8,5 +8,6 @@ package teamprj.antrip.data;
 public class Fakedata {
     String email = "test@test.com";
     String password = "1q2w3e4r!";
+    String name = "Tester";
     int travelcnt = 3;
 }
