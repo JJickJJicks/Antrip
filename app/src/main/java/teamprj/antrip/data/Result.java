@@ -1,7 +1,7 @@
 package teamprj.antrip.data;
 
 /**
- * A generic class that holds a result success w/ data or an error exception.
+ * 데이터 또는 에러 예외가 있는 결과의 성공을 보관 유지하는 범용 클래스입니다.
  */
 public class Result<T> {
     // hide the private constructor to limit subclass types (Success, Error)
