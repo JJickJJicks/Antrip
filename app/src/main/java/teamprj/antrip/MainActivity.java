@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_contact) {
             Toast.makeText(getApplicationContext(), "문의하기", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_manage) {
-            Toast.makeText(getApplicationContext(), "설정화면", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             finish();

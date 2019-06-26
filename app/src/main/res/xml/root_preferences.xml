@@ -15,12 +15,14 @@
   -->
 
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/settings_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/login_header">
 
         <Preference
             app:key="login_account"
+            android:icon="@drawable/ic_menu_profile"
             app:title="@string/login_account_title" />
 
         <CheckBoxPreference
@@ -30,6 +32,7 @@
 
         <Preference
             app:key="logout"
+            android:onClick="btn_logout"
             app:title="@string/logout_title" />
 
     </PreferenceCategory>

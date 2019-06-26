@@ -6,8 +6,8 @@ package teamprj.antrip.data;
 
 // TODO: 최종 구현 단계에서 삭제해야 함!
 public class Fakedata {
-    String email = "test@test.com";
-    String password = "1q2w3e4r!";
-    String name = "Tester";
-    int travelcnt = 3;
+    public String email = "test@test.com";
+    public String password = "1q2w3e4r!";
+    public String name = "Tester";
+    public int travelcnt = 0;
 }
