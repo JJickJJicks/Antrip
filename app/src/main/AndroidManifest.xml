@@ -29,7 +29,6 @@
         <activity android:name=".NoticeActivity" />
         <activity
             android:name=".TravelInfoActivity"
-            android:label="@string/title_activity_travel_info"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

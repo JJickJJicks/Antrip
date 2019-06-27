@@ -130,10 +130,15 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
+    public void temploginClick(View v) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("id", "test@test.com");
+        startActivity(intent);
+        finish();
+    }
+
     private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getName();
         // TODO : 로그인 이후 과정 작성
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         EditText emailText = findViewById(R.id.emailText);
         String email = emailText.getText().toString();
         Intent intent = new Intent(this, MainActivity.class);
