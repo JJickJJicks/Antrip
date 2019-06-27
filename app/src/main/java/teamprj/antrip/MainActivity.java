@@ -12,11 +12,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,6 +34,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +50,28 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        // 주소 자동 완성 정의
+        Places.initialize(getApplicationContext(), "AIzaSyDw6iFpfZH_uNQ-upmS9JC4c3GMS4i-I7Y");
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
+
+        // 동작부
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Intent intent = new Intent(MainActivity.this, TravelInfoActivity.class);
+                intent.putExtra("city",place.getName());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: 장소 검색 에러 발생시 대응 방법
+                Snackbar.make(findViewById(android.R.id.content), "An error occurred: " + status, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
+        });
     }
 
     @Override
@@ -86,23 +116,19 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        Fragment fragment = new Fragment();
-
-        if (id == R.id.nav_search) {
-            Toast.makeText(getApplicationContext(), "Default 도시 검색 화면", Toast.LENGTH_LONG).show();
-            // 도시 검색부
-        } else if (id == R.id.nav_profile) {
-            Toast.makeText(getApplicationContext(), "내 정보 보기", Toast.LENGTH_LONG).show();
-        } else if (id == R.id.nav_travel) {
+        if (id == R.id.nav_travel) {
             Toast.makeText(getApplicationContext(), "내 여행 정보", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_profile) {
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_notice) {
-            Toast.makeText(getApplicationContext(), "공지사항", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, NoticeActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_contact) {
             Toast.makeText(getApplicationContext(), "문의하기", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
-            finish();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

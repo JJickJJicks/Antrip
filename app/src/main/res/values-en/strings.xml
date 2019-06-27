@@ -43,4 +43,5 @@
     <string name="prompt_temp">temporary</string>
     <string name="action_search_account_short">Search Account</string>
     <string name="action_search_account">Forgot password?</string>
+    <string name="action_settings">Settings</string>
 </resources>

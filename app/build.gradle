@@ -10,6 +10,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        resValue "string", "places_api_key", (project.findProperty("PLACES_API_KEY") ?: "")
     }
     buildTypes {
         release {
@@ -32,4 +33,5 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    implementation 'com.google.android.libraries.places:places:1.1.0'
 }
