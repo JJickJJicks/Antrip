@@ -142,6 +142,8 @@
     </string>
     <string name="action_settings">설정</string>
     <string name="title_activity_profile" translatable="false">Profile</string>
+    <string name="default_notification_channel_id" translatable="false">antrip</string>
+    <string name="default_notification_channel_name" translatable="false">antrip</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
