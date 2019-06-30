@@ -1,5 +1,7 @@
 package teamprj.antrip.data;
 
+import android.app.ProgressDialog;
+
 import java.io.IOException;
 
 import teamprj.antrip.data.model.LoggedInUser;
@@ -8,9 +10,13 @@ import teamprj.antrip.data.model.LoggedInUser;
  * 로그인 자격 증명을 사용하여 인증을 처리하고 사용자 정보를 검색하는 클래스입니다.
  */
 public class LoginDataSource {
+    private static final String TAG = "LoginActivity";
+    private static final String URL_FOR_LOGIN = "https://antrip.kro.kr/login.php";
+    ProgressDialog progressDialog;
 
     public Result<LoggedInUser> login(String email, String password) {
         // TODO: 로그인 Data 로드 부분 (Fake 대신 실 DB 연결 필요)
+
         Fakedata fakedata = new Fakedata();
         String realemail = fakedata.email;
         String realpw = fakedata.password;
@@ -20,8 +26,7 @@ public class LoginDataSource {
             if (email.equals(realemail) && password.equals(realpw)) {
                 LoggedInUser fakeUser = new LoggedInUser(java.util.UUID.randomUUID().toString(), name);
                 return new Result.Success<>(fakeUser);
-            }
-            else
+            } else
                 return new Result.Error(new Exception());
 
         } catch (Exception e) {
@@ -31,5 +36,15 @@ public class LoginDataSource {
 
     public void logout() {
         // TODO: 인증 취소
+    }
+
+    private void showDialog() {
+        if (!progressDialog.isShowing())
+            progressDialog.show();
+    }
+
+    private void hideDialog() {
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 }

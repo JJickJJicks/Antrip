@@ -131,10 +131,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void temploginClick(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("id", "test@test.com");
-        startActivity(intent);
-        finish();
+        final EditText emailEditText = findViewById(R.id.emailText);
+        final EditText passwordEditText = findViewById(R.id.password);
+        emailEditText.setText("test@test.com");
+        passwordEditText.setText("1q2w3e4r!");
     }
 
     private void updateUiWithUser(LoggedInUserView model) {

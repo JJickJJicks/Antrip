@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // 주소 자동 완성 정의
-        Places.initialize(getApplicationContext(), "AIzaSyDw6iFpfZH_uNQ-upmS9JC4c3GMS4i-I7Y");
+        Places.initialize(getApplicationContext(), "AIzaSyB8eFsQ-Z7VH2_8rW2EVT8v1Uy8bViHX5o");
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
         autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
