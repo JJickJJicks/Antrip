@@ -35,6 +35,4 @@ public class LoginDataSource {
     public void logout() {
         // TODO: 인증 취소
     }
-
-    //login부 추가
 }
