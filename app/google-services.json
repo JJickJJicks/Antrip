@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "313533626290",
+    "firebase_url": "https://jjickjjicks.firebaseio.com",
+    "project_id": "jjickjjicks",
+    "storage_bucket": "jjickjjicks.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313533626290:android:6886c6a976f91266",
+        "android_client_info": {
+          "package_name": "teamprj.antrip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313533626290-h83ufedlft3n5uftpop1pn5kqv8dubbn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "teamprj.antrip",
+            "certificate_hash": "091256fa95b9f17f1d4a608ee4a989be823da22e"
+          }
+        },
+        {
+          "client_id": "313533626290-tuh87fkjq3jtc0m9qhev4strudkbq1an.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8eFsQ-Z7VH2_8rW2EVT8v1Uy8bViHX5o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "313533626290-tuh87fkjq3jtc0m9qhev4strudkbq1an.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "313533626290-fkk27s1cf8ug318j9aa179h6kpojik1o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "teamprj.antrip"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

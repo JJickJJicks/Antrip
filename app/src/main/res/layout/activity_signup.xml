@@ -59,7 +59,7 @@
             tools:targetApi="o" />
 
         <EditText
-            android:id="@+id/pwcheckText"
+            android:id="@+id/pwCheckText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -115,7 +115,7 @@
             android:layout_height="53dp"
             android:background="#00000000"
             android:gravity="center"
-            android:onClick="mOnClose"
+            android:onClick="signUp"
             android:padding="16dp"
             android:text="@string/action_sign_up_short"
             android:textColor="@android:color/black"

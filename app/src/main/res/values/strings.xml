@@ -5,7 +5,7 @@
     <string name="prompt_password">비밀번호</string>
     <string name="action_sign_in">로그인</string>
     <string name="action_sign_in_short">로그인</string>
-    <string name="welcome">어서오세요 !</string>
+    <string name="welcome">어서오세요! </string>
     <string name="invalid_email">유효한 이메일이 아닙니다</string>
     <string name="invalid_password">비밀번호는 5자 이상이어야합니다.</string>
     <string name="login_failed">로그인 실패</string>
@@ -144,6 +144,10 @@
     <string name="title_activity_profile" translatable="false">Profile</string>
     <string name="default_notification_channel_id" translatable="false">antrip</string>
     <string name="default_notification_channel_name" translatable="false">antrip</string>
+    <string name="wrongEmail" translatable="false">이메일을 확인해주세요</string>
+    <string name="wrongPassword" translatable="false">비밀번호를 확인해주세요</string>
+    <string name="wrongName" translatable="false">이름을 확인해주세요</string>
+    <string name="wrongBirth" translatable="false">생년월일을 확인해주세요</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
