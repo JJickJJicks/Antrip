@@ -2,6 +2,7 @@ package teamprj.antrip.data;
 
 import java.io.IOException;
 
+import teamprj.antrip.R;
 import teamprj.antrip.data.model.Fakedata;
 import teamprj.antrip.data.model.LoggedInUser;
 
@@ -10,7 +11,7 @@ import teamprj.antrip.data.model.LoggedInUser;
  */
 public class LoginDataSource {
     private static final String TAG = "LoginActivity";
-    private static final String URL_FOR_LOGIN = "https://antrip.kro.kr/app/login.php";
+    private static final String URL_FOR_LOGIN = R.string.devURL + "login.php";
 
     public Result<LoggedInUser> login(String email, String password) {
         // TODO: 로그인 Data 로드 부분 (Fake 대신 실 DB 연결 필요)

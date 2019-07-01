@@ -33,7 +33,7 @@ public class SignupActivity extends Activity {
 
 
     private static final String TAG = "signUp";
-    private static final String URL_FOR_REGISTRATION = "http://antrip.kro.kr/app/signup.php";
+    private static final String URL_FOR_REGISTRATION = R.string.devURL + "signup.php";
     private EditText emailText, passwordText, pwCheckText, nameText, birthText;
 
     Calendar myCalendar = Calendar.getInstance();
