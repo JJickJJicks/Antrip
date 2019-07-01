@@ -1,4 +1,4 @@
-package teamprj.antrip;
+package teamprj.antrip.ui.login;
 
 
 import android.app.Activity;
@@ -25,6 +25,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import teamprj.antrip.R;
+import teamprj.antrip.data.AppSingleton;
 
 public class SignupActivity extends Activity {
 

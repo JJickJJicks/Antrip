@@ -80,7 +80,7 @@
             app:key="open_source"
             app:title="@string/open_source_title" >
             <intent
-                android:targetClass="teamprj.antrip.LicenseActivity"
+                android:targetClass="teamprj.antrip.ui.settings.LicenseActivity"
                 android:targetPackage="teamprj.antrip" />
         </Preference>
 

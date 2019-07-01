@@ -1,4 +1,4 @@
-package teamprj.antrip;
+package teamprj.antrip.ui.settings;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,7 +13,8 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import teamprj.antrip.data.Fakedata;
+import teamprj.antrip.R;
+import teamprj.antrip.data.model.Fakedata;
 import teamprj.antrip.ui.login.LoginActivity;
 
 public class SettingsActivity extends AppCompatActivity {

@@ -39,16 +39,16 @@
                 android:value="teamprj.antrip.MainActivity" />
         </activity>
         <activity
-            android:name=".LicenseActivity"
+            android:name=".ui.settings.LicenseActivity"
             android:label="@string/app_license" />
         <activity
-            android:name=".AccountSearchActivity"
+            android:name=".ui.login.AccountSearchActivity"
             android:theme="@android:style/Theme.Dialog" />
         <activity
-            android:name=".SignupActivity"
+            android:name=".ui.login.SignupActivity"
             android:theme="@android:style/Theme.Dialog" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.settings.SettingsActivity"
             android:label="@string/app_name"
             android:parentActivityName=".MainActivity">
             <meta-data

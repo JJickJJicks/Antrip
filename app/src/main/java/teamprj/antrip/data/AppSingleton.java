@@ -1,4 +1,4 @@
-package teamprj.antrip;
+package teamprj.antrip.data;
 
 import android.content.Context;
 

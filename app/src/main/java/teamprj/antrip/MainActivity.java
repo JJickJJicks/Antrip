@@ -25,6 +25,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
 
+import teamprj.antrip.ui.settings.SettingsActivity;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

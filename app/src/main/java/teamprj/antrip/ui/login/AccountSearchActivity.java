@@ -1,10 +1,12 @@
-package teamprj.antrip;
+package teamprj.antrip.ui.login;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+
+import teamprj.antrip.R;
 
 public class AccountSearchActivity extends Activity {
 

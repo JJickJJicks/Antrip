@@ -1,4 +1,4 @@
-package teamprj.antrip.data;
+package teamprj.antrip.data.model;
 
 /**
  * 기능 구현 및 테스트를 위해 임의로 만든 가짜 데이터 클래스입니다.

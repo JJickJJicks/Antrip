@@ -1,10 +1,12 @@
-package teamprj.antrip;
+package teamprj.antrip.ui.settings;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import teamprj.antrip.R;
 
 public class LicenseActivity extends AppCompatActivity {
 

@@ -20,10 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import teamprj.antrip.AccountSearchActivity;
 import teamprj.antrip.MainActivity;
 import teamprj.antrip.R;
-import teamprj.antrip.SignupActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
