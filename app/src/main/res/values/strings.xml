@@ -149,6 +149,7 @@
     <string name="wrongName" translatable="false">이름을 확인해주세요</string>
     <string name="wrongBirth" translatable="false">생년월일을 확인해주세요</string>
     <string name="devURL">http://antrip.kro.kr/app/</string>
+    <string name="title_activity_travel_planner">Map</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
