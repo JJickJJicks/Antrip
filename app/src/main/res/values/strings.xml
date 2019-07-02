@@ -148,9 +148,9 @@
     <string name="wrongPassword" translatable="false">비밀번호를 확인해주세요</string>
     <string name="wrongName" translatable="false">이름을 확인해주세요</string>
     <string name="wrongBirth" translatable="false">생년월일을 확인해주세요</string>
-    <string name="devURL">http://antrip.kro.kr/app/</string>
     <string name="title_activity_travel_planner">Map</string>
     <string name="wrongNetwork">네트워크 상태를 확인해주세요</string>
+    <string name="wrongPwLength">비밀번호는 5자 이상이여야 합니다.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

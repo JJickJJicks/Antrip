@@ -33,9 +33,7 @@ public class SignupActivity extends Activity {
 
 
     private static final String TAG = "signUp";
-    private static final String URL_FOR_REGISTRATION = R.string.devURL + "signup.php";
-    private EditText emailText, passwordText, pwCheckText, nameText, birthText;
-
+    private static final String URL_FOR_REGISTRATION = "http://antrip.kro.kr/app/" + "signup.php";
     Calendar myCalendar = Calendar.getInstance();
     DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -46,6 +44,7 @@ public class SignupActivity extends Activity {
             updateLabel();
         }
     };
+    private EditText emailText, passwordText, pwCheckText, nameText, birthText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

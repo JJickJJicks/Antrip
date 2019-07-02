@@ -25,16 +25,15 @@ public class SplashActivity extends AppCompatActivity {
                 Intent i = new Intent(this, LoginActivity.class);
                 startActivity(i);
                 finish();
-            }catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
-        else{
+        } else {
             try {
                 Thread.sleep(1000);
                 Toast.makeText(this, R.string.wrongNetwork, Toast.LENGTH_SHORT).show();
                 finish();
-            }catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }

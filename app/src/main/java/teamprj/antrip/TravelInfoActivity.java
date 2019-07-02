@@ -28,7 +28,7 @@ public class TravelInfoActivity extends AppCompatActivity {
         maintext.setText(name);
 
         //TODO: Titlebar에 들어갈 제목은?
-        collapsingToolbar.setTitle(name+" 혹은 여행1");
+        collapsingToolbar.setTitle(name + " 혹은 여행1");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

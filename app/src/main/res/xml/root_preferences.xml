@@ -15,14 +15,14 @@
   -->
 
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/settings_layout"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settings_layout">
 
     <PreferenceCategory app:title="@string/login_header">
 
         <Preference
-            app:key="login_account"
             android:icon="@drawable/ic_menu_profile"
+            app:key="login_account"
             app:title="@string/login_account_title" />
 
         <CheckBoxPreference
@@ -31,8 +31,8 @@
             android:title="@string/auto_login_title" />
 
         <Preference
-            app:key="logout"
             android:onClick="btn_logout"
+            app:key="logout"
             app:title="@string/logout_title" />
 
     </PreferenceCategory>
@@ -62,7 +62,7 @@
     <PreferenceCategory app:title="@string/system_header">
         <Preference
             app:key="notice"
-            app:title="@string/menu_notice" >
+            app:title="@string/menu_notice">
             <intent
                 android:targetClass="teamprj.antrip.NoticeActivity"
                 android:targetPackage="teamprj.antrip" />
@@ -78,7 +78,7 @@
 
         <Preference
             app:key="open_source"
-            app:title="@string/open_source_title" >
+            app:title="@string/open_source_title">
             <intent
                 android:targetClass="teamprj.antrip.ui.settings.LicenseActivity"
                 android:targetPackage="teamprj.antrip" />

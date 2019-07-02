@@ -1,119 +1,148 @@
 package teamprj.antrip.ui.login;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.textfield.TextInputLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import teamprj.antrip.MainActivity;
 import teamprj.antrip.R;
+import teamprj.antrip.data.AppSingleton;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private LoginViewModel loginViewModel;
+    private static final String TAG = "Login";
+    private static final String URL_FOR_LOGIN = "http://antrip.kro.kr/app/" + "login.php";
+    ProgressDialog progressDialog;
+
+    EditText emailEditText, passwordEditText;
+    Button loginButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
-                .get(LoginViewModel.class);
 
-        final EditText emailEditText = findViewById(R.id.emailText);
-        final EditText passwordEditText = findViewById(R.id.password);
-        final Button loginButton = findViewById(R.id.login);
-        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+        emailEditText = findViewById(R.id.emailText);
+        passwordEditText = findViewById(R.id.password);
+        loginButton = findViewById(R.id.login);
 
-        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
-            @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
-                    return;
-                }
-                loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getEmailError() != null) {
-                    emailEditText.setError(getString(loginFormState.getEmailError()));
-                }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
-                }
-            }
-        });
+        // Progress dialog
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
 
-        loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
-            @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                    return;
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
-                }
-                setResult(Activity.RESULT_OK);
-
-                //Complete and destroy login activity once successful
-                finish();
-            }
-        });
-
-        TextWatcher afterTextChangedListener = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(emailEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-        };
-        emailEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(emailEditText.getText().toString(),
-                            passwordEditText.getText().toString());
-                }
-                return false;
-            }
-        });
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(emailEditText.getText().toString(), passwordEditText.getText().toString());
+                if (checkError()) {
+                    loginUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
+                }
+
             }
         });
+    }
+
+    private void loginUser(final String email, final String password) {
+        // Tag used to cancel the request
+        String cancel_req_tag = "login";
+        progressDialog.setMessage("Logging you in...");
+        showDialog();
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                URL_FOR_LOGIN, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response);
+                hideDialog();
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+
+                    if (!error) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("email", jObj.getJSONObject("user").getString("email"));
+                        intent.putExtra("name", jObj.getJSONObject("user").getString("name"));
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Login Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to login url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                params.put("password", password);
+                return params;
+            }
+
+        };
+        // Adding request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, cancel_req_tag);
+    }
+
+    private void showDialog() {
+        if (!progressDialog.isShowing())
+            progressDialog.show();
+    }
+
+    private void hideDialog() {
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+    public boolean checkError() {
+        emailEditText = findViewById(R.id.emailText);
+        passwordEditText = findViewById(R.id.password);
+
+        TextInputLayout emailLayout = findViewById(R.id.emailLayout);
+        TextInputLayout passwordLayout = findViewById(R.id.passwordLayout);
+
+        if (emailEditText.getText().toString().equals("") || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailEditText.getText().toString()).matches())
+            emailLayout.setError(getText(R.string.wrongEmail));
+        else if (passwordEditText.getText().toString().equals(""))
+            passwordLayout.setError(getText(R.string.wrongPassword));
+        else if (passwordEditText.getText().toString().length() < 5)
+            passwordLayout.setError(getText(R.string.wrongPwLength));
+        else
+            return true;
+        return false;
     }
 
     public void signupClick(View v) {
@@ -131,21 +160,7 @@ public class LoginActivity extends AppCompatActivity {
     public void temploginClick(View v) {
         final EditText emailEditText = findViewById(R.id.emailText);
         final EditText passwordEditText = findViewById(R.id.password);
-        emailEditText.setText("test@test.com");
-        passwordEditText.setText("1q2w3e4r!");
-    }
-
-    private void updateUiWithUser(LoggedInUserView model) {
-        // TODO : 로그인 이후 과정 작성
-        EditText emailText = findViewById(R.id.emailText);
-        String email = emailText.getText().toString();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("id", email);
-        startActivity(intent);
-        finish();
-    }
-
-    private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+        emailEditText.setText("admin@test.com");
+        passwordEditText.setText("123456");
     }
 }
