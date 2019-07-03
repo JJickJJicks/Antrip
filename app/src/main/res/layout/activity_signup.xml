@@ -35,7 +35,7 @@
         android:padding="24dp">
 
         <EditText
-            android:id="@+id/emailText"
+            android:id="@+id/signup.emailText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -47,7 +47,7 @@
             tools:targetApi="o" />
 
         <EditText
-            android:id="@+id/pwText"
+            android:id="@+id/signup.pwText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -59,7 +59,7 @@
             tools:targetApi="o" />
 
         <EditText
-            android:id="@+id/pwCheckText"
+            android:id="@+id/signup.pwCheckText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -71,7 +71,7 @@
             tools:targetApi="o" />
 
         <EditText
-            android:id="@+id/nameText"
+            android:id="@+id/signup.nameText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -83,7 +83,7 @@
             tools:targetApi="o" />
 
         <EditText
-            android:id="@+id/birthText"
+            android:id="@+id/signup.birthText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"

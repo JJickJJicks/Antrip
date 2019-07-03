@@ -2,10 +2,13 @@ package teamprj.antrip.ui.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,21 +38,24 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText emailEditText, passwordEditText;
     Button loginButton;
+    CheckBox autoLogin;
+    SharedPreferences setting;
+    SharedPreferences.Editor editor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        emailEditText = findViewById(R.id.emailText);
-        passwordEditText = findViewById(R.id.password);
+        emailEditText = findViewById(R.id.login_emailText);
+        passwordEditText = findViewById(R.id.login_passwordText);
         loginButton = findViewById(R.id.login);
 
         // Progress dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
 
-
+        // 로그인 버튼
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +63,39 @@ public class LoginActivity extends AppCompatActivity {
                     loginUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
                 }
 
+            }
+        });
+
+        // 자동 로그인
+        autoLogin = findViewById(R.id.login_autologin);
+
+        setting = getSharedPreferences("setting", 0);
+        editor = setting.edit();
+
+        if (setting.getBoolean("Auto_Login_enabled", false)) {
+            emailEditText.setText(setting.getString("ID", ""));
+            passwordEditText.setText(setting.getString("PW", ""));
+            autoLogin.setChecked(true);
+        }
+
+        autoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // TODO Auto-generated method stub
+                if (isChecked) {
+                    String ID = emailEditText.getText().toString();
+                    String PW = passwordEditText.getText().toString();
+
+                    editor.putString("ID", ID);
+                    editor.putString("PW", PW);
+                    editor.putBoolean("Auto_Login_enabled", true);
+                    editor.commit();
+                } else {
+                    editor.remove("ID");
+                    editor.remove("PW");
+                    editor.remove("Auto_Login_enabled");
+                    editor.commit();
+                }
             }
         });
     }
@@ -128,8 +167,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public boolean checkError() {
-        emailEditText = findViewById(R.id.emailText);
-        passwordEditText = findViewById(R.id.password);
+        emailEditText = findViewById(R.id.login_emailText);
+        passwordEditText = findViewById(R.id.login_passwordText);
 
         TextInputLayout emailLayout = findViewById(R.id.emailLayout);
         TextInputLayout passwordLayout = findViewById(R.id.passwordLayout);
@@ -158,8 +197,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void temploginClick(View v) {
-        final EditText emailEditText = findViewById(R.id.emailText);
-        final EditText passwordEditText = findViewById(R.id.password);
+        final EditText emailEditText = findViewById(R.id.login_emailText);
+        final EditText passwordEditText = findViewById(R.id.login_passwordText);
         emailEditText.setText("admin@test.com");
         passwordEditText.setText("123456");
     }

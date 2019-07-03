@@ -53,11 +53,11 @@ public class SignupActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_signup);
 
-        emailText = findViewById(R.id.emailText);
-        passwordText = findViewById(R.id.pwText);
-        pwCheckText = findViewById(R.id.pwCheckText);
-        nameText = findViewById(R.id.nameText);
-        birthText = findViewById(R.id.birthText);
+        emailText = findViewById(R.id.signup_emailText);
+        passwordText = findViewById(R.id.signup_pwText);
+        pwCheckText = findViewById(R.id.signup_pwCheckText);
+        nameText = findViewById(R.id.signup_nameText);
+        birthText = findViewById(R.id.signup_birthText);
         birthText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,36 +67,46 @@ public class SignupActivity extends Activity {
     }
 
     public void signUp(View v) {
-        emailText = findViewById(R.id.emailText);
-        passwordText = findViewById(R.id.pwText);
-        pwCheckText = findViewById(R.id.pwCheckText);
-        nameText = findViewById(R.id.nameText);
-        birthText = findViewById(R.id.birthText);
+        emailText = findViewById(R.id.signup_emailText);
+        passwordText = findViewById(R.id.signup_pwText);
+        pwCheckText = findViewById(R.id.signup_pwCheckText);
+        nameText = findViewById(R.id.signup_nameText);
+        birthText = findViewById(R.id.signup_birthText);
 
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
-        String pwCheck = pwCheckText.getText().toString();
-        String name = nameText.getText().toString();
-        String birth = birthText.getText().toString();
-
-        if (checkError(email, password, pwCheck, name, birth)) {
-            register(email, password, name, birth);
+        if (checkError()) {
+            register(emailText.getText().toString(), passwordText.getText().toString(), nameText.getText().toString(), birthText.getText().toString());
 //            finish();
         }
     }
 
-    public boolean checkError(String email, String password, String pwCheck, String name, String birth) {
-        if (email.equals("") || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
-            Toast.makeText(getApplicationContext(), R.string.wrongEmail, Toast.LENGTH_SHORT).show();
-        else if (password.equals("") || !password.equals(pwCheck))
-            Toast.makeText(getApplicationContext(), R.string.wrongPassword, Toast.LENGTH_SHORT).show();
-        else if (name.equals(""))
-            Toast.makeText(getApplicationContext(), R.string.wrongName, Toast.LENGTH_SHORT).show();
-        else if (birth.equals(""))
-            Toast.makeText(getApplicationContext(), R.string.wrongBirth, Toast.LENGTH_SHORT).show();
-        else
-            return true;
-        return false;
+    public boolean checkError() {
+        emailText = findViewById(R.id.signup_emailText);
+        passwordText = findViewById(R.id.signup_pwText);
+        pwCheckText = findViewById(R.id.signup_pwCheckText);
+        nameText = findViewById(R.id.signup_nameText);
+        birthText = findViewById(R.id.signup_birthText);
+
+        if (emailText.getText().toString().equals("") || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches()) {
+            emailText.setError(getText(R.string.wrongEmail));
+            return false;
+        } else
+            emailText.setError(null);
+        if (passwordText.getText().toString().equals("") || !passwordText.getText().toString().equals(pwCheckText.getText().toString())) {
+            passwordText.setError(getText(R.string.wrongPassword));
+            return false;
+        } else
+            passwordText.setError(null);
+        if (nameText.getText().toString().equals("")) {
+            nameText.setError(getText(R.string.wrongName));
+            return false;
+        } else
+            nameText.setError(null);
+        if (birthText.getText().toString().equals("")) {
+            birthText.setError(getText(R.string.wrongBirth));
+            return false;
+        } else
+            birthText.setError(null);
+        return true;
     }
 
     private void register(final String email, final String password, final String name, final String birth) {
