@@ -76,6 +76,9 @@ public class LoginActivity extends AppCompatActivity {
             emailEditText.setText(setting.getString("ID", ""));
             passwordEditText.setText(setting.getString("PW", ""));
             autoLogin.setChecked(true);
+            if (checkError()) {
+                loginUser(emailEditText.getText().toString(), passwordEditText.getText().toString());
+            }
         }
 
         autoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

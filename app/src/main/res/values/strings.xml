@@ -151,6 +151,7 @@
     <string name="title_activity_travel_planner">Map</string>
     <string name="wrongNetwork">네트워크 상태를 확인해주세요</string>
     <string name="wrongPwLength">비밀번호는 5자 이상이여야 합니다.</string>
+    <string name="for_test">Test용 Data</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

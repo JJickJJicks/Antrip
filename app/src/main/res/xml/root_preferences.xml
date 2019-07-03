@@ -25,11 +25,6 @@
             app:key="login_account"
             app:title="@string/login_account_title" />
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="auto_login"
-            android:title="@string/auto_login_title" />
-
         <Preference
             android:onClick="btn_logout"
             app:key="logout"

@@ -2,6 +2,7 @@ package teamprj.antrip.ui.settings;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -45,6 +46,9 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
+        SharedPreferences setting;
+        SharedPreferences.Editor editor;
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
@@ -55,9 +59,21 @@ public class SettingsActivity extends AppCompatActivity {
             logout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
                     new AlertDialog.Builder(getActivity())
-                            .setTitle("로그아웃").setMessage("로그아웃 하시겠습니까?")
+                            .setTitle("로그아웃").setMessage("로그아웃 하시겠습니까? 자동 로그인이 해제됩니다.")
                             .setPositiveButton("로그아웃", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
+                                    // 자동 로그인 해제
+                                    setting = getActivity().getSharedPreferences("setting", 0);
+                                    editor = setting.edit();
+
+                                    if (setting.getBoolean("Auto_Login_enabled", false)) {
+                                        editor.remove("ID");
+                                        editor.remove("PW");
+                                        editor.remove("Auto_Login_enabled");
+                                        editor.commit();
+                                    }
+
+                                    // 초기 로그인 화면으로 돌아감
                                     Intent i = new Intent(getActivity(), LoginActivity.class);
                                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(i);
