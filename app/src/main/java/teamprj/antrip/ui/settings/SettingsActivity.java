@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
@@ -28,7 +27,6 @@ public class SettingsActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.profileText, new SettingsFragment())
                 .commit();
-        ActionBar actionBar = getSupportActionBar();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -55,6 +53,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             Preference logout = findPreference("logout");
             Preference travel = findPreference("downloaded_travel");
+            Preference appVersion = findPreference("app_version");
 
             logout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {

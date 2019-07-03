@@ -79,5 +79,10 @@
                 android:targetPackage="teamprj.antrip" />
         </Preference>
 
+        <Preference
+            app:key="app_version"
+            app:title="@string/app_version_title"
+            app:summary="@string/app_version"/>
+
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

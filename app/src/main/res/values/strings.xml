@@ -152,6 +152,8 @@
     <string name="wrongNetwork">네트워크 상태를 확인해주세요</string>
     <string name="wrongPwLength">비밀번호는 5자 이상이여야 합니다.</string>
     <string name="for_test">Test용 Data</string>
+    <string name="app_version">0.29</string>
+    <string name="app_version_title">어플리케이션 버전</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
