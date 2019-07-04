@@ -75,7 +75,6 @@ public class SignupActivity extends Activity {
 
         if (checkError()) {
             register(emailText.getText().toString(), passwordText.getText().toString(), nameText.getText().toString(), birthText.getText().toString());
-//            finish();
         }
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@android:style/Theme.Dialog"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
@@ -32,11 +33,71 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <TextView
-            android:id="@+id/acc_search.tempText"
+        <EditText
+            android:id="@+id/acc_search.emailText"
+            tools:targetApi="o"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/prompt_temp" />
+
+            android:ems="10"
+            android:hint="@string/prompt_email"
+
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress" />
+
+        <Button
+            android:id="@+id/acc_search.sendBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/prompt_send" />
+
+        <EditText
+            android:id="@+id/acc_search.codeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+
+            android:enabled="false"
+            android:hint="@string/prompt_code"
+
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:maxLength="6"
+            tools:targetApi="o" />
+
+        <Button
+            android:id="@+id/acc_search.codeBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="@string/prompt_confirm" />
+
+        <EditText
+            android:id="@+id/acc_search.pwText"
+            tools:targetApi="o"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:enabled="false"
+            android:ems="10"
+
+            android:hint="@string/prompt_password"
+            android:importantForAutofill="no"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/acc_search.pwCheckText"
+            tools:targetApi="o"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:enabled="false"
+            android:ems="10"
+
+            android:hint="@string/prompt_password_check"
+            android:importantForAutofill="no"
+            android:inputType="textPassword" />
+
     </LinearLayout>
     <!-- Notice -->
 
@@ -58,8 +119,9 @@
             android:layout_width="match_parent"
             android:layout_height="53dp"
             android:background="#00000000"
+            android:enabled="true"
             android:gravity="center"
-            android:onClick="mOnClose"
+            android:onClick="findUser"
             android:padding="16dp"
             android:text="@string/action_search_account_short"
             android:textColor="@android:color/black"
