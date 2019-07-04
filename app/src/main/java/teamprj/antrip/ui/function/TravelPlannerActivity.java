@@ -1,4 +1,4 @@
-package teamprj.antrip;
+package teamprj.antrip.ui.function;
 
 import android.os.Bundle;
 
@@ -10,6 +10,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import teamprj.antrip.R;
 
 public class TravelPlannerActivity extends FragmentActivity implements OnMapReadyCallback {
 

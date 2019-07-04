@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SplashActivity">
+        <activity android:name=".ui.function.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,11 +43,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".TravelPlannerActivity"
+            android:name=".ui.function.TravelPlannerActivity"
             android:label="@string/title_activity_travel_planner">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="teamprj.antrip.TravelInfoActivity" />
+                android:value="teamprj.antrip.ui.function.TravelInfoActivity" />
         </activity>
         <activity
             android:name=".ui.ProfileActivity"
@@ -59,10 +59,10 @@
                 android:value="teamprj.antrip.ui.MainActivity" />
         </activity>
         <activity android:name=".ui.ProfileCorrectActivity" />
-        <activity android:name=".NoticeArticleActivity" />
-        <activity android:name=".NoticeActivity" />
+        <activity android:name=".ui.function.NoticeArticleActivity" />
+        <activity android:name=".ui.function.NoticeActivity" />
         <activity
-            android:name=".TravelInfoActivity"
+            android:name=".ui.function.TravelInfoActivity"
             android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

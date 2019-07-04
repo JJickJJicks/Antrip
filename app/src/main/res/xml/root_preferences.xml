@@ -63,7 +63,7 @@
             app:key="notice"
             app:title="@string/menu_notice">
             <intent
-                android:targetClass="teamprj.antrip.NoticeActivity"
+                android:targetClass="teamprj.antrip.ui.function.NoticeActivity"
                 android:targetPackage="teamprj.antrip" />
         </Preference>
 

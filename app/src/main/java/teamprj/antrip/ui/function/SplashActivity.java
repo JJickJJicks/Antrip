@@ -1,4 +1,4 @@
-package teamprj.antrip;
+package teamprj.antrip.ui.function;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import teamprj.antrip.R;
 import teamprj.antrip.ui.login.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {

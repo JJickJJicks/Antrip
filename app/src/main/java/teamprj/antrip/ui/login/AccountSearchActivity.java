@@ -15,7 +15,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +34,6 @@ public class AccountSearchActivity extends Activity {
 
     EditText emailEditText, codeEditText, pwEditText, pwCheckEditText;
     Button sendBtn, codeBtn;
-    Boolean state = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +70,14 @@ public class AccountSearchActivity extends Activity {
                 codeEditText = findViewById(R.id.acc_search_codeText);
                 String code = codeEditText.getText().toString();
                 if (code.equals(randNum)) {
-                    Toast.makeText(getApplicationContext(), "성공 " + randNum, Toast.LENGTH_LONG).show();
+                    findViewById(R.id.acc_search_codeText).setEnabled(false);
+                    findViewById(R.id.acc_search_codeBtn).setEnabled(false);
                     findViewById(R.id.acc_search_pwText).setEnabled(true);
                     findViewById(R.id.acc_search_pwCheckText).setEnabled(true);
-                } else
+                } else {
+                    codeEditText.setText("");
                     Toast.makeText(getApplicationContext(), "실패 " + randNum, Toast.LENGTH_LONG).show();
-
+                }
             }
         });
     }
@@ -101,6 +101,8 @@ public class AccountSearchActivity extends Activity {
                         user_email = email;
                         int rand = (int) (Math.random() * 1000000);
                         randNum = String.format("%06d", rand);
+                        findViewById(R.id.acc_search_emailText).setEnabled(false);
+                        findViewById(R.id.acc_search_sendBtn).setEnabled(false);
                         findViewById(R.id.acc_search_codeText).setEnabled(true);
                         findViewById(R.id.acc_search_codeBtn).setEnabled(true);
                         Toast.makeText(getApplicationContext(), randNum, Toast.LENGTH_LONG).show(); // 원래 이메일로 보내야 되지만 임시로 Toast로 출력
@@ -139,8 +141,6 @@ public class AccountSearchActivity extends Activity {
 
     public void findUser(View v) {
         pwEditText = findViewById(R.id.acc_search_pwText);
-        pwCheckEditText = findViewById(R.id.acc_search_pwCheckText);
-
         if (checkPassword()) {
             Toast.makeText(getApplicationContext(), "성공", Toast.LENGTH_LONG).show();
 
@@ -154,18 +154,19 @@ public class AccountSearchActivity extends Activity {
         pwEditText = findViewById(R.id.acc_search_pwText);
         pwCheckEditText = findViewById(R.id.acc_search_pwCheckText);
 
-        if (pwEditText.getText().toString().equals("") || !pwEditText.getText().toString().equals(pwCheckEditText.getText().toString())) {
+        if (pwEditText.getText().toString().length() < 5) {
+            pwEditText.setError(getText(R.string.wrongPwLength));
+            return false;
+        } else if (pwEditText.getText().toString().equals("") || !pwEditText.getText().toString().equals(pwCheckEditText.getText().toString())) {
             pwEditText.setError(getText(R.string.wrongPassword));
             return false;
-        }
-        pwEditText.setError(null);
+        } else
+            pwEditText.setError(null);
         return true;
     }
 
     public boolean checkEmail() {
         emailEditText = findViewById(R.id.acc_search_emailText);
-
-        TextInputLayout emailLayout = findViewById(R.id.login_emailLayout);
 
         if (emailEditText.getText().toString().equals("") || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailEditText.getText().toString()).matches()) {
             emailEditText.setError(getText(R.string.wrongEmail));
@@ -183,12 +184,6 @@ public class AccountSearchActivity extends Activity {
     private void hideDialog() {
         if (progressDialog.isShowing())
             progressDialog.dismiss();
-    }
-
-    //확인 버튼 클릭
-    public void mOnClose(View v) {
-        //액티비티(팝업) 닫기
-        finish();
     }
 
     @Override

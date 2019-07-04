@@ -1,4 +1,4 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
-    tools:context="teamprj.antrip.TravelInfoActivity">
+    tools:context="teamprj.antrip.ui.function.TravelInfoActivity">
 
 </menu>

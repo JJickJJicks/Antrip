@@ -25,9 +25,9 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
 
-import teamprj.antrip.NoticeActivity;
 import teamprj.antrip.R;
-import teamprj.antrip.TravelInfoActivity;
+import teamprj.antrip.ui.function.NoticeActivity;
+import teamprj.antrip.ui.function.TravelInfoActivity;
 import teamprj.antrip.ui.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity
