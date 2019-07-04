@@ -15,8 +15,8 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import teamprj.antrip.MainActivity;
 import teamprj.antrip.R;
+import teamprj.antrip.ui.MainActivity;
 
 public class FireBaseMessagingService extends FirebaseMessagingService {
 

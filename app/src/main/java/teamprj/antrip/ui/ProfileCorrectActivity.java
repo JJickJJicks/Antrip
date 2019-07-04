@@ -1,8 +1,10 @@
-package teamprj.antrip;
+package teamprj.antrip.ui;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import teamprj.antrip.R;
 
 public class ProfileCorrectActivity extends AppCompatActivity {
 

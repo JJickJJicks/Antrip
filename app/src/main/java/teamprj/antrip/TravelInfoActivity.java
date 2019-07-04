@@ -16,15 +16,15 @@ public class TravelInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel_info);
 
-        CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.toolbar_layout);
+        CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.profile_toolbarLayout);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.travelInfo_toolbar);
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         String name = intent.getExtras().getString("name");
 
-        TextView maintext = findViewById(R.id.maintext);
+        TextView maintext = findViewById(R.id.travel_text);
         maintext.setText(name);
 
         //TODO: Titlebar에 들어갈 제목은?

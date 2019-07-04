@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity"
+    tools:context=".ui.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
     <LinearLayout
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <fragment
-            android:id="@+id/autocomplete_fragment"
+            android:id="@+id/main.autocomplete_fragment"
             android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

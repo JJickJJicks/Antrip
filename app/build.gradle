@@ -8,10 +8,13 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "0.29"
+        versionName "0.30"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         resValue "string", "places_api_key", (project.findProperty("PLACES_API_KEY") ?: "")
+    }
+    applicationVariants.all { variant ->
+        variant.resValue "string", "app_version", variant.versionName
     }
     buildTypes {
         release {

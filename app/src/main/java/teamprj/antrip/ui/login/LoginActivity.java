@@ -26,9 +26,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import teamprj.antrip.MainActivity;
 import teamprj.antrip.R;
 import teamprj.antrip.data.AppSingleton;
+import teamprj.antrip.ui.MainActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
         emailEditText = findViewById(R.id.login_emailText);
         passwordEditText = findViewById(R.id.login_passwordText);
-        loginButton = findViewById(R.id.login);
+        loginButton = findViewById(R.id.login_loginBtn);
 
         // Progress dialog
         progressDialog = new ProgressDialog(this);
@@ -172,8 +172,8 @@ public class LoginActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.login_emailText);
         passwordEditText = findViewById(R.id.login_passwordText);
 
-        TextInputLayout emailLayout = findViewById(R.id.emailLayout);
-        TextInputLayout passwordLayout = findViewById(R.id.passwordLayout);
+        TextInputLayout emailLayout = findViewById(R.id.login_emailLayout);
+        TextInputLayout passwordLayout = findViewById(R.id.login_passwordLayout);
 
         if (emailEditText.getText().toString().equals("") || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailEditText.getText().toString()).matches())
             emailLayout.setError(getText(R.string.wrongEmail));

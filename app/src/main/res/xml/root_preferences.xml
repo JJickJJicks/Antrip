@@ -23,7 +23,11 @@
         <Preference
             android:icon="@drawable/ic_menu_profile"
             app:key="login_account"
-            app:title="@string/login_account_title" />
+            app:title="@string/login_account_title">
+            <intent
+                android:targetClass="teamprj.antrip.ui.ProfileActivity"
+                android:targetPackage="teamprj.antrip" />
+        </Preference>
 
         <Preference
             android:onClick="btn_logout"
@@ -81,8 +85,8 @@
 
         <Preference
             app:key="app_version"
-            app:title="@string/app_version_title"
-            app:summary="@string/app_version"/>
+            app:summary="@string/app_version"
+            app:title="@string/app_version_title" />
 
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

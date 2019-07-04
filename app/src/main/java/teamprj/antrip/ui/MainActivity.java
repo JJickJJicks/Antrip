@@ -1,4 +1,4 @@
-package teamprj.antrip;
+package teamprj.antrip.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +25,9 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
 
+import teamprj.antrip.NoticeActivity;
+import teamprj.antrip.R;
+import teamprj.antrip.TravelInfoActivity;
 import teamprj.antrip.ui.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.main_navView);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity
 
         // 주소 자동 완성 정의
         Places.initialize(getApplicationContext(), "AIzaSyB8eFsQ-Z7VH2_8rW2EVT8v1Uy8bViHX5o");
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.main_autocomplete_fragment);
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
         autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
 

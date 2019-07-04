@@ -14,7 +14,7 @@ public class LicenseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_license);
-        WebView webView = findViewById(R.id.webview);
+        WebView webView = findViewById(R.id.license_webview);
         webView.loadUrl("file:///android_asset/www/license.html");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -25,7 +25,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.settings_activity);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.profileText, new SettingsFragment())
+                .replace(R.id.settings_Layout, new SettingsFragment())
                 .commit();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
