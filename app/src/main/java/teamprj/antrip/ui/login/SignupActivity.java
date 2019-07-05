@@ -32,8 +32,6 @@ import teamprj.antrip.data.AppSingleton;
 import static android.util.TypedValue.TYPE_NULL;
 
 public class SignupActivity extends Activity {
-
-
     private static final String TAG = "signUp";
     private static final String URL_FOR_REGISTRATION = "http://antrip.kro.kr/app/" + "signup.php";
     Calendar myCalendar = Calendar.getInstance();
