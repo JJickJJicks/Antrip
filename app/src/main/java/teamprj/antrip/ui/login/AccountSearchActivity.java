@@ -28,7 +28,8 @@ import teamprj.antrip.data.AppSingleton;
 public class AccountSearchActivity extends Activity {
 
     private static final String TAG = "Login";
-    private static final String URL_FOR_FINDUSER = "http://antrip.kro.kr/app/" + "checkemail.php";
+    private static final String URL_FOR_CHECKEMAIL = "http://antrip.kro.kr/app/" + "checkemail.php";
+    private static final String URL_FOR_UPDATEPW = "http://antrip.kro.kr/app/" + "updatepassword.php";
     String randNum, user_email;
     ProgressDialog progressDialog;
 
@@ -84,14 +85,14 @@ public class AccountSearchActivity extends Activity {
 
     private void checkUser(final String email) {
         // Tag used to cancel the request
-        String cancel_req_tag = "login";
-        progressDialog.setMessage("Logging you in...");
+        String cancel_req_tag = "check";
+        progressDialog.setMessage("Check User Information");
         showDialog();
-        StringRequest strReq = new StringRequest(Request.Method.POST, URL_FOR_FINDUSER, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.POST, URL_FOR_CHECKEMAIL, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Register Response: " + response);
+                Log.d(TAG, "Response: " + response);
                 hideDialog();
                 try {
                     JSONObject jObj = new JSONObject(response);
@@ -120,7 +121,7 @@ public class AccountSearchActivity extends Activity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Login Error: " + error.getMessage());
+                Log.e(TAG, "Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
             }
@@ -129,8 +130,58 @@ public class AccountSearchActivity extends Activity {
             @Override
             protected Map<String, String> getParams() {
                 // Posting params to login url
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("email", email);
+                return params;
+            }
+
+        };
+        // Adding request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, cancel_req_tag);
+    }
+
+    private void updatePw(final String email, final String password) {
+        // Tag used to cancel the request
+        String cancel_req_tag = "update";
+        progressDialog.setMessage("Updating User Information");
+        showDialog();
+        StringRequest strReq = new StringRequest(Request.Method.POST, URL_FOR_UPDATEPW, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Response: " + response);
+                hideDialog();
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+                        Toast.makeText(getApplicationContext(), R.string.success , Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to login url
+                Map<String, String> params = new HashMap<>();
+                params.put("email", email);
+                params.put("password", password);
                 return params;
             }
 
@@ -142,10 +193,7 @@ public class AccountSearchActivity extends Activity {
     public void findUser(View v) {
         pwEditText = findViewById(R.id.acc_search_pwText);
         if (checkPassword()) {
-            Toast.makeText(getApplicationContext(), "성공", Toast.LENGTH_LONG).show();
-
-            //TODO: 비밀번호 변경
-//            update(user_email, pwEditText.getText().toString());
+            updatePw(user_email, pwEditText.getText().toString());
         }
 
     }

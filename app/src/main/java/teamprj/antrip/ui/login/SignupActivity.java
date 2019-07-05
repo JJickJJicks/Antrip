@@ -29,6 +29,8 @@ import java.util.Map;
 import teamprj.antrip.R;
 import teamprj.antrip.data.AppSingleton;
 
+import static android.util.TypedValue.TYPE_NULL;
+
 public class SignupActivity extends Activity {
 
 
@@ -58,6 +60,7 @@ public class SignupActivity extends Activity {
         pwCheckText = findViewById(R.id.signup_pwCheckText);
         nameText = findViewById(R.id.signup_nameText);
         birthText = findViewById(R.id.signup_birthText);
+        birthText.setInputType(TYPE_NULL);
         birthText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,14 +147,12 @@ public class SignupActivity extends Activity {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                final String types = "1";
                 // Posting params to register url
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("email", email);
                 params.put("password", password);
                 params.put("name", name);
                 params.put("birth", birth);
-                params.put("type", types);
                 return params;
             }
         };
