@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -55,6 +56,13 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Nav 이메일, 이름 로드
+        View nav_header_view = navigationView.getHeaderView(0);
+        TextView nav_nameview = nav_header_view.findViewById(R.id.nav_nameText);
+        TextView nav_emailview = nav_header_view.findViewById(R.id.nav_emailText);
+        nav_nameview.setText(getIntent().getExtras().getString("name"));
+        nav_emailview.setText(getIntent().getExtras().getString("email"));
 
         // 주소 자동 완성 정의
         Places.initialize(getApplicationContext(), "AIzaSyB8eFsQ-Z7VH2_8rW2EVT8v1Uy8bViHX5o");
@@ -125,14 +133,17 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "내 여행 정보", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_profile) {
             Intent intent = new Intent(this, ProfileActivity.class);
+            intent.putExtra("email",getIntent().getExtras().getString("email"));
             startActivity(intent);
         } else if (id == R.id.nav_notice) {
             Intent intent = new Intent(this, NoticeActivity.class);
+            intent.putExtra("email",getIntent().getExtras().getString("email"));
             startActivity(intent);
         } else if (id == R.id.nav_contact) {
             Toast.makeText(getApplicationContext(), "문의하기", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(this, SettingsActivity.class);
+            intent.putExtra("email",getIntent().getExtras().getString("email"));
             startActivity(intent);
         }
 

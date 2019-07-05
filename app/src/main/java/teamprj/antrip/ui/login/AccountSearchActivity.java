@@ -155,7 +155,7 @@ public class AccountSearchActivity extends Activity {
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("error");
                     if (!error) {
-                        Toast.makeText(getApplicationContext(), R.string.success , Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.success, Toast.LENGTH_LONG).show();
                         finish();
                     } else {
                         String errorMsg = jObj.getString("error_msg");

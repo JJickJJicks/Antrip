@@ -14,7 +14,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
 
 import teamprj.antrip.R;
-import teamprj.antrip.data.model.Fakedata;
 import teamprj.antrip.ui.login.LoginActivity;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -90,8 +89,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             travel.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 //TODO: 저장한 Travel의 수 Data 로드
-                Fakedata fakedata = new Fakedata();
-                int travelcnt = fakedata.travelcnt;
+                int travelcnt = 0;
 
                 public boolean onPreferenceClick(Preference preference) {
                     if (travelcnt > 0)

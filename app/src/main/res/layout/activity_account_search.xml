@@ -35,15 +35,15 @@
 
         <EditText
             android:id="@+id/acc_search.emailText"
-            tools:targetApi="o"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:ems="10"
-            android:hint="@string/prompt_email"
 
+            android:hint="@string/prompt_email"
             android:importantForAutofill="no"
-            android:inputType="textEmailAddress" />
+
+            android:inputType="textEmailAddress"
+            tools:targetApi="o" />
 
         <Button
             android:id="@+id/acc_search.sendBtn"
@@ -74,29 +74,29 @@
 
         <EditText
             android:id="@+id/acc_search.pwText"
-            tools:targetApi="o"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:enabled="false"
             android:ems="10"
 
+            android:enabled="false"
             android:hint="@string/prompt_password"
+
             android:importantForAutofill="no"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            tools:targetApi="o" />
 
         <EditText
             android:id="@+id/acc_search.pwCheckText"
-            tools:targetApi="o"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:enabled="false"
             android:ems="10"
 
+            android:enabled="false"
             android:hint="@string/prompt_password_check"
+
             android:importantForAutofill="no"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            tools:targetApi="o" />
 
     </LinearLayout>
     <!-- Notice -->
