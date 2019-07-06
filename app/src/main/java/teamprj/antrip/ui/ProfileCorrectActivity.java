@@ -32,6 +32,8 @@ import static android.util.TypedValue.TYPE_NULL;
 public class ProfileCorrectActivity extends AppCompatActivity {
     private static final String TAG = "signUp";
     private static final String URL_FOR_UPDATE = "http://antrip.kro.kr/app/" + "updateuser.php";
+    private static final String URL_FOR_GETUSERDATA = "http://antrip.kro.kr/app/" + "getuserdata.php";
+
     Calendar myCalendar = Calendar.getInstance();
     DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -55,6 +57,8 @@ public class ProfileCorrectActivity extends AppCompatActivity {
         nameText = findViewById(R.id.acc_correct_nameText);
         birthText = findViewById(R.id.acc_correct_birthText);
         emailText.setText(getIntent().getExtras().getString("email"));
+        getUserData(getIntent().getExtras().getString("email"));
+
         birthText.setInputType(TYPE_NULL);
         birthText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,7 +151,6 @@ public class ProfileCorrectActivity extends AppCompatActivity {
                 params.put("password", password);
                 params.put("name", name);
                 params.put("birth", birth);
-                params.put("type", "1");
                 return params;
             }
         };
@@ -159,5 +162,52 @@ public class ProfileCorrectActivity extends AppCompatActivity {
         String myFormat = "yyyy-MM-dd";    // 출력형식   2019-06-26
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.KOREA);
         birthText.setText(sdf.format(myCalendar.getTime()));
+    }
+
+    private void getUserData(final String email) {
+        // Tag used to cancel the request
+        String cancel_req_tag = "getuser";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST, URL_FOR_GETUSERDATA, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Response: " + response);
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+
+                    if (!error) {
+                        nameText = findViewById(R.id.acc_correct_nameText);
+                        birthText = findViewById(R.id.acc_correct_birthText);
+                        nameText.setText(jObj.getJSONObject("user").getString("name"));
+                        birthText.setText(jObj.getJSONObject("user").getString("birth"));
+                    } else {
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<>();
+                params.put("email", email);
+                return params;
+            }
+        };
+        // Adding request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, cancel_req_tag);
     }
 }

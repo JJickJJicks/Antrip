@@ -2,6 +2,7 @@ package teamprj.antrip.ui.function;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +19,7 @@ public class TravelInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel_info);
 
-        CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.profile_toolbarLayout);
+        CollapsingToolbarLayout collapsingToolbar = findViewById(R.id.travelInfo_toolbarLayout);
 
         Toolbar toolbar = findViewById(R.id.travelInfo_toolbar);
         setSupportActionBar(toolbar);
@@ -30,8 +31,19 @@ public class TravelInfoActivity extends AppCompatActivity {
         maintext.setText(name);
 
         //TODO: Titlebar에 들어갈 제목은?
-        collapsingToolbar.setTitle(name + " 혹은 여행1");
+        collapsingToolbar.setTitle(name);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { // 뒤로 가기
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
