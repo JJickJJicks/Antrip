@@ -42,7 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
         getUserData(email);
 
 
-        final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeLayout);
+        final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.profile_swipeLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

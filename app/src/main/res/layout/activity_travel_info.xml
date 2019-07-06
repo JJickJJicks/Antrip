@@ -30,8 +30,68 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_travel_info" />
+    <LinearLayout
+        android:id="@+id/travelInfo.tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        app:layout_anchor="@+id/travelInfo.appBar"
+        app:layout_anchorGravity="bottom">
+
+        <Button
+            android:id="@+id/travelInfo.tabBtn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="@string/prompt_plan"
+            android:textColor="@android:color/primary_text_dark" />
+
+        <Button
+            android:id="@+id/travelInfo.tabBtn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="Button"
+            android:textColor="@android:color/primary_text_dark" />
+
+        <Button
+            android:id="@+id/travelInfo.tabBtn3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="Button"
+            android:textColor="@android:color/primary_text_dark" />
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/travelInfo.swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".ui.ProfileActivity"
+        tools:showIn="@layout/activity_profile">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/travelInfo.text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:text="@string/large_text" />
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

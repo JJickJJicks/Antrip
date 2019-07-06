@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPlaceSelected(Place place) {
                 Intent intent = new Intent(MainActivity.this, TravelInfoActivity.class);
+                intent.putExtra("email",getIntent().getExtras().getString("email"));
                 intent.putExtra("name", place.getName());
                 startActivity(intent);
             }

@@ -3,10 +3,12 @@ package teamprj.antrip.ui.function;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
@@ -27,13 +29,50 @@ public class TravelInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String name = intent.getExtras().getString("name");
 
-        TextView maintext = findViewById(R.id.travel_text);
+        TextView maintext = findViewById(R.id.travelInfo_text);
         maintext.setText(name);
 
         //TODO: Titlebar에 들어갈 제목은?
         collapsingToolbar.setTitle(name);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // 1번 버튼
+        findViewById(R.id.travelInfo_tabBtn1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TravelPlannerActivity.class);
+                intent.putExtra("email",getIntent().getExtras().getString("email"));
+                startActivity(intent);
+            }
+        });
+
+        // 2번 버튼
+        findViewById(R.id.travelInfo_tabBtn2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: 2번 버튼 동작
+            }
+        });
+
+        // 3번 버튼
+        findViewById(R.id.travelInfo_tabBtn3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: 3번 버튼 동작
+            }
+        });
+
+
+        // 메인 화면
+        final SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.travelInfo_swipeLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //TODO: 메인 화면에 할꺼...
+
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override

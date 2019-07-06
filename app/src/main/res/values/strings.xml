@@ -157,6 +157,7 @@
     <string name="prompt_send">보내기</string>
     <string name="prompt_confirm">확인</string>
     <string name="success">완료되었습니다</string>
+    <string name="prompt_plan">일정</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
