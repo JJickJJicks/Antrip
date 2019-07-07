@@ -12,28 +12,30 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import androidx.annotation.NonNull;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import teamprj.antrip.R;
-import teamprj.antrip.data.AppSingleton;
+import teamprj.antrip.data.model.Member;
 
 import static android.util.TypedValue.TYPE_NULL;
 
 public class SignupActivity extends Activity {
+    private FirebaseAuth mAuth;
+    private  FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private  DatabaseReference myRef = database.getReference();
     private static final String TAG = "signUp";
-    private static final String URL_FOR_REGISTRATION = "http://antrip.kro.kr/app/" + "signup.php";
+
     Calendar myCalendar = Calendar.getInstance();
     DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -52,6 +54,9 @@ public class SignupActivity extends Activity {
         //타이틀바 없애기
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_signup);
+
+        //Firebase Authentication
+        mAuth = FirebaseAuth.getInstance();
 
         emailText = findViewById(R.id.signup_emailText);
         passwordText = findViewById(R.id.signup_pwText);
@@ -75,7 +80,7 @@ public class SignupActivity extends Activity {
         birthText = findViewById(R.id.signup_birthText);
 
         if (checkError()) {
-            register(emailText.getText().toString(), passwordText.getText().toString(), nameText.getText().toString(), birthText.getText().toString());
+            register();
         }
     }
 
@@ -109,53 +114,31 @@ public class SignupActivity extends Activity {
         return true;
     }
 
-    private void register(final String email, final String password, final String name, final String birth) {
-        // Tag used to cancel the request
-        String cancel_req_tag = "register";
+    public void register() {
+        String email = emailText.getText().toString().trim();
+        String password = passwordText.getText().toString().trim();
 
-        StringRequest strReq = new StringRequest(Request.Method.POST, URL_FOR_REGISTRATION, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Register Response: " + response);
-
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
-
-                    if (!error) {
-                        String user = jObj.getJSONObject("user").getString("name");
-                        Toast.makeText(getApplicationContext(), R.string.welcome + user, Toast.LENGTH_SHORT).show();
-                        finish();
-                    } else {
-                        String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            additionalInfo();
+                            Toast.makeText(getApplicationContext(), "Authentication success.", Toast.LENGTH_LONG).show();
+                            finish();
+                        } else {
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_LONG).show();
+                        }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                });
+    }
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting params to register url
-                Map<String, String> params = new HashMap<>();
-                params.put("email", email);
-                params.put("password", password);
-                params.put("name", name);
-                params.put("birth", birth);
-                return params;
-            }
-        };
-        // Adding request to request queue
-        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, cancel_req_tag);
+    public void additionalInfo() {
+        Member member = new Member(emailText.getText().toString().trim(), nameText.getText().toString().trim(), birthText.getText().toString().trim(), 1);
+
+        // Write a message to the database
+        myRef.child("users").push().setValue(member);
     }
 
     @Override

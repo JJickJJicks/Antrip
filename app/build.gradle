@@ -8,7 +8,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "0.40"
+        versionName "0.42"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         resValue "string", "places_api_key", (project.findProperty("PLACES_API_KEY") ?: "")
@@ -34,6 +34,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference:1.1.0-beta01'
     implementation 'com.google.firebase:firebase-messaging:17.3.4' // 절대 버전 올리지 말것!
+    implementation 'com.google.firebase:firebase-database:16.0.4' // 절대 버전 올리지 말것!
+    implementation 'com.google.firebase:firebase-auth:16.0.5' // 절대 버전 올리지 말것!
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

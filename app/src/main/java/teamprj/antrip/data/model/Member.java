@@ -1,10 +1,16 @@
 package teamprj.antrip.data.model;
 
-import java.io.Serializable;
+import com.google.firebase.database.Exclude;
 
-public class Member implements Serializable {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Member {
     private String email, name, birth;
     private int type;
+
+    public Member() {
+    }
 
     public Member(String email, String name, String birth, int type) {
         super();
@@ -28,5 +34,16 @@ public class Member implements Serializable {
 
     public int getType() {
         return type;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("email", email);
+        result.put("name", name);
+        result.put("birth", birth);
+        result.put("type", type);
+
+        return result;
     }
 }

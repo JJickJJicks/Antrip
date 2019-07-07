@@ -2,6 +2,7 @@ package teamprj.antrip.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,19 +21,28 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
 import teamprj.antrip.R;
+import teamprj.antrip.data.model.Member;
 import teamprj.antrip.ui.function.NoticeActivity;
 import teamprj.antrip.ui.function.TravelInfoActivity;
 import teamprj.antrip.ui.settings.SettingsActivity;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = database.getReference("users");
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +51,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.main_navView);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -59,13 +61,35 @@ public class MainActivity extends AppCompatActivity
 
         // Nav 이메일, 이름 로드
         View nav_header_view = navigationView.getHeaderView(0);
-        TextView nav_nameview = nav_header_view.findViewById(R.id.nav_nameText);
+        final TextView nav_nameview = nav_header_view.findViewById(R.id.nav_nameText);
         TextView nav_emailview = nav_header_view.findViewById(R.id.nav_emailText);
-        nav_nameview.setText(getIntent().getExtras().getString("name"));
-        nav_emailview.setText(getIntent().getExtras().getString("email"));
+
+        // Firebase 로드
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        email = user.getEmail();
+        nav_emailview.setText(email);
+
+        myRef.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            Member member = data.getValue(Member.class);
+                            nav_nameview.setText(member.getName());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("MyApp", "getUser:onCancelled", databaseError.toException());
+                    }
+                }
+        );
 
         // 주소 자동 완성 정의
-        Places.initialize(getApplicationContext(), "AIzaSyB8eFsQ-Z7VH2_8rW2EVT8v1Uy8bViHX5o");
+        Places.initialize(
+
+                getApplicationContext(), "AIzaSyBU3tGzwEtupAQeleEYqzsKJ-p7q7pSyw0");
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.main_autocomplete_fragment);
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
         autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
@@ -75,7 +99,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPlaceSelected(Place place) {
                 Intent intent = new Intent(MainActivity.this, TravelInfoActivity.class);
-                intent.putExtra("email",getIntent().getExtras().getString("email"));
+                intent.putExtra("email", getIntent().getExtras().getString("email"));
                 intent.putExtra("name", place.getName());
                 startActivity(intent);
             }
@@ -134,17 +158,14 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "내 여행 정보", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_profile) {
             Intent intent = new Intent(this, ProfileActivity.class);
-            intent.putExtra("email",getIntent().getExtras().getString("email"));
             startActivity(intent);
         } else if (id == R.id.nav_notice) {
             Intent intent = new Intent(this, NoticeActivity.class);
-            intent.putExtra("email",getIntent().getExtras().getString("email"));
             startActivity(intent);
         } else if (id == R.id.nav_contact) {
             Toast.makeText(getApplicationContext(), "문의하기", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(this, SettingsActivity.class);
-            intent.putExtra("email",getIntent().getExtras().getString("email"));
             startActivity(intent);
         }
 

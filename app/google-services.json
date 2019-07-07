@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "313533626290",
-    "firebase_url": "https://jjickjjicks.firebaseio.com",
-    "project_id": "jjickjjicks",
-    "storage_bucket": "jjickjjicks.appspot.com"
+    "project_number": "761420960745",
+    "firebase_url": "https://antrip-c0236.firebaseio.com",
+    "project_id": "antrip-c0236",
+    "storage_bucket": "antrip-c0236.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:313533626290:android:6886c6a976f91266",
+        "mobilesdk_app_id": "1:761420960745:android:6886c6a976f91266",
         "android_client_info": {
           "package_name": "teamprj.antrip"
         }
       },
       "oauth_client": [
         {
-          "client_id": "313533626290-h83ufedlft3n5uftpop1pn5kqv8dubbn.apps.googleusercontent.com",
+          "client_id": "761420960745-d4i53nsvlk2q81kf8b2j77njqdhhr35a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "teamprj.antrip",
@@ -23,28 +23,21 @@
           }
         },
         {
-          "client_id": "313533626290-tuh87fkjq3jtc0m9qhev4strudkbq1an.apps.googleusercontent.com",
+          "client_id": "761420960745-bk4l0aopbilau2tbkbnr4nbsagfsfd95.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB8eFsQ-Z7VH2_8rW2EVT8v1Uy8bViHX5o"
+          "current_key": "AIzaSyBU3tGzwEtupAQeleEYqzsKJ-p7q7pSyw0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "313533626290-tuh87fkjq3jtc0m9qhev4strudkbq1an.apps.googleusercontent.com",
+              "client_id": "761420960745-bk4l0aopbilau2tbkbnr4nbsagfsfd95.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "313533626290-fkk27s1cf8ug318j9aa179h6kpojik1o.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "teamprj.antrip"
-              }
             }
           ]
         }

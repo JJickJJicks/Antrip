@@ -1,4 +1,4 @@
-package teamprj.antrip.fcm;
+package teamprj.antrip.firebase;
 
 import android.util.Log;
 
