@@ -69,29 +69,16 @@
             android:paddingTop="30dp"
             tools:targetApi="o" />
 
-        <EditText
-            android:id="@+id/acc_correct.birthText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:ems="10"
-            android:hint="@string/prompt_birth"
-            android:importantForAutofill="no"
-            android:inputType="none"
-            android:paddingTop="30dp"
-            tools:targetApi="o" />
-
         <Button
             android:id="@+id/acc_correct.confirmBtn"
             android:layout_width="match_parent"
             android:layout_height="53dp"
-            android:background="#00000000"
+            android:background="@color/colorPrimary"
             android:gravity="center"
-            android:onClick="update"
             android:padding="16dp"
             android:paddingTop="30dp"
             android:text="@string/action_sign_up_short"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="15sp" />
 
     </LinearLayout>

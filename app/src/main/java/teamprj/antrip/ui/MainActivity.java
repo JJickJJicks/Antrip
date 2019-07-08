@@ -2,7 +2,6 @@ package teamprj.antrip.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,16 +24,12 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
 import teamprj.antrip.R;
-import teamprj.antrip.data.model.Member;
 import teamprj.antrip.ui.function.NoticeActivity;
 import teamprj.antrip.ui.function.TravelInfoActivity;
 import teamprj.antrip.ui.settings.SettingsActivity;
@@ -61,35 +56,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Nav 이메일, 이름 로드
         View nav_header_view = navigationView.getHeaderView(0);
-        final TextView nav_nameview = nav_header_view.findViewById(R.id.nav_nameText);
+        TextView nav_nameview = nav_header_view.findViewById(R.id.nav_nameText);
         TextView nav_emailview = nav_header_view.findViewById(R.id.nav_emailText);
 
         // Firebase 로드
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        email = user.getEmail();
-        nav_emailview.setText(email);
-
-        myRef.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-                            Member member = data.getValue(Member.class);
-                            nav_nameview.setText(member.getName());
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w("MyApp", "getUser:onCancelled", databaseError.toException());
-                    }
-                }
-        );
+        nav_emailview.setText(user.getEmail());
+        nav_nameview.setText(user.getDisplayName());
 
         // 주소 자동 완성 정의
-        Places.initialize(
-
-                getApplicationContext(), "AIzaSyBU3tGzwEtupAQeleEYqzsKJ-p7q7pSyw0");
+        Places.initialize(getApplicationContext(), "AIzaSyBU3tGzwEtupAQeleEYqzsKJ-p7q7pSyw0");
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.main_autocomplete_fragment);
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
         autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
@@ -99,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onPlaceSelected(Place place) {
                 Intent intent = new Intent(MainActivity.this, TravelInfoActivity.class);
-                intent.putExtra("email", getIntent().getExtras().getString("email"));
                 intent.putExtra("name", place.getName());
                 startActivity(intent);
             }

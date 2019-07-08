@@ -83,17 +83,6 @@
             android:inputType="textPersonName"
             tools:targetApi="o" />
 
-        <EditText
-            android:id="@+id/signup.birthText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:ems="10"
-            android:hint="@string/prompt_birth"
-            android:importantForAutofill="no"
-            android:inputType="none"
-            tools:targetApi="o" />
-
     </LinearLayout>
     <!-- Notice -->
 

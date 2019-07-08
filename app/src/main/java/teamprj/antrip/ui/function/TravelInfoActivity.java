@@ -41,7 +41,6 @@ public class TravelInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TravelPlannerActivity.class);
-                intent.putExtra("email",getIntent().getExtras().getString("email"));
                 startActivity(intent);
             }
         });
