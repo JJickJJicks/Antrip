@@ -57,11 +57,13 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="teamprj.antrip.ui.MainActivity" />
+                android:value="teamprj.antrip.ui.MainActivity"/>
         </activity>
         <activity android:name=".ui.ProfileCorrectActivity" />
-        <activity android:name=".ui.function.NoticeArticleActivity" />
-        <activity android:name=".ui.function.NoticeActivity" />
+        <activity android:name=".ui.function.NoticeArticleActivity"
+            android:label="공지사항"/>
+        <activity android:name=".ui.function.NoticeActivity"
+            android:label="공지사항"/>
         <activity
             android:name=".ui.function.TravelInfoActivity"
             android:parentActivityName=".ui.MainActivity"

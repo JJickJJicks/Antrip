@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/main_title"
+        style="@style/NoticeItemMainTitleStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="[공지 사항] 메인 타이틀 입니다." />
+
+    <TextView
+        android:id="@+id/sub_title"
+        style="@style/NoticeItemSubTitleStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="2019.12.12" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorTranslucentGray" />
+
+
+</LinearLayout>

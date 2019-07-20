@@ -1,8 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
     tools:context=".ui.function.NoticeArticleActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/main_title"
+            style="@style/NoticeArticleTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="[공지사항]출력 테스트" />
+
+        <TextView
+            android:id="@+id/sub_title"
+            style="@style/NoticeItemSubTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="2019.09.12 12:12" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/content"
+            style="@style/NoticeArticleContentStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="문자(文字, Writing system)는 언어를 기록하기 위한 상징 체계이다.\n대부분 음성 언어를 기록하기 위해 생겨나거나 만들어졌다.\n메시지를 전달하기 위해 문자와 구어(口語)는 둘 다 유용하지만, 문자의 경우 정보의 저장과 전달을 신뢰할 수 있다는 점에서 차이가 있다." />
+
+    </LinearLayout>
+</LinearLayout>
