@@ -13,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import teamprj.antrip.R;
+import teamprj.antrip.TranslateActivity;
 
 public class TravelInfoActivity extends AppCompatActivity {
 
@@ -49,7 +50,8 @@ public class TravelInfoActivity extends AppCompatActivity {
         findViewById(R.id.travelInfo_tabBtn2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: 2번 버튼 동작
+                Intent intent = new Intent(getApplicationContext(), TranslateActivity.class);
+                startActivity(intent);
             }
         });
 
