@@ -75,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
         autoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // TODO Auto-generated method stub
                 if (isChecked) {
                     String ID = emailEditText.getText().toString();
                     String PW = passwordEditText.getText().toString();
