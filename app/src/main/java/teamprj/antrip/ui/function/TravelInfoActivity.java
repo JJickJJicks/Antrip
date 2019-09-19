@@ -13,7 +13,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import teamprj.antrip.R;
-import teamprj.antrip.TranslateActivity;
 
 public class TravelInfoActivity extends AppCompatActivity {
 
