@@ -4,26 +4,49 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Text to translate :" />
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/originLang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/origin_lang" />
+
+        <Spinner
+            android:id="@+id/targetLang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/target_lang" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/input_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter text to translate" />
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Enter text to translate"
+        android:inputType="textMultiLine" />
 
     <Button
         android:id="@+id/translateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:text="Translate to Korean" />
+        android:text="Translate" />
 
-    <TextView
+    <EditText
         android:id="@+id/translated_text"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Translate Result"
+        android:inputType="textMultiLine" />
+
 </LinearLayout>

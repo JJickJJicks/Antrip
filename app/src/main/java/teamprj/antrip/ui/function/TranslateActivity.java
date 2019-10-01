@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Spinner;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -22,50 +22,26 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import teamprj.antrip.R;
+import teamprj.antrip.data.model.Language;
 
 
 public class TranslateActivity extends Activity {
     private static final int MESSAGE_OK = 0;
     private static String clientId = "XXar7pmbbGZwyqwCnKvq";//애플리케이션 클라이언트 아이디값";
     private static String clientSecret = "JSXbNKzVtN";//애플리케이션 클라이언트 시크릿값";
-    TextView translatedTextView;
-    private static String from, after, res, origin_lang, target_lang;
     public Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MESSAGE_OK:
-                    translatedTextView.setText(res);
+                    translatedText.setText(res); // 파파고에서는 String 한줄로 주는 관계로 그냥 String으로 변경
                     break;
             }
         }
     };
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_translate);
-
-        final EditText inputText = findViewById(R.id.input_text);
-        translatedTextView = findViewById(R.id.translated_text);
-
-        Button translateButton = findViewById(R.id.translateButton);
-        translateButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                from = inputText.getText().toString();
-
-                try {
-                    mThread mThread = new mThread();
-                    mThread.start();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        });
-    }
+    private static String from, after, res, origin_lang, target_lang;
+    private EditText inputText, translatedText;
+    private Spinner origin_lan, target_lan;
 
     private static String detectLang(String text) {
         try {
@@ -99,13 +75,46 @@ public class TranslateActivity extends Activity {
             JsonParser jsonParser = new JsonParser();
             JsonObject jsonObject = (JsonObject) jsonParser.parse(response.toString());
             res = jsonObject.get("langCode").toString();
-            return res.substring(1, res.length() - 1);
+            return res.substring(1, res.length() - 1); // Json이 아닌 String으로 언어 코드 제공 (https://developers.naver.com/docs/papago/papago-detectlangs-api-reference.md)
         } catch (Exception e) {
             return e.toString();
         }
     }
 
-    private String translate(String text, String origin_lang, String target_lang) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_translate);
+
+        origin_lan = findViewById(R.id.originLang);
+        target_lan = findViewById(R.id.targetLang);
+
+        final Language lang = new Language();
+
+        inputText = findViewById(R.id.input_text);
+        translatedText = findViewById(R.id.translated_text);
+
+        Button translateButton = findViewById(R.id.translateButton);
+        translateButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                from = inputText.getText().toString();
+                origin_lang = lang.getLangCode(origin_lan.getSelectedItem().toString());
+                target_lang = lang.getLangCode(target_lan.getSelectedItem().toString());
+
+                try {
+                    mThread mThread = new mThread();
+                    mThread.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+    }
+
+    private String translate(String text, String origin_lang, String target_lang) { // PAPAGO SMT (https://developers.naver.com/docs/labs/translator/)
         try {
             text = URLEncoder.encode(text, "UTF-8");
             String apiURL = "https://openapi.naver.com/v1/language/translate";
@@ -115,7 +124,7 @@ public class TranslateActivity extends Activity {
             con.setRequestProperty("X-Naver-Client-Id", clientId);
             con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
             // post request
-            String postParams = "source=en&target=ko&text=" + text;
+            String postParams = "source=" + origin_lang + "&target=" + target_lang + "&text=" + text;
             con.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream(con.getOutputStream());
             wr.writeBytes(postParams);
@@ -142,8 +151,8 @@ public class TranslateActivity extends Activity {
 
     public class mThread extends Thread {
         public void run() {
-            origin_lang = detectLang(from);
-            target_lang = "ko";
+            if (origin_lang == "user") // 언어 코드가 아닐 경우 언어를 감지해서 적용함
+                origin_lang = detectLang(from);
             after = translate(from, origin_lang, target_lang);
             Log.d("temp", after);
             JsonParser jsonParser = new JsonParser();
