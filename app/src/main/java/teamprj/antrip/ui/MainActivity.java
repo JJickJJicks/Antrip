@@ -1,6 +1,8 @@
 package teamprj.antrip.ui;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.net.URL;
 import java.util.Arrays;
 
 import teamprj.antrip.R;
@@ -138,7 +141,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(this, NoticeActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_contact) {
-            Toast.makeText(getApplicationContext(), "문의하기", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:wng2641@naver.com"));
+            startActivity(intent);
+            //Toast.makeText(getApplicationContext(), "문의하기", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);

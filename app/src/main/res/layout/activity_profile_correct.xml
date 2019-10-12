@@ -17,20 +17,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/acc_correct.emailText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-
-            android:enabled="false"
-            android:hint="@string/prompt_email"
-
-            android:importantForAutofill="no"
-            android:inputType="textEmailAddress"
-            android:paddingTop="30dp"
-            tools:targetApi="o" />
-
-        <EditText
             android:id="@+id/acc_correct.pwText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,6 +54,53 @@
             android:inputType="textPersonName"
             android:paddingTop="30dp"
             tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/acc_correct.emailText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+
+            android:enabled="false"
+            android:hint="@string/prompt_email"
+
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress"
+            android:paddingTop="30dp"
+            tools:targetApi="o" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="프로필 이미지 선택"
+
+            android:paddingTop="30dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_sample1"/>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginLeft="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_sample2" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginLeft="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_sample3" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/acc_correct.confirmBtn"

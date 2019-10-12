@@ -18,12 +18,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import teamprj.antrip.R;
+import teamprj.antrip.data.model.Member;
 
 public class SignupActivity extends Activity {
     private FirebaseAuth mAuth;
+    private DatabaseReference databaseReference;
     private static final String TAG = "signUp";
+    private static final int USER_TYPE = 1;
     private EditText emailText, passwordText, pwCheckText, nameText;
 
     @Override
@@ -95,6 +100,7 @@ public class SignupActivity extends Activity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 Log.d(TAG, "User profile updated.");
+                                                RegisterDB();
                                             }
                                         }
                                     });
@@ -112,5 +118,14 @@ public class SignupActivity extends Activity {
     public boolean onTouchEvent(MotionEvent event) {
         //바깥레이어 클릭시 안닫히게
         return event.getAction() != MotionEvent.ACTION_OUTSIDE;
+    }
+
+    public void RegisterDB() {
+        //유저가 회원가입 때 입력한 사항들 DB에 추가
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        final String email = emailText.getText().toString().trim();
+        final String name = nameText.getText().toString().trim();
+        Member member = new Member(email, USER_TYPE);
+        databaseReference.push().setValue(member.toMap());
     }
 }

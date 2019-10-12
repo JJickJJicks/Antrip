@@ -43,4 +43,11 @@
         <item name="android:layout_gravity">left</item>
     </style>
 
+    <declare-styleable name="CheckableImageButton">
+        <attr name="isChecked" format="boolean"/>
+        <attr name="personality">
+            <enum name="radio" value="0"/>
+            <enum name="check" value="1"/>
+        </attr>
+    </declare-styleable>
 </resources>
