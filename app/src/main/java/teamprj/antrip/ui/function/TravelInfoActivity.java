@@ -1,9 +1,12 @@
 package teamprj.antrip.ui.function;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,8 +43,30 @@ public class TravelInfoActivity extends AppCompatActivity {
         findViewById(R.id.travelInfo_tabBtn1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TravelPlannerActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), TravelPlannerActivity.class);
+//                startActivity(intent);
+
+                final EditText edittext = new EditText(TravelInfoActivity.this);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(TravelInfoActivity.this);
+                builder.setTitle("임시 입력창");
+                builder.setMessage("기간 입력");
+                builder.setView(edittext);
+                builder.setPositiveButton("입력",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(getApplicationContext(), TravelPlanActivity.class);
+                                intent.putExtra("inputValue", edittext.getText().toString());
+                                startActivity(intent);
+                            }
+                        });
+                builder.setNegativeButton("취소",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                builder.show();
             }
         });
 
