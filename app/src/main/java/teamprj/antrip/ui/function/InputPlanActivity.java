@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import teamprj.antrip.BuildConfig;
 import teamprj.antrip.R;
 import teamprj.antrip.ui.MainActivity;
 
@@ -44,7 +45,7 @@ public class InputPlanActivity extends FragmentActivity {
 
 
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), "AIzaSyBU3tGzwEtupAQeleEYqzsKJ-p7q7pSyw0");
+            Places.initialize(getApplicationContext(), BuildConfig.places_api_key);
         }
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);

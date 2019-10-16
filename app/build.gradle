@@ -12,6 +12,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         resValue "string", "places_api_key", (project.findProperty("PLACES_API_KEY") ?: "")
+        buildConfigField 'String', "places_api_key", (project.findProperty("PLACES_API_KEY") ?: "")
     }
     applicationVariants.all { variant ->
         variant.resValue "string", "app_version", variant.versionName
@@ -20,6 +21,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue 'string', "api_key", (project.findProperty("PLACES_API_KEY") ?: "")
+            buildConfigField 'String', "ApiKey", (project.findProperty("PLACES_API_KEY") ?: "")
         }
     }
 }
