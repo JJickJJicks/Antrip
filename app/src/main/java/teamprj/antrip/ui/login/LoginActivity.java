@@ -38,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        test(); // 지워야 함!
+
         emailEditText = findViewById(R.id.login_emailText);
         passwordEditText = findViewById(R.id.login_passwordText);
         Button loginButton = findViewById(R.id.login_loginBtn);
