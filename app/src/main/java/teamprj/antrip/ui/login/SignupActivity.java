@@ -98,11 +98,11 @@ public class SignupActivity extends Activity {
                                             }
                                         }
                                     });
-                            Toast.makeText(getApplicationContext(), "Authentication success.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "가입을 환영합니다.", Toast.LENGTH_LONG).show();
                             finish();
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "가입에 실패하였습니다.", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

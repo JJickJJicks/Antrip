@@ -1,29 +1,28 @@
 package teamprj.antrip.ui.function;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AddressComponent;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import java.util.Arrays;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import teamprj.antrip.BuildConfig;
 import teamprj.antrip.R;
-import teamprj.antrip.ui.MainActivity;
 
 
 public class InputPlanActivity extends FragmentActivity {
