@@ -2,6 +2,7 @@ package teamprj.antrip.ui.function;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -67,6 +68,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         saveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                // 숙소 지정 다 했는지 체크 필요
                 jsonCreate();
             }
         });
@@ -84,6 +86,19 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             mAdapter.moveAccommodation(index);
         }
         GoogleMapFragment.selectPlace(latLng, name);
+    }
+
+    public static int checkAccommodation(int position) {
+        for (int i = position; i >= 0; i--) {
+            if (data.get(i).type == ExpandableListAdapter.DATA) {
+                if (data.get(i).accommodation) {
+                    return -1;
+                }
+            } else if (data.get(i).type == ExpandableListAdapter.HEADER) {
+                break;
+            }
+        }
+        return 0;
     }
 
 //    private String getJsonString()
@@ -141,22 +156,49 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 String name = data.get(i).name;
 
                 if (type == ExpandableListAdapter.CHILD) {
+                    // 한 일차의 마지막 지점
                     continue;
                 }
-                sObject.put("type", type);
-                sObject.put("name", name);
-                if (type == ExpandableListAdapter.DATA) {
+                else if (type == ExpandableListAdapter.HEADER) {
+                    sObject.put("type", type);
+                    sObject.put("name", name);
+                    jArray.put(sObject);
+
+                    List<ExpandableListAdapter.Item> invisibleChild = data.get(i).invisibleChildren;
+                    if (invisibleChild != null) {
+                        for (int j = 0; j < invisibleChild.size(); j++) {
+                            sObject = new JSONObject();
+                            if (invisibleChild.get(j).type == ExpandableListAdapter.CHILD) {
+                                // 접힌 부분의 추가 버튼
+                                continue;
+                            }
+                            sObject.put("type", invisibleChild.get(j).type);    // 중복
+                            sObject.put("name", invisibleChild.get(j).name);
+
+                            LatLng latLng = invisibleChild.get(j).latLng;
+                            sObject.put("lat", latLng.latitude);
+                            sObject.put("lng", latLng.longitude);
+
+                            jArray.put(sObject);
+                        }
+                    }
+                }
+                else if (type == ExpandableListAdapter.DATA) {
+                    sObject.put("type", type);
+                    sObject.put("name", name);
+
                     LatLng latLng = data.get(i).latLng;
                     sObject.put("lat", latLng.latitude);
                     sObject.put("lng", latLng.longitude);
+
+                    jArray.put(sObject);
                 }
-                jArray.put(sObject);
             }
-            obj.put("tempJson", "temp");
-            obj.put("item", jArray);
+            obj.put("tripName", "temp trip name");
+            obj.put("authority", "temp authority");
+            obj.put("tripInfo", jArray);
 
-            System.out.println(obj.toString());
-
+            Log.d("OutputJson", obj.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
