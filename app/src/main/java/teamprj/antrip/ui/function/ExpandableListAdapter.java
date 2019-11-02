@@ -2,6 +2,7 @@ package teamprj.antrip.ui.function;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.TooltipCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import teamprj.antrip.R;
 
@@ -119,6 +121,13 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 break;
             case CHILD:
                 Button itemButton = (Button) holder.itemView;
+                for (int i = position; i > 0; i--) {
+                    Item tempItem = data.get(i);
+                    if (tempItem.type == HEADER) {
+                        itemButton.setId(tempItem.name.charAt(0));
+                        break;
+                    }
+                }
                 itemButton.setText(data.get(position).name);
                 itemButton.setOnClickListener(new View.OnClickListener(){
                     @Override
@@ -130,12 +139,17 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case DATA:
                 RelativeLayout tempLayout = (RelativeLayout) holder.itemView;
                 TextView name = tempLayout.findViewById(R.id.data_name);
+                TextView country = tempLayout.findViewById(R.id.data_country);
                 name.setText(data.get(position).name);
+                TooltipCompat.setTooltipText(tempLayout.findViewById(R.id.data_name), data.get(position).name);
+                country.setText(data.get(position).country);
                 CheckBox checkBox = tempLayout.findViewById(R.id.data_accommodation);
                 if (item.accommodation) {
                     checkBox.setVisibility(View.VISIBLE);
                     checkBox.setChecked(true);
                     checkBox.setEnabled(false);
+                } else {
+                    checkBox.setVisibility(View.INVISIBLE);
                 }
 
                 holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
@@ -174,6 +188,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public static class Item {
         int type;
         public String name;
+        public String country;
         LatLng latLng;
         boolean accommodation = false;
         List<Item> invisibleChildren;
@@ -183,9 +198,10 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             this.name = name;
         }
 
-        public Item(int type, String name, LatLng latLng, boolean accommodation) {
+        public Item(int type, String name, String country, LatLng latLng, boolean accommodation) {
             this.type = type;
             this.name = name;
+            this.country = country;
             this.latLng = latLng;
             this.accommodation = accommodation;
         }
@@ -193,37 +209,59 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        if (fromPosition >= toPosition) {
-            int temp = fromPosition;
-            fromPosition = toPosition;
-            toPosition = temp;
-        }
-        for (int i = fromPosition; i <= toPosition; i++) {
-            if (data.get(i).type != DATA || data.get(i).accommodation) {
+        Item fromItem = data.get(fromPosition);
+        Item toItem = data.get(toPosition);
+        if (fromItem.accommodation)
+            return; // 숙소는 못바꾸게 해놓음 나중에 수정 예정
+        if (toPosition > 0) {
+            Item beforeItem = data.get(toPosition - 1);
+            if (toItem.type == CHILD && (beforeItem.type == HEADER || (beforeItem.type == DATA && beforeItem.accommodation))) {
+                if (fromPosition < toPosition) {
+                    for (int i = fromPosition; i < toPosition - 1; i++) {
+                        Collections.swap(data, i, i + 1);
+                    }
+                } else {
+                    for (int i = fromPosition; i > toPosition; i--) {
+                        Collections.swap(data, i, i - 1);
+                    }
+                }
+                notifyItemMoved(fromPosition, toPosition);
                 return;
             }
         }
-        if (data.get(toPosition).type == DATA) {
-            Collections.swap(data, fromPosition, toPosition);
+        if (toItem.type == DATA && !toItem.accommodation) {
+            if (fromPosition < toPosition) {
+                for (int i = fromPosition; i < toPosition; i++) {
+                    Collections.swap(data, i, i + 1);
+                }
+            } else {
+                for (int i = fromPosition; i > toPosition; i--) {
+                    Collections.swap(data, i, i - 1);
+                }
+            }
             notifyItemMoved(fromPosition, toPosition);
         }
     }
 
     @Override
     public void onItemRemove(int position) {
+        GoogleMapFragment.removePlace(data.get(position).name, data.get(position).country);
         data.remove(position);
         notifyItemRemoved(position);
     }
 
-    public void moveAccommodation(int position) {
+    public int moveAccommodation(int position) {
         int firstPosition = 0;
-        for (int i = position; i >= 0; i--) {
-            if (data.get(i).type != DATA) {
+        for (int i = position - 1; i >= 0; i--) {
+            if (data.get(i).type != DATA || data.get(i).accommodation) {
                 firstPosition = i + 1;
                 break;
             }
         }
-        Collections.swap(data, position, firstPosition);
-        notifyItemMoved(position, firstPosition);
+        if (position != firstPosition) {
+            Collections.swap(data, position, firstPosition);
+            notifyItemMoved(position, firstPosition);
+        }
+        return firstPosition;
     }
 }

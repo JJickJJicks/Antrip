@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AddressComponent;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
@@ -43,7 +44,6 @@ public class InputPlanActivity extends FragmentActivity {
 
         accommodationCheck = findViewById(R.id.accommodationCheck);
 
-
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), BuildConfig.places_api_key);
         }
@@ -63,37 +63,21 @@ public class InputPlanActivity extends FragmentActivity {
             }
         });
 
-
         Button okButton = findViewById(R.id.okButton);
         okButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+
                 if (place == null) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(InputPlanActivity.this);
-                    builder.setTitle("장소를 선택하지 않았습니다.");
-                    builder.setMessage("장소를 선택해주시기 바랍니다.");
-                    builder.setPositiveButton("확인",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                }
-                            });
-                    builder.show();
+                    OkAlertDialog.viewOkAlertDialog(InputPlanActivity.this, "장소를 선택하지 않았습니다.", "장소를 선택해주시기 바랍니다.");
                 } else if (accommodationCheck.isChecked() && TravelPlanActivity.checkAccommodation(index) == -1) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(InputPlanActivity.this);
-                    builder.setTitle("숙소를 이미 선택하셨습니다.");
-                    builder.setMessage("숙소는 하루에 한 곳만 지정할 수 있습니다.");
-                    builder.setPositiveButton("확인",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                }
-                            });
-                    builder.show();
+                    OkAlertDialog.viewOkAlertDialog(InputPlanActivity.this, "숙소를 이미 선택하셨습니다.", "숙소는 최대 두 군데 까지만 지정할 수 있습니다.");
+                } else if (!TravelPlanActivity.checkDuplicateData(place.getName(), getCountry(place))) {
+                    OkAlertDialog.viewOkAlertDialog(InputPlanActivity.this, "이미 선택한 여행지 입니다.", "같은 여행지는 추가할 수 없습니다.");
                 } else {
                     finish();
-//                    Log.d("add", place.getAddress());
-//                    String country = place.getAddressComponents().asList().get(place.getAddressComponents().asList().size() - 1).getName();
-//                    Log.d("country", country);
-                    TravelPlanActivity.addItem(index, place.getName(), latLng, accommodationCheck.isChecked());
+                    String country = getCountry(place);
+                    TravelPlanActivity.addItem(index, place.getName(), country, latLng, accommodationCheck.isChecked());
                 }
             }
         });
@@ -105,5 +89,14 @@ public class InputPlanActivity extends FragmentActivity {
                 finish();
             }
         });
+    }
+
+    private String getCountry(Place place) {
+        for (int i = 0; i < place.getAddressComponents().asList().size(); i++) {
+            if (place.getAddressComponents().asList().get(i).getTypes().get(0).equals("country")) {
+                return place.getAddressComponents().asList().get(i).getName();
+            }
+        }
+        return "null";
     }
 }

@@ -167,6 +167,9 @@
     <string name="save">저장</string>
     <string name="calculation">계산</string>
     <string name="name">name</string>
+    <string name="share">공유</string>
+    <string name="country">country</string>
+    <string name="edit">Edit</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
