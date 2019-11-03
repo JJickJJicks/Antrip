@@ -1,98 +1,36 @@
 package teamprj.antrip.data.model;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class Plan {
-    private HashMap<Integer, ArrayList<String>> travel;
-    private DatabaseReference mDatabase, mTravelDB;
-    private long maxid;
+    private int period;
+    private List<String> authority = new ArrayList<>();
+    private HashMap<String, ArrayList<Travel>> travel = new HashMap<>();
 
-    public Plan() {
-        travel = new HashMap<>();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Plan");
+    public int getPeriod() {
+        return period;
     }
 
-    public void insertDatePlan(int date, ArrayList<String> list) {
-        travel.put(date, list);
+    public void setPeriod(int period) {
+        this.period = period;
     }
 
-    public ArrayList<String> getDatePlan(int date) {
-        return travel.get(Integer.valueOf(date));
+    public List<String> getAuthority() {
+        return authority;
     }
 
-    public void sort() {
-        //TODO: 정렬하는 함수
+    public void setAuthority(List<String> authority) {
+        this.authority = authority;
     }
 
-    public void insertDB(String userId, String travelName) {
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists())
-                    maxid = dataSnapshot.getChildrenCount();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        mTravelDB = mDatabase.child(String.valueOf(maxid + 1));
-        mTravelDB.child("userId").setValue(userId);
-        mTravelDB.child("name").setValue(travelName);
-        mTravelDB.child("plan").setValue(travel);
+    public HashMap<String, ArrayList<Travel>> getTravel() {
+        return travel;
     }
 
-//    void updateDB(int key, String travelName) {
-//        mDatabase.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists())
-//                    maxid = dataSnapshot.getChildrenCount();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//        mTravelDB = mDatabase.child(String.valueOf(maxid + 1));
-//        mTravelDB.child("name").setValue(travelName);
-//        mTravelDB.child("plan").setValue(travel);
-//    }
-
-    void readDB(long key) {
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Plan");
-        myRef.orderByKey().equalTo(Long.toString(key)).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-                            Plan member = data.getValue(Plan.class);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w("MyApp", "getUser:onCancelled", databaseError.toException());
-                    }
-                }
-        );
-    }
-
-    void removeDB(int key) {
-        mTravelDB = mDatabase.child(Long.toString(key));
-        mTravelDB.removeValue();
+    public void setTravel(HashMap<String, ArrayList<Travel>> travel) {
+        this.travel = travel;
     }
 }
