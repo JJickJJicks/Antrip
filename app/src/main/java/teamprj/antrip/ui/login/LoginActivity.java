@@ -32,13 +32,15 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
     private SharedPreferences.Editor editor;
+    private Plan plan;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        test(); // 지워야 함!
+        plan = new Plan("test2", "testPlan2");
+//        test(); // 지워야 함!
 
         emailEditText = findViewById(R.id.login_emailText);
         passwordEditText = findViewById(R.id.login_passwordText);
@@ -100,7 +102,6 @@ public class LoginActivity extends AppCompatActivity {
 
     //TODO:지워야 함(RDB 테스트용임)
     void test(){
-        Plan plan = new Plan();
         ArrayList<String> day1 = new ArrayList<>();
         ArrayList<String> day2 = new ArrayList<>();
         ArrayList<String> day3 = new ArrayList<>();
