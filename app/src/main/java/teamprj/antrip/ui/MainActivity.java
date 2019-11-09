@@ -34,11 +34,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import androidx.viewpager.widget.ViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 import teamprj.antrip.BuildConfig;
 import teamprj.antrip.R;
+import teamprj.antrip.adapter.ImageFragmentAdapter;
+import teamprj.antrip.fragment.ImageFragment;
 import teamprj.antrip.ui.function.MyPlanActivity;
 import teamprj.antrip.ui.function.NoticeActivity;
 import teamprj.antrip.ui.function.TravelInfoActivity;
@@ -109,6 +113,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Snackbar.make(findViewById(android.R.id.content), "An error occurred: " + status, Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
+
+        ViewPager viewPager = findViewById(R.id.mainViewPager);
+        ImageFragmentAdapter fragmentAdapter = new ImageFragmentAdapter(getSupportFragmentManager());
+        // ViewPager와  FragmentAdapter 연결
+        viewPager.setAdapter(fragmentAdapter);
+
+        viewPager.setClipToPadding(false);
+        int dpValue = 16;
+        float d = getResources().getDisplayMetrics().density;
+        int margin = (int) (dpValue * d);
+        viewPager.setPadding(margin, 0, margin, 0);
+        viewPager.setPageMargin(margin/2);
+
+        ArrayList<Integer> listImage = new ArrayList<>();
+        listImage.add(R.drawable.img_sample1);
+        listImage.add(R.drawable.img_sample2);
+        listImage.add(R.drawable.img_sample3);
+        listImage.add(R.drawable.img_sample1);
+
+        for (int i = 0; i < listImage.size(); i++) {
+            ImageFragment imageFragment = new ImageFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("imgRes", listImage.get(i));
+            bundle.putString("text", "추천");
+            imageFragment.setArguments(bundle);
+            fragmentAdapter.addItem(imageFragment);
+        }
+        fragmentAdapter.notifyDataSetChanged();
     }
 
     @Override

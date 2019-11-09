@@ -1,4 +1,4 @@
-package teamprj.antrip.ui.function;
+package teamprj.antrip.map;
 
 import android.graphics.Point;
 import android.os.Bundle;

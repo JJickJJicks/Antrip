@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:id="@+id/recommend_cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp_size_8"
+    app:cardCornerRadius="@dimen/dp_size_8"
+    app:cardElevation="@dimen/dp_size_4">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_basic_constraint_recommend"
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_card_imageView_recommend"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_guideLine_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="382dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontal_start_guideLine_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.21" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontal_end_guideLine_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.55" />
+
+        <teamprj.antrip.ui.function.CustomTextView
+            android:id="@+id/tv_title_recommend"
+            style="@style/Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="0dp"
+            app:textStroke="true"
+            app:textStrokeColor="@color/colorBlack"
+            app:textStrokeWidth="8.0"
+            app:layout_constraintStart_toStartOf="@id/vertical_guideLine_recommend"
+            app:layout_constraintTop_toTopOf="@id/horizontal_start_guideLine_recommend"
+            tools:text="test" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_contents_recommend"
+            style="@style/SubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_size_4"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_end_guideLine_recommend"
+            app:layout_constraintStart_toStartOf="@id/vertical_guideLine_recommend"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_recommend"
+            tools:text="test" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

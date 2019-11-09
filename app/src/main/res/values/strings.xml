@@ -175,9 +175,13 @@
     <string name="share">공유</string>
     <string name="country">country</string>
     <string name="edit">Edit</string>
+    <string name="translate">번역</string>
+    <string name="mainTopText">환영합니다.\n어떤 곳을 가고싶으신가요?</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="recommendTrip">이런곳은 어떠신가요?</string>
+    <string name="add">추가</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

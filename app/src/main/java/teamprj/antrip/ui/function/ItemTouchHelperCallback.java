@@ -4,7 +4,7 @@ package teamprj.antrip.ui.function;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import teamprj.antrip.R;
+import teamprj.antrip.adapter.ExpandableListAdapter;
 
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 

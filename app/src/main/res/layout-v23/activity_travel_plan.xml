@@ -7,54 +7,16 @@
     android:orientation="vertical"
     tools:context=".ui.function.TravelPlanActivity">
 
-
     <FrameLayout
         android:id="@+id/googleMapFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_travel_plan"
         android:layout_width="match_parent"
-        android:layout_height="320dp" >
+        android:layout_height="match_parent" >
     </androidx.recyclerview.widget.RecyclerView>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <ImageButton
-            android:id="@+id/saveButton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:src="@drawable/button_save"
-            android:background="@drawable/button_save"
-            android:scaleType="fitXY"/>
-
-        <ImageButton
-            android:id="@+id/calcButton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:src="@drawable/button_calc"
-            android:background="@drawable/button_calc"
-            android:scaleType="fitXY" />
-
-        <ImageButton
-            android:id="@+id/shareButton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:src="@drawable/button_share"
-            android:background="@drawable/button_share"
-            android:scaleType="fitXY" />
-    </LinearLayout>
 </LinearLayout>
 

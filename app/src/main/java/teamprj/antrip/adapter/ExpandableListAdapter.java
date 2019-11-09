@@ -1,8 +1,7 @@
-package teamprj.antrip.ui.function;
+package teamprj.antrip.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +21,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.TooltipCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import teamprj.antrip.R;
+import teamprj.antrip.map.GoogleMapFragment;
+import teamprj.antrip.ui.function.InputPlanActivity;
+import teamprj.antrip.ui.function.ItemTouchHelperCallback;
 
 public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperCallback.OnItemMoveListener {
-    static final int HEADER = 0;
-    static final int CHILD = 1;
-    static final int DATA = 2;
+    public static final int HEADER = 0;
+    public static final int CHILD = 1;
+    public static final int DATA = 2;
 
     private List<Item> data;
     private OnStartDragListner mStartDragListener;
@@ -62,15 +64,9 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 view = inflater.inflate(R.layout.list_header, parent, false);
                 return new ListHeaderViewHolder(view);
             case CHILD:
-                final Button itemButton = new Button(context);
-                itemButton.setTextColor(0x88000000);
-                itemButton.setTextSize(20);
-                itemButton.setPadding(subItemPaddingLeft, subItemPaddingTopAndBottom, 0, subItemPaddingTopAndBottom);
-                itemButton.setLayoutParams(
-                        new ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT));
-                return new RecyclerView.ViewHolder(itemButton) {
+                LayoutInflater childInflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = childInflater.inflate(R.layout.list_child, parent, false);
+                return new RecyclerView.ViewHolder(view) {
                 };
             case DATA:
                 LayoutInflater dataInflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -120,14 +116,14 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 });
                 break;
             case CHILD:
-                Button itemButton = (Button) holder.itemView;
-                for (int i = position; i > 0; i--) {
-                    Item tempItem = data.get(i);
-                    if (tempItem.type == HEADER) {
-                        itemButton.setId(tempItem.name.charAt(0));
-                        break;
-                    }
-                }
+                Button itemButton = (Button) holder.itemView.findViewById(R.id.btn_list_child);
+//                for (int i = position; i > 0; i--) {
+//                    Item tempItem = data.get(i);
+//                    if (tempItem.type == HEADER) {
+//                        itemButton.setId(tempItem.name.charAt(0));
+//                        break;
+//                    }
+//                }
                 itemButton.setText(data.get(position).name);
                 itemButton.setOnClickListener(new View.OnClickListener(){
                     @Override
@@ -186,12 +182,12 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public static class Item {
-        int type;
+        public int type;
         public String name;
         public String country;
-        LatLng latLng;
-        boolean accommodation = false;
-        List<Item> invisibleChildren;
+        public LatLng latLng;
+        public boolean accommodation = false;
+        public List<Item> invisibleChildren;
 
         public Item(int type, String name) {
             this.type = type;

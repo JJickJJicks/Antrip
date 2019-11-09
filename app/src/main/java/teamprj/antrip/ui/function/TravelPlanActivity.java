@@ -5,9 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -29,8 +30,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import teamprj.antrip.R;
+import teamprj.antrip.adapter.ExpandableListAdapter;
 import teamprj.antrip.data.model.Plan;
 import teamprj.antrip.data.model.Travel;
+import teamprj.antrip.map.GoogleMapFragment;
 
 
 public class TravelPlanActivity extends AppCompatActivity implements ExpandableListAdapter.OnStartDragListner {
@@ -41,12 +44,9 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
     static ExpandableListAdapter mAdapter;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
-    ExpandableListAdapter.OnStartDragListner thisListner = this;
-    boolean isNewPlan = true;
-    boolean isChange = true;
+    ExpandableListAdapter.OnStartDragListner thisListener = this;
     boolean isFinish = false;
     String tripName = "새 여행";
-    String beforeTripName = "";
     String admin = "admin";
     int period;
 
@@ -70,12 +70,9 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 
         Intent intent = getIntent();
         if (intent.getExtras().getString("savedTrip").equals("true")) {
-//            tripName = intent.getExtras().getString("tripName");
-//            admin =  intent.getExtras().getString("admin");
             tripName = "test trip";
             admin = "admin";
             setTitle(tripName);
-            isNewPlan = false;
 
             myRef.child("plan").child("admin").child("test trip").addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -103,7 +100,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                             data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "추가"));
                         }
 
-                        mAdapter = new ExpandableListAdapter(data, thisListner);
+                        mAdapter = new ExpandableListAdapter(data, thisListener);
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -111,9 +108,10 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                     }
                 });
         } else {
-            setTitle(tripName);
             period = Integer.parseInt(intent.getExtras().getString("period"));
             admin =  intent.getExtras().getString("admin");
+            tripName = intent.getExtras().getString("tripName");
+            setTitle(tripName);
 
             String headerText = "0일차";
             for (int i = 0; i < period; i++)
@@ -130,19 +128,32 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         mItemTouchHelper = new ItemTouchHelper(mCallback);
         mItemTouchHelper.attachToRecyclerView(recyclerview);
         recyclerview.setAdapter(mAdapter);
+    }
 
-        ImageButton saveButton = findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                clickSaveButton();
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder holder) {
+        mItemTouchHelper.startDrag(holder);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_travel_plan, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                onBackPressed();
+                return true;
             }
-        });
-
-        ImageButton calcButton = findViewById(R.id.calcButton);
-        calcButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
+            case R.id.action_save_title: {
+                clickSaveButton();
+                return true;
+            }
+            case R.id.action_calc_title: {
                 List<Travel> calcList = new ArrayList<>();
                 for (int i = 0; i < data.size(); i++) {
                     ExpandableListAdapter.Item getData = data.get(i);
@@ -154,21 +165,10 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                     Log.d("calcList", calcList.get(i).getName() + ", " + calcList.get(i).isAccommodation() + ", " +
                             calcList.get(i).getLatitude() + ", " + calcList.get(i).getLongitude());
                 }
+                return true;
             }
-        });
-
-        ImageButton shareButton = findViewById(R.id.shareButton);
-        shareButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                clickSaveButton();
-            }
-        });
-    }
-
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder holder) {
-        mItemTouchHelper.startDrag(holder);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -190,16 +190,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                     }
                 });
         builder.show();
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public static void addItem(int index, String name, String country, LatLng latLng, boolean accommodation){
@@ -258,59 +248,8 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         if (!isAccommodationSelected()) {
             OkAlertDialog.viewOkAlertDialogFinish(TravelPlanActivity.this, "숙소를 선택하지 않았습니다.", "각 일차별로 숙소를 지정해주시기 바랍니다.", isFinish);
         } else {
-            if (isNewPlan) {
-                showTripNameAlert();
-            } else {
-                savePlan();
-            }
+            savePlan();
         }
-    }
-
-    public void showTripNameAlert() {
-        final EditText edittext = new EditText(TravelPlanActivity.this);
-        AlertDialog.Builder builder = new AlertDialog.Builder(TravelPlanActivity.this);
-        builder.setTitle("여행 이름 입력 창");
-        builder.setMessage("여행 이름을 입력해주시기 바랍니다.");
-        builder.setView(edittext);
-        builder.setPositiveButton("확인",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        tripName = edittext.getText().toString();
-                        myRef.child("plan").child("admin").child(tripName).addListenerForSingleValueEvent(
-                                new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.exists()) {
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(TravelPlanActivity.this);
-                                            builder.setTitle("이름 중복");
-                                            builder.setMessage("이미 존재하는 이름입니다.");
-                                            builder.setPositiveButton("확인",
-                                                    new DialogInterface.OnClickListener() {
-                                                        public void onClick (DialogInterface dialog,int which){
-                                                            showTripNameAlert();
-                                                        }
-                                                    });
-                                            builder.show();
-                                        } else {
-                                            setTitle(tripName);
-                                            isNewPlan = false;
-                                            savePlan();
-                                        }
-                                    }
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        Log.d("ErrorTravelPlanActivity", "data receive error");
-                                    }
-                                });
-                    }
-                });
-        builder.setNegativeButton("취소",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-        builder.show();
     }
 
     private void savePlan()
@@ -354,13 +293,14 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 }
             }
             Plan plan = new Plan();
-            List<String> friends = new ArrayList<>();
-            friends.add("친구1");
-            friends.add("친구2");
-            friends.add("친구3");
-            plan.setAuthority(friends);
+//            List<String> friends = new ArrayList<>();
+//            friends.add("친구1");
+//            friends.add("친구2");
+//            friends.add("친구3");
+//            plan.setAuthority(friends);
             plan.setPeriod(period);
             plan.setTravel(travelMap);
+
             myRef.child("plan").child(admin).child(tripName).setValue(plan);
 
             OkAlertDialog.viewOkAlertDialogFinish(TravelPlanActivity.this, "저장 완료", "저장이 완료되었습니다.", isFinish);
