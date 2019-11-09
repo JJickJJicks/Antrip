@@ -19,6 +19,7 @@ public class NoticeArticleActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String main_title = intent.getStringExtra("main_title");
         String sub_title = intent.getStringExtra("sub_title");
+        String contents = intent.getStringExtra("contents");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView temp = findViewById(R.id.main_title);
@@ -26,7 +27,7 @@ public class NoticeArticleActivity extends AppCompatActivity {
         temp = findViewById(R.id.sub_title);
         temp.setText(sub_title);
         temp = findViewById(R.id.content);
-        temp.setText("테스트용 출력입니다.");
+        temp.setText(contents);
     }
 
     @Override

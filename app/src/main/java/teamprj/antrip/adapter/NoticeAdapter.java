@@ -1,4 +1,4 @@
-package teamprj.antrip.ui.function;
+package teamprj.antrip.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,37 +9,39 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 import teamprj.antrip.R;
+import teamprj.antrip.data.model.Notice;
+import teamprj.antrip.ui.function.NoticeArticleActivity;
 
 public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder>{
     private Context context;
-    private String[] main_title;
-    private String[] sub_title;
+    private ArrayList<Notice> noticeList;
 
-    public NoticeAdapter(String[] main_title, String[] sub_title, Context context) {
+    public NoticeAdapter(ArrayList<Notice> noticeList, Context context) {
         this.context = context;
-        this.main_title = main_title;
-        this.sub_title = sub_title;
+       this.noticeList = noticeList;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        TextView main_title, sub_title;
+        TextView main_title, sub_title, contents;
 
         public ViewHolder(View itemView) {
             super(itemView);
             main_title = itemView.findViewById(R.id.main_title);
             sub_title = itemView.findViewById(R.id.sub_title);
+            contents = itemView.findViewById(R.id.content);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if(position != RecyclerView.NO_POSITION){
-                        String parameter_first = main_title.getText().toString();
-                        String parameter_second = sub_title.getText().toString();
                         Intent intent = new Intent(context, NoticeArticleActivity.class);
                         intent.putExtra("main_title", main_title.getText().toString());
                         intent.putExtra("sub_title", sub_title.getText().toString());
+                        intent.putExtra("contents", contents.getText().toString());
                         context.startActivity(intent);
                     }
                 }
@@ -55,13 +57,14 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(NoticeAdapter.ViewHolder holder, int position) {
-        holder.main_title.setText(this.main_title[position]);
-        holder.sub_title.setText(this.sub_title[position]);
+        holder.main_title.setText(noticeList.get(position).getTitle());
+        holder.sub_title.setText(noticeList.get(position).getDate());
+        holder.contents.setText(noticeList.get(position).getContent());
 
     }
 
     @Override
     public int getItemCount() {
-        return main_title.length;
+        return noticeList.size();
     }
 }

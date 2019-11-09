@@ -26,10 +26,10 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".ui.function.SplashActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -115,6 +115,12 @@
             android:name=".ui.function.InputPlanActivity"
             android:label="여행일정 입력"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog">
+        </activity>
+        <activity android:name=".ui.function.PlanResultActivity">
+        </activity>
+        <activity android:name=".ui.intro.IntroActivity">
+        </activity>
+        <activity android:name=".ui.function.MyPlanActivity">
         </activity>
     </application>
 

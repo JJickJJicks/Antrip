@@ -43,11 +43,36 @@
         <item name="android:layout_gravity">left</item>
     </style>
 
-    <declare-styleable name="CheckableImageButton">
-        <attr name="isChecked" format="boolean"/>
-        <attr name="personality">
-            <enum name="radio" value="0"/>
-            <enum name="check" value="1"/>
-        </attr>
-    </declare-styleable>
+    <style name="Title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">@dimen/font_size_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SubTitle" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textSize">@dimen/font_size_subTitle</item>
+    </style>
+
+    <style name="Body" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/colorEtcText</item>
+        <item name="android:textSize">@dimen/font_size_body</item>
+    </style>
+
+    <style name="BottomNavigationStyle" parent="Widget.Design.BottomNavigationView">
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:minWidth">0dp</item>
+    </style>
+
+    <style name="AppTheme.Main">
+        <item name="android:windowExitTransition">@transition/main_exit</item>
+        <item name="android:windowReenterTransition">@transition/main_reenter</item>
+    </style>
+
+    <style name="AppTheme.Detail">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowEnterTransition">@transition/detail_enter</item>
+    </style>
 </resources>

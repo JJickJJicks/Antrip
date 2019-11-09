@@ -83,16 +83,87 @@
             android:inputType="textPersonName"
             tools:targetApi="o" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="프로필 사진 선택" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/frame_rectangle"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_image1"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="@dimen/dp_size_4"
+                    tools:src="@drawable/img_sample1" />
+
+                <ImageView
+                    android:id="@+id/iv_image2"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="@dimen/dp_size_4"
+                    tools:src="@drawable/img_sample2" />
+
+                <ImageView
+                    android:id="@+id/iv_image3"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="@dimen/dp_size_4"
+                    tools:src="@drawable/img_sample3" />
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/rg_radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RadioButton
+                    android:id="@+id/rb_btn1"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="프로필1"
+                    android:textColor="@color/colorBlack"/>
+
+
+                <RadioButton
+                    android:id="@+id/rb_btn2"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="프로필2"
+                    android:textColor="@color/colorBlack"/>
+
+
+                <RadioButton
+                    android:id="@+id/rb_btn3"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="프로필3"
+                    android:textColor="@color/colorBlack"/>
+
+            </RadioGroup>
+
+        </LinearLayout>
+
     </LinearLayout>
     <!-- Notice -->
 
+    <!-- 닫기 버튼 -->
     <View
         android:id="@+id/signup.view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#66bdbdbd" />
+    <!--// 닫기 버튼 -->
 
-    <!-- 닫기 버튼 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -111,5 +182,4 @@
             android:textColor="@android:color/black"
             android:textSize="15sp" />
     </LinearLayout>
-    <!--// 닫기 버튼 -->
 </LinearLayout>

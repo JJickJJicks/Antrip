@@ -8,14 +8,16 @@ import java.util.Map;
 public class Member {
     private String email;
     private int type;
+    private String profile;
 
     public Member() {
         }
 
-    public Member(String email, int type) {
+    public Member(String email, int type, String profile) {
             super();
             this.email = email;
             this.type = type;
+            this.profile = profile;
     }
 
     public String getEmail() {
@@ -26,11 +28,15 @@ public class Member {
         return type;
     }
 
+    public String getProfile() { return profile; }
+
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("email", email);
         result.put("type", type);
+        result.put("profile", profile);
 
         return result;
     }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,14 +27,19 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.net.URL;
 import java.util.Arrays;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import teamprj.antrip.BuildConfig;
 import teamprj.antrip.R;
+import teamprj.antrip.ui.function.MyPlanActivity;
 import teamprj.antrip.ui.function.NoticeActivity;
 import teamprj.antrip.ui.function.TravelInfoActivity;
 import teamprj.antrip.ui.settings.SettingsActivity;
@@ -58,15 +64,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         // Nav 이메일, 이름 로드
         View nav_header_view = navigationView.getHeaderView(0);
         TextView nav_nameview = nav_header_view.findViewById(R.id.nav_nameText);
         TextView nav_emailview = nav_header_view.findViewById(R.id.nav_emailText);
+        CircleImageView nav_profileview = nav_header_view.findViewById(R.id.nav_profileImg);
 
         // Firebase 로드
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         nav_emailview.setText(user.getEmail());
         nav_nameview.setText(user.getDisplayName());
+//        nav_profileview.setImageResource();
 
         // 주소 자동 완성 정의
         Places.initialize(getApplicationContext(), BuildConfig.places_api_key);
@@ -134,7 +154,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_travel) {
-            Toast.makeText(getApplicationContext(), "내 여행 정보", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, MyPlanActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_profile) {
             Intent intent = new Intent(this, ProfileActivity.class);
             startActivity(intent);

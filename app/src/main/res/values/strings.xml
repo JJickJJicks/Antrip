@@ -20,7 +20,7 @@
     <string name="menu_notice">공지사항</string>
     <string name="fail_notice">공지사항을 불러올 수 없습니다.</string>
     <string name="notice_title_hint">공지사항 제목을 입력하세요.</string>
-    <string name="notice_content_hint">공지사항 내용을 입력하세요.</string>
+    <string name="notice_content_hint">내용을 입력하세요.</string>
 
 
     <!-- Preference Titles -->
@@ -154,6 +154,7 @@
     <string name="wrongBirth" translatable="false">생년월일을 확인해주세요</string>
     <string name="title_activity_travel_planner">Map</string>
     <string name="wrongNetwork">네트워크 상태를 확인해주세요</string>
+    <string name="wrongPermissions">설정에서 앱의 권한을 허용해주세요</string>
     <string name="wrongPwLength">비밀번호는 5자 이상이여야 합니다.</string>
     <string name="app_version_title">어플리케이션 버전</string>
     <string name="action_edit_profile">프로필 변경</string>

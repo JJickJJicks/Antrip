@@ -2,16 +2,23 @@ package teamprj.antrip.ui.login;
 
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,6 +37,16 @@ public class SignupActivity extends Activity {
     private static final String TAG = "signUp";
     private static final int USER_TYPE = 1;
     private EditText emailText, passwordText, pwCheckText, nameText;
+    private ImageView image1, image2, image3;
+    private RadioGroup radioGroup;
+    private String profile = "";
+
+    private final String URL1 = "https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1993704_960_720.jpg";
+    private final String URL2 = "https://cdn.pixabay.com/photo/2014/12/15/17/16/pier-569314_960_720.jpg";
+    private final String URL3 = "https://cdn.pixabay.com/photo/2018/10/01/11/45/landscape-3715977_960_720.jpg";
+
+    SharedPreferences mSharedPreferences;
+    SharedPreferences.Editor mEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +55,9 @@ public class SignupActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_signup);
 
+        mSharedPreferences = getSharedPreferences("profileInfo", MODE_PRIVATE);
+        mEditor = mSharedPreferences.edit();
+
         //Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
 
@@ -45,6 +65,26 @@ public class SignupActivity extends Activity {
         passwordText = findViewById(R.id.signup_pwText);
         pwCheckText = findViewById(R.id.signup_pwCheckText);
         nameText = findViewById(R.id.signup_nameText);
+        radioGroup = findViewById(R.id.rg_radioGroup);
+
+        image1 = findViewById(R.id.iv_image1);
+        image2 = findViewById(R.id.iv_image2);
+        image3 = findViewById(R.id.iv_image3);
+
+        Glide.with(this).load(URL1).into(image1);
+        Glide.with(this).load(URL2).into(image2);
+        Glide.with(this).load(URL3).into(image3);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rb_btn1 : profile = URL1; break;
+                    case R.id.rb_btn2 : profile = URL2; break;
+                    case R.id.rb_btn3 : profile = URL3; break;
+                }
+            }
+        });
     }
 
     public void signUp(View v) {
@@ -79,6 +119,10 @@ public class SignupActivity extends Activity {
             return false;
         } else
             nameText.setError(null);
+        if (profile == "") {
+            Toast.makeText(this, "프로필을 선택 하세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
     }
 
@@ -125,7 +169,9 @@ public class SignupActivity extends Activity {
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         final String email = emailText.getText().toString().trim();
         final String name = nameText.getText().toString().trim();
-        Member member = new Member(email, USER_TYPE);
+        Member member = new Member(email, USER_TYPE, profile);
         databaseReference.push().setValue(member.toMap());
+
+
     }
 }

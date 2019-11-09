@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        plan = new Plan("test2", "testPlan2");
+        plan = new Plan();
 //        test(); // 지워야 함!
 
         emailEditText = findViewById(R.id.login_emailText);
@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //TODO:지워야 함(RDB 테스트용임)
-    void test(){
+   /* void test(){
         ArrayList<String> day1 = new ArrayList<>();
         ArrayList<String> day2 = new ArrayList<>();
         ArrayList<String> day3 = new ArrayList<>();
@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
         plan.insertDatePlan(3,day3);
 
         plan.insertDB("test","testPlan");
-    }
+    }*/
 
     public void login() {
         String email = emailEditText.getText().toString().trim();

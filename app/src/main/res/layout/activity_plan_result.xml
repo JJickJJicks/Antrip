@@ -3,25 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="10"
     android:orientation="vertical"
+    android:weightSum="10"
     tools:context=".ui.function.PlanResultActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3">
+        android:layout_weight="3"
+        android:orientation="vertical">
 
-        <TextView
+        <FrameLayout
+            android:id="@+id/googleMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:text="지도 자리"
-            tools:textColor="@color/colorWhite"
-            tools:background="@color/colorBlack"
-            android:gravity="center" />
-        <fragment
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
     <LinearLayout

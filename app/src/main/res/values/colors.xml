@@ -6,4 +6,13 @@
     <color name="colorTranslucentGray">#80808080</color>
     <color name="colorBlack">#252525</color>
     <color name="colorWhite">#ffffff</color>
+
+    <color name="colorYellow">#F1C40F</color>
+    <color name="colorBlue">#3498DB</color>
+    <color name="colorDarkBlue">#2C3E50</color>
+
+    <color name="colorPrimaryText">#FFFFFFFF</color>
+    <color name="colorSecondaryText">#B3FFFFFF</color>
+    <color name="colorEtcText">#80FFFFFF</color>
+    <color name="colorDividers">#1FFFFFFF</color>
 </resources>
