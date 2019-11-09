@@ -56,7 +56,9 @@ public class TravelInfoActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(getApplicationContext(), TravelPlanActivity.class);
-                                intent.putExtra("inputValue", edittext.getText().toString());
+                                intent.putExtra("admin", "admin");
+                                intent.putExtra("period", edittext.getText().toString());
+                                intent.putExtra("savedTrip", "false");
                                 startActivity(intent);
                             }
                         });

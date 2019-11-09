@@ -32,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.net.URL;
 import java.util.Arrays;
 
+import teamprj.antrip.BuildConfig;
 import teamprj.antrip.R;
 import teamprj.antrip.ui.function.NoticeActivity;
 import teamprj.antrip.ui.function.TravelInfoActivity;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nav_nameview.setText(user.getDisplayName());
 
         // 주소 자동 완성 정의
-        Places.initialize(getApplicationContext(), "AIzaSyBU3tGzwEtupAQeleEYqzsKJ-p7q7pSyw0");
+        Places.initialize(getApplicationContext(), BuildConfig.places_api_key);
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.main_autocomplete_fragment);
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
         autocompleteFragment.setTypeFilter(TypeFilter.CITIES);

@@ -1,5 +1,6 @@
 package teamprj.antrip.ui.function;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,8 +14,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -24,6 +30,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private View rootView;
     private MapView mapView;
     private static GoogleMap googleMap;
+    private static HashMap<String, Marker> markerHashMap;
+    private static LatLngBounds.Builder builder;
 
     public GoogleMapFragment() {
     }
@@ -37,6 +45,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+        builder = new LatLngBounds.Builder();
+        markerHashMap = new HashMap<>();
     }
 
     @Override
@@ -45,7 +55,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         rootView = inflater.inflate(R.layout.content_map, container, false);
         mapView = rootView.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
-
         mapView.getMapAsync(this);
 
         return rootView;
@@ -75,12 +84,32 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         this.googleMap = googleMap;
     }
 
-    public static void selectPlace(LatLng latLng, String name) {
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-        googleMap.animateCamera(cameraUpdate);
-        googleMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .title(name));
+    public static void selectPlace(LatLng latLng, String name, String country) {
+        MarkerOptions markerOption = new MarkerOptions().position(latLng).title(name);
+        Marker marker = googleMap.addMarker(markerOption);
+
+        builder.include(latLng);
+        LatLngBounds bounds = builder.build();
+
+        googleMap.setPadding(0, 100, 0, 0);
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds,17));
+        markerHashMap.put(name + country, marker);
+    }
+
+    public static void removePlace(String name, String country) {
+        if (markerHashMap.containsKey(name + country)) {
+            markerHashMap.get(name + country).remove();
+            markerHashMap.remove(name + country);
+
+            builder = new LatLngBounds.Builder();
+            if (markerHashMap.size() > 0) {
+                for (Marker marker : markerHashMap.values()) {
+                    builder.include(marker.getPosition());
+                }
+                LatLngBounds bounds = builder.build();
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 17));
+            }
+        }
     }
 }
 
