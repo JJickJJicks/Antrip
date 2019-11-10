@@ -20,10 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
-
 import teamprj.antrip.R;
-import teamprj.antrip.data.model.Plan;
 import teamprj.antrip.ui.MainActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -32,15 +29,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
     private SharedPreferences.Editor editor;
-    private Plan plan;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        plan = new Plan();
-//        test(); // 지워야 함!
 
         emailEditText = findViewById(R.id.login_emailText);
         passwordEditText = findViewById(R.id.login_passwordText);
@@ -99,32 +92,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-    //TODO:지워야 함(RDB 테스트용임)
-   /* void test(){
-        ArrayList<String> day1 = new ArrayList<>();
-        ArrayList<String> day2 = new ArrayList<>();
-        ArrayList<String> day3 = new ArrayList<>();
-
-        day1.add("1번 장소");
-        day1.add("2번 장소");
-        day1.add("3번 장소");
-        day1.add("4번 장소");
-        day2.add("5번 장소");
-        day2.add("6번 장소");
-        day2.add("7번 장소");
-        day2.add("8번 장소");
-        day3.add("9번 장소");
-        day3.add("10번 장소");
-        day3.add("11번 장소");
-        day3.add("12번 장소");
-
-        plan.insertDatePlan(1,day1);
-        plan.insertDatePlan(2,day2);
-        plan.insertDatePlan(3,day3);
-
-        plan.insertDB("test","testPlan");
-    }*/
 
     public void login() {
         String email = emailEditText.getText().toString().trim();

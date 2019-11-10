@@ -2,6 +2,7 @@ package teamprj.antrip.ui.function;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -15,8 +16,11 @@ import java.util.ArrayList;
 
 import teamprj.antrip.R;
 import teamprj.antrip.ui.intro.IntroActivity;
+import teamprj.antrip.ui.login.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
+    private SharedPreferences.Editor editor;
+
     private String[] USES_PERMISSIONS = {
             "android.permission.READ_CONTACTS",
             "android.permission.ACCESS_FINE_LOCATION"
@@ -31,9 +35,7 @@ public class SplashActivity extends AppCompatActivity {
 
         if (activeNetwork != null) {
             if (checkPermissions(USES_PERMISSIONS)) {
-                Intent i = new Intent(this, IntroActivity.class);
-                startActivity(i);
-                finish();
+                start();
             }
 
         } else {
@@ -87,16 +89,29 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }
             if (isGranted) {
-                Intent i = new Intent(this, IntroActivity.class);
-                startActivity(i);
-                finish();
-
+                start();
             } else {
                 Toast.makeText(this, R.string.wrongPermissions, Toast.LENGTH_SHORT).show();
                 finish();
 
             }
         }
+    }
+
+    private void start() {
+        SharedPreferences setting = getSharedPreferences("start", 0);
+        editor = setting.edit();
+
+        Intent i = null;
+        if (setting.getBoolean("Intro_pass", false)) {
+            i = new Intent(this, IntroActivity.class);
+
+            editor.putBoolean("Intro_pass", true);
+            editor.commit();
+        } else
+            i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+        finish();
     }
 
     @Override
