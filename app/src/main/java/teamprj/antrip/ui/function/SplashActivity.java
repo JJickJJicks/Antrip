@@ -1,5 +1,6 @@
 package teamprj.antrip.ui.function;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,9 +8,9 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
@@ -18,7 +19,8 @@ import teamprj.antrip.R;
 import teamprj.antrip.ui.intro.IntroActivity;
 import teamprj.antrip.ui.login.LoginActivity;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends Activity {
+    private final int SPLASH_DISPLAY_TIME = 3000;
     private SharedPreferences.Editor editor;
 
     private String[] USES_PERMISSIONS = {
@@ -31,22 +33,29 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
-        if (activeNetwork != null) {
-            if (checkPermissions(USES_PERMISSIONS)) {
-                start();
-            }
 
-        } else {
-            try {
-                Thread.sleep(1000);
-                Toast.makeText(this, R.string.wrongNetwork, Toast.LENGTH_SHORT).show();
-                finish();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (activeNetwork != null) {
+                    if (checkPermissions(USES_PERMISSIONS)) {
+                        start();
+                    }
+                } else {
+                    try {
+                        Thread.sleep(1000);
+                        Toast.makeText(getApplicationContext(), R.string.wrongNetwork, Toast.LENGTH_SHORT).show();
+                        finish();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }
+        }, SPLASH_DISPLAY_TIME);
+
     }
 
     private Boolean checkPermissions(String[] permissions) {
@@ -105,13 +114,12 @@ public class SplashActivity extends AppCompatActivity {
         Intent i = null;
         if (setting.getBoolean("Intro_pass", false)) {
             i = new Intent(this, IntroActivity.class);
-
             editor.putBoolean("Intro_pass", true);
             editor.commit();
         } else
             i = new Intent(this, LoginActivity.class);
         startActivity(i);
-        finish();
+        SplashActivity.this.finish();
     }
 
     @Override

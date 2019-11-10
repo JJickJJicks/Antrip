@@ -277,20 +277,6 @@ public class TravelInfoActivity extends AppCompatActivity {
         options.setDisplayOptions(displayOptions);
         options.setCanPickDateRange(true);
 
-        // Example for setting date range:
-        // Note that you can pass a date range as the initial date params
-        // even if you have date-range selection disabled. In this case,
-        // the user WILL be able to change date-range using the header
-        // TextViews, but not using long-press.
-
-        /*Calendar startCal = Calendar.getInstance();
-        startCal.set(2016, 2, 4);
-        Calendar endCal = Calendar.getInstance();
-        endCal.set(2016, 2, 17);
-
-        options.setDateParams(startCal, endCal);*/
-
-        // If 'displayOptions' is zero, the chosen options are not valid
         return new Pair<>(displayOptions != 0 ? Boolean.TRUE : Boolean.FALSE, options);
     }
 
