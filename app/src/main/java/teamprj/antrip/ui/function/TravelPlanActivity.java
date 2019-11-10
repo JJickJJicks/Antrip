@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,9 +47,11 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
     ExpandableListAdapter.OnStartDragListner thisListener = this;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    String userName = user.getDisplayName();
     boolean isFinish = false;
     String tripName = "새 여행";
-    String admin = "admin";
+    ArrayList<String> authList = null;
     int period;
 
     @Override
@@ -71,10 +75,9 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         Intent intent = getIntent();
         if (intent.getExtras().getString("savedTrip").equals("true")) {
             tripName = "test trip";
-            admin = "admin";
             setTitle(tripName);
 
-            myRef.child("plan").child("admin").child("test trip").addListenerForSingleValueEvent(
+            myRef.child("plan").child(userName).child(tripName).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -109,7 +112,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 });
         } else {
             period = Integer.parseInt(intent.getExtras().getString("period"));
-            admin =  intent.getExtras().getString("admin");
             tripName = intent.getExtras().getString("tripName");
             setTitle(tripName);
 
@@ -123,6 +125,22 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 
             mAdapter = new ExpandableListAdapter(data, this);
         }
+
+        myRef.child("plan").child(userName).child(tripName).addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.hasChild("authority")) {
+                            authList = (ArrayList) ((HashMap) dataSnapshot.getValue()).get("authority");
+                        } else {
+                            authList = new ArrayList<>();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d("ErrorTravelPlanActivity", "data receive error");
+                    }
+                });
 
         ItemTouchHelperCallback mCallback = new ItemTouchHelperCallback(mAdapter);
         mItemTouchHelper = new ItemTouchHelper(mCallback);
@@ -297,11 +315,11 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 //            friends.add("친구1");
 //            friends.add("친구2");
 //            friends.add("친구3");
-//            plan.setAuthority(friends);
+            plan.setAuthority(authList);
             plan.setPeriod(period);
             plan.setTravel(travelMap);
 
-            myRef.child("plan").child(admin).child(tripName).setValue(plan);
+            myRef.child("plan").child(userName).child(tripName).setValue(plan);
 
             OkAlertDialog.viewOkAlertDialogFinish(TravelPlanActivity.this, "저장 완료", "저장이 완료되었습니다.", isFinish);
         } catch (Exception e) {

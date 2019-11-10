@@ -182,6 +182,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recommendTrip">이런곳은 어떠신가요?</string>
     <string name="add">추가</string>
+    <string name="auth_add_share">공유하기</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

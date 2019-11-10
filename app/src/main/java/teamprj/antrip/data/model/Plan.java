@@ -9,6 +9,8 @@ public class Plan {
     private List<String> authority = new ArrayList<>();
     private HashMap<String, ArrayList<Travel>> travel = new HashMap<>();
 
+    public Plan() { }
+
     public int getPeriod() {
         return period;
     }

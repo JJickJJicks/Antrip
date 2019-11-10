@@ -17,6 +17,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +35,8 @@ public class TravelInfoActivity extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbar;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    String userName = user.getDisplayName();
     private String tripName = "새 여행 1";
     private boolean isSelectTripName = false;
 
@@ -56,7 +60,7 @@ public class TravelInfoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // 초기 여행 이름
-        myRef.child("plan").child("admin").addValueEventListener(
+        myRef.child("plan").child(userName).addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -68,7 +72,7 @@ public class TravelInfoActivity extends AppCompatActivity {
                         while (!isSelectTripName) {
                             if (!tripNameList.contains(tripName)) {
                                 collapsingToolbar.setTitle(tripName);
-                                myRef.child("plan").child("admin").child(tripName).setValue("dummy");
+                                myRef.child("plan").child(userName).child(tripName).setValue("dummy");
                                 isSelectTripName = true;
                                 break;
                             } else {
@@ -102,7 +106,6 @@ public class TravelInfoActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(getApplicationContext(), TravelPlanActivity.class);
-                                intent.putExtra("admin", "admin");
                                 intent.putExtra("tripName", tripName);
                                 intent.putExtra("period", edittext.getText().toString());
                                 intent.putExtra("savedTrip", "false");
@@ -132,25 +135,9 @@ public class TravelInfoActivity extends AppCompatActivity {
         findViewById(R.id.travelInfo_tabBtn3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: 3번 버튼 동작
-                final EditText edittext = new EditText(TravelInfoActivity.this);
-                AlertDialog.Builder builder = new AlertDialog.Builder(TravelInfoActivity.this);
-                builder.setTitle("공유하기");
-                builder.setMessage("공유할 대상의 아이디를 입력해주시기 바랍니다.");
-                builder.setView(edittext);
-                builder.setPositiveButton("확인",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-                builder.setNegativeButton("취소",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-                builder.show();
+                Intent intent = new Intent(getApplicationContext(), AuthorityAddActivity.class);
+                intent.putExtra("tripName", tripName);
+                startActivity(intent);
             }
         });
 
@@ -198,12 +185,12 @@ public class TravelInfoActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         final String inputName = edittext.getText().toString();
-                        myRef.child("plan").child("admin").child(tripName).addListenerForSingleValueEvent(
+                        myRef.child("plan").child(userName).child(tripName).addListenerForSingleValueEvent(
                                 new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         final Plan plan = dataSnapshot.getValue(Plan.class);
-                                        myRef.child("plan").child("admin").child(inputName).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        myRef.child("plan").child(userName).child(inputName).addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                                                if (dataSnapshot.exists() && !tripName.equals(savedTripName)) {
@@ -219,10 +206,10 @@ public class TravelInfoActivity extends AppCompatActivity {
                                                             });
                                                     builder.show();
                                                 } else {
-                                                    myRef.child("plan").child("admin").child(tripName).removeValue();
+                                                    myRef.child("plan").child(userName).child(tripName).removeValue();
                                                     tripName = inputName;
                                                     collapsingToolbar.setTitle(tripName);
-                                                    myRef.child("plan").child("admin").child(tripName).setValue(plan);
+                                                    myRef.child("plan").child(userName).child(tripName).setValue(plan);
                                                 }
                                             }
 
