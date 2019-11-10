@@ -27,14 +27,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import teamprj.antrip.R;
+import teamprj.antrip.data.model.Plan;
 
 public class TravelInfoActivity extends AppCompatActivity {
-
-    CollapsingToolbarLayout collapsingToolbar;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference();
-    String tripName = "새 여행 1";
-    boolean isSelectTripName = false;
+    private CollapsingToolbarLayout collapsingToolbar;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = database.getReference();
+    private String tripName = "새 여행 1";
+    private boolean isSelectTripName = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,6 @@ public class TravelInfoActivity extends AppCompatActivity {
         TextView maintext = findViewById(R.id.travelInfo_text);
         maintext.setText(name);
 
-        //TODO: Titlebar에 들어갈 제목은?
         collapsingToolbar.setTitle(tripName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -199,28 +198,40 @@ public class TravelInfoActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         final String inputName = edittext.getText().toString();
-                        myRef.child("plan").child("admin").child(inputName).addListenerForSingleValueEvent(
+                        myRef.child("plan").child("admin").child(tripName).addListenerForSingleValueEvent(
                                 new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                        if (dataSnapshot.exists() && !tripName.equals(savedTripName)) {
-                                        if (dataSnapshot.exists()) {
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(TravelInfoActivity.this);
-                                            builder.setTitle("이름 중복");
-                                            builder.setMessage("이미 존재하는 이름입니다.");
-                                            builder.setPositiveButton("확인",
-                                                    new DialogInterface.OnClickListener() {
-                                                        public void onClick (DialogInterface dialog,int which){
-                                                            tripNameChange();
-                                                        }
-                                                    });
-                                            builder.show();
-                                        } else {
-                                            myRef.child("plan").child("admin").child(tripName).removeValue();
-                                            tripName = inputName;
-                                            collapsingToolbar.setTitle(tripName);
-                                            myRef.child("plan").child("admin").child(tripName).setValue("dummy");
-                                        }
+                                        final Plan plan = dataSnapshot.getValue(Plan.class);
+                                        myRef.child("plan").child("admin").child(inputName).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                                if (dataSnapshot.exists() && !tripName.equals(savedTripName)) {
+                                                if (dataSnapshot.exists()) {
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(TravelInfoActivity.this);
+                                                    builder.setTitle("이름 중복");
+                                                    builder.setMessage("이미 존재하는 이름입니다.");
+                                                    builder.setPositiveButton("확인",
+                                                            new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                    tripNameChange();
+                                                                }
+                                                            });
+                                                    builder.show();
+                                                } else {
+                                                    myRef.child("plan").child("admin").child(tripName).removeValue();
+                                                    tripName = inputName;
+                                                    collapsingToolbar.setTitle(tripName);
+                                                    myRef.child("plan").child("admin").child(tripName).setValue(plan);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError
+                                                                            databaseError) {
+                                                Log.d("ErrorTravelInfoActivity", "data receive error");
+                                            }
+                                        });
                                     }
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -235,5 +246,9 @@ public class TravelInfoActivity extends AppCompatActivity {
                     }
                 });
         builder.show();
+    }
+
+    private void getTravelData(String tripName) {
+
     }
 }
