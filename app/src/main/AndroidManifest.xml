@@ -120,7 +120,8 @@
         </activity>
         <activity android:name=".ui.intro.IntroActivity">
         </activity>
-        <activity android:name=".ui.function.MyPlanActivity">
+        <activity android:name=".ui.function.MyPlanActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".ui.function.OffActivity">
         </activity>

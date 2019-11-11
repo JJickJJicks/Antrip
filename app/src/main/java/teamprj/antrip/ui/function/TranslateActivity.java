@@ -1,5 +1,6 @@
 package teamprj.antrip.ui.function;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,8 +30,10 @@ import teamprj.antrip.data.model.Language;
 
 public class TranslateActivity extends AppCompatActivity {
     private static final int MESSAGE_OK = 0;
+    private static final int MESSAGE_FAIL = -1;
     private static String clientId = "XXar7pmbbGZwyqwCnKvq";//애플리케이션 클라이언트 아이디값";
     private static String clientSecret = "JSXbNKzVtN";//애플리케이션 클라이언트 시크릿값";
+    private Context mContext = this;
     public Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -37,6 +41,8 @@ public class TranslateActivity extends AppCompatActivity {
                 case MESSAGE_OK:
                     translatedText.setText(res); // 파파고에서는 String 한줄로 주는 관계로 그냥 String으로 변경
                     break;
+                case MESSAGE_FAIL:
+                    Toast.makeText(mContext, "지원하지 않는 언어입니다.", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -166,6 +172,9 @@ public class TranslateActivity extends AppCompatActivity {
                 res = res.substring(1, res.length() - 1);
                 Log.d("temp", res);
                 mHandler.sendEmptyMessage(MESSAGE_OK);
+            } else {
+                mHandler.sendEmptyMessage(MESSAGE_FAIL);
+
             }
         }
     }

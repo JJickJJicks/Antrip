@@ -42,15 +42,6 @@
         android:id="@+id/rv_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fb_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dp_size_20"
-        android:elevation="@dimen/dp_size_12"
-        android:src="@drawable/ic_add_black_24dp"
-        app:layout_anchor="@id/ab_appBarLayout"
-        app:layout_anchorGravity="right|bottom" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
