@@ -59,6 +59,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.appeaser.sublimepickerlibrary:sublimepickerlibrary:2.1.2'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.thoughtbot:expandablerecyclerview:1.3'
+
 }
 repositories {
     mavenCentral()

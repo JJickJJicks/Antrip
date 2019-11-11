@@ -128,6 +128,8 @@
         </activity>
         <activity android:name=".ui.function.MyPlanActivity">
         </activity>
+        <activity android:name=".ui.function.OffActivity">
+        </activity>
     </application>
 
 </manifest>
