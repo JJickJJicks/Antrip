@@ -1,5 +1,6 @@
 package teamprj.antrip.firebase;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,7 +9,6 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -21,84 +21,63 @@ import teamprj.antrip.ui.MainActivity;
 public class FireBaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
-
-    /**
-     * Called when message is received.
-     *
-     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
-     */
-    // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-
-        // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-            } else {
-                // Handle message within 10 seconds
-                handleNow();
-            }
-
-        }
-
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            sendNotification(remoteMessage.getNotification().getBody());
-        }
-
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
-    }
-    // [END receive_message]
-
-    /**
-     * Handle time allotted to BroadcastReceivers.
-     */
-    private void handleNow() {
-        Log.d(TAG, "Short lived task is done.");
+        if (remoteMessage.getData() == null)
+            return;
+        sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("content"));
     }
 
-    /**
-     * Create and show a simple notification containing the received FCM message.
-     *
-     * @param messageBody FCM message body received.
-     */
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String title, String content) {
+        if (title == null)
+            title = "FCM Message";
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        String channelId = getString(R.string.default_notification_channel_id);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("FCM Message")
-                        .setContentText(messageBody)
-                        .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Since android Oreo notification channel is needed.
+        // 오레오(8.0) 이상일 경우 채널을 반드시 생성해야 한다.
+        final String CHANNEL_ID = "antrip";
+        NotificationManager mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create channel to show notifications.
-            String channelName = getString(R.string.default_notification_channel_name);
-            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(channel);
+            final String CHANNEL_NAME = "채널 이름";
+            final String CHANNEL_DESCRIPTION = "채널 Description";
+            final int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            // add in API level 26
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
+            mChannel.setDescription(CHANNEL_DESCRIPTION);
+            mChannel.enableLights(true);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 100, 200});
+            mChannel.setSound(defaultSoundUri, null);
+            mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            mManager.createNotificationChannel(mChannel);
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        builder.setAutoCancel(true);
+        builder.setDefaults(Notification.DEFAULT_ALL);
+        builder.setWhen(System.currentTimeMillis());
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setContentText(content);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            // 아래 설정은 오레오부터 deprecated 되면서 NotificationChannel에서 동일 기능을 하는 메소드를 사용.
+            builder.setContentTitle(title);
+            builder.setSound(defaultSoundUri);
+            builder.setVibrate(new long[]{500, 500});
+        }
+
+        mManager.notify(0, builder.build());
+    }
+
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        /*
+         * 기존의 FirebaseInstanceIdService에서 수행하던 토큰 생성, 갱신 등의 역할은 이제부터
+         * FirebaseMessaging에 새롭게 추가된 위 메소드를 사용하면 된다.
+         */
     }
 }
