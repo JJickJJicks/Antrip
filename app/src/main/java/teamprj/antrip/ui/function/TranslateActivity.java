@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -34,9 +35,56 @@ public class TranslateActivity extends AppCompatActivity {
     private static String clientId = "XXar7pmbbGZwyqwCnKvq";//애플리케이션 클라이언트 아이디값";
     private static String clientSecret = "JSXbNKzVtN";//애플리케이션 클라이언트 시크릿값";
     private Context mContext = this;
+    private static String from, after, res, origin_lang, target_lang;
+    private EditText inputText, translatedText;
+    private Spinner origin_lan, target_lan;
+    private Button translateButton;
+    private LottieAnimationView animationView;
+    private LottieAnimation animation;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_translate);
+
+        origin_lan = findViewById(R.id.originLang);
+        target_lan = findViewById(R.id.targetLang);
+
+        final Language lang = new Language();
+
+        inputText = findViewById(R.id.input_text);
+        translatedText = findViewById(R.id.translated_text);
+        animationView = findViewById(R.id.av_animation_view);
+
+        animation = new LottieAnimation(animationView, "loading.json");
+
+        translateButton = findViewById(R.id.translateButton);
+        translateButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                from = inputText.getText().toString();
+                origin_lang = lang.getLangCode(origin_lan.getSelectedItem().toString());
+                target_lang = lang.getLangCode(target_lan.getSelectedItem().toString());
+                animation.DoAnimation();
+
+                try {
+                    mThread mThread = new mThread();
+                    mThread.start();
+                    translateButton.setClickable(false);
+                } catch (Exception e) {
+                    translateButton.setClickable(true);
+                    e.printStackTrace();
+                }
+            }
+
+        });
+    }
+
     public Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            animation.StopAnimation();
+            translateButton.setClickable(true);
             switch (msg.what) {
                 case MESSAGE_OK:
                     translatedText.setText(res); // 파파고에서는 String 한줄로 주는 관계로 그냥 String으로 변경
@@ -46,9 +94,6 @@ public class TranslateActivity extends AppCompatActivity {
             }
         }
     };
-    private static String from, after, res, origin_lang, target_lang;
-    private EditText inputText, translatedText;
-    private Spinner origin_lan, target_lan;
 
     private static String detectLang(String text) {
         try {
@@ -86,39 +131,6 @@ public class TranslateActivity extends AppCompatActivity {
         } catch (Exception e) {
             return e.toString();
         }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_translate);
-
-        origin_lan = findViewById(R.id.originLang);
-        target_lan = findViewById(R.id.targetLang);
-
-        final Language lang = new Language();
-
-        inputText = findViewById(R.id.input_text);
-        translatedText = findViewById(R.id.translated_text);
-
-        Button translateButton = findViewById(R.id.translateButton);
-        translateButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                from = inputText.getText().toString();
-                origin_lang = lang.getLangCode(origin_lan.getSelectedItem().toString());
-                target_lang = lang.getLangCode(target_lan.getSelectedItem().toString());
-
-                try {
-                    mThread mThread = new mThread();
-                    mThread.start();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        });
     }
 
     private String translate(String text, String origin_lang, String target_lang) { // PAPAGO SMT (https://developers.naver.com/docs/labs/translator/)
