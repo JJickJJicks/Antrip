@@ -127,16 +127,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewPager.setPageMargin(margin/2);
 
         ArrayList<Integer> listImage = new ArrayList<>();
-        listImage.add(R.drawable.img_sample1);
-        listImage.add(R.drawable.img_sample2);
+        listImage.add(R.drawable.img_sample4);
         listImage.add(R.drawable.img_sample3);
+        listImage.add(R.drawable.img_sample2);
         listImage.add(R.drawable.img_sample1);
 
         for (int i = 0; i < listImage.size(); i++) {
             ImageFragment imageFragment = new ImageFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("imgRes", listImage.get(i));
-            bundle.putString("text", "추천");
+            bundle.putString("text", "London");
             imageFragment.setArguments(bundle);
             fragmentAdapter.addItem(imageFragment);
         }

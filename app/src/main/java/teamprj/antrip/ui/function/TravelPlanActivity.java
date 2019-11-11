@@ -26,7 +26,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,6 +56,8 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
     String tripName = "새 여행";
     ArrayList<String> authList = null;
     int period;
+    String start_date;
+    String end_date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +78,9 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         data = new ArrayList<>();
 
         Intent intent = getIntent();
-        if (intent.getExtras().getString("savedTrip").equals("true")) {
+        start_date = intent.getStringExtra("start_date");
+        end_date = intent.getStringExtra("end_date");
+        if (intent.getStringExtra("savedTrip").equals("true")) {
             tripName = "test trip";
             setTitle(tripName);
 
@@ -115,15 +122,34 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             tripName = intent.getExtras().getString("tripName");
             setTitle(tripName);
 
-            String headerText = "0일차";
-            for (int i = 0; i < period; i++)
-            {
-                headerText = headerText.replace(Integer.toString(i), Integer.toString(i + 1));
-                data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, headerText));
-                data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "추가"));
-            }
+//            try {
+//            SimpleDateFormat format = new SimpleDateFormat("MMM d, yyyy");
+//            Date SecondDate = format.parse(start_date);
+//            } catch {
+//
+//            }
 
-            mAdapter = new ExpandableListAdapter(data, this);
+            Date startDate = null;
+            SimpleDateFormat format = null;
+            try {
+                format = new SimpleDateFormat("MMM d, yyyy");
+                startDate = format.parse(start_date);
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(startDate);
+                String headerText = "0일차";
+                for (int i = 0; i < period; i++) {
+
+                    headerText = headerText.replace(Integer.toString(i), Integer.toString(i + 1));
+                    data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, headerText + " / " + format.format(cal.getTime())));
+                    data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "추가"));
+                    cal.add(Calendar.DATE, 1);
+                }
+
+                mAdapter = new ExpandableListAdapter(data, this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         myRef.child("plan").child(userName).child(tripName).addValueEventListener(
@@ -318,6 +344,8 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             plan.setAuthority(authList);
             plan.setPeriod(period);
             plan.setTravel(travelMap);
+            plan.setStart_date(start_date);
+            plan.setEnd_date(end_date);
 
             myRef.child("plan").child(userName).child(tripName).setValue(plan);
 

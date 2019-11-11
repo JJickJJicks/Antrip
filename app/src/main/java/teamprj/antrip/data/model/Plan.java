@@ -8,8 +8,26 @@ public class Plan {
     private int period;
     private List<String> authority = new ArrayList<>();
     private HashMap<String, ArrayList<Travel>> travel = new HashMap<>();
+    private String start_date;
+    private String end_date;
 
     public Plan() { }
+
+    public String getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(String start_date) {
+        this.start_date = start_date;
+    }
+
+    public String getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(String end_date) {
+        this.end_date = end_date;
+    }
 
     public int getPeriod() {
         return period;
