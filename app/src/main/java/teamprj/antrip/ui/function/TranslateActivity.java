@@ -137,6 +137,7 @@ public class TranslateActivity extends AppCompatActivity {
                 br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             } else {  // 에러 발생
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+                return "error"; // 에러 발생 여부를 return 해줌
             }
             String inputLine;
             StringBuffer response = new StringBuffer();
@@ -155,15 +156,17 @@ public class TranslateActivity extends AppCompatActivity {
             if (origin_lang == "user") // 언어 코드가 아닐 경우 언어를 감지해서 적용함
                 origin_lang = detectLang(from);
             after = translate(from, origin_lang, target_lang);
-            Log.d("temp", after);
-            JsonParser jsonParser = new JsonParser();
-            JsonObject jsonObject = (JsonObject) jsonParser.parse(after);
-            JsonObject message = (JsonObject) jsonObject.get("message");
-            JsonObject result = (JsonObject) message.get("result");
-            res = result.get("translatedText").toString();
-            res = res.substring(1, res.length() - 1);
-            Log.d("temp", res);
-            mHandler.sendEmptyMessage(MESSAGE_OK);
+            if (!after.equals("error")) {
+                Log.d("temp", after);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject jsonObject = (JsonObject) jsonParser.parse(after);
+                JsonObject message = (JsonObject) jsonObject.get("message");
+                JsonObject result = (JsonObject) message.get("result");
+                res = result.get("translatedText").toString();
+                res = res.substring(1, res.length() - 1);
+                Log.d("temp", res);
+                mHandler.sendEmptyMessage(MESSAGE_OK);
+            }
         }
     }
 }
