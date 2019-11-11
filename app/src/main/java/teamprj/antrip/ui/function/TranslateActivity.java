@@ -1,6 +1,5 @@
 package teamprj.antrip.ui.function;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,6 +9,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -25,7 +26,7 @@ import teamprj.antrip.R;
 import teamprj.antrip.data.model.Language;
 
 
-public class TranslateActivity extends Activity {
+public class TranslateActivity extends AppCompatActivity {
     private static final int MESSAGE_OK = 0;
     private static String clientId = "XXar7pmbbGZwyqwCnKvq";//애플리케이션 클라이언트 아이디값";
     private static String clientSecret = "JSXbNKzVtN";//애플리케이션 클라이언트 시크릿값";
