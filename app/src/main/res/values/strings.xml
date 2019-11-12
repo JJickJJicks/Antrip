@@ -82,6 +82,7 @@
     <string name="country">country</string>
     <string name="edit">Edit</string>
     <string name="translate">번역</string>
+    <string name="delete_title">탈퇴하기</string>
     <string name="mainTopText">환영합니다.\n어떤 곳을 가고싶으신가요?</string>
 
     <!-- TODO: Remove or change this placeholder text -->

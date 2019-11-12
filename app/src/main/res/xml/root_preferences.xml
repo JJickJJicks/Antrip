@@ -34,6 +34,10 @@
             app:key="logout"
             app:title="@string/logout_title" />
 
+        <Preference
+            app:key="delete"
+            app:title="@string/delete_title" />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/travel_header">
@@ -70,9 +74,6 @@
         <Preference
             app:key="contact"
             app:title="@string/menu_contact">
-            <intent
-                android:action="android.intent.action.SENDTO"
-                android:data="mailto:ilovejava@kakao.com" />
         </Preference>
 
         <Preference

@@ -3,13 +3,21 @@ package teamprj.antrip.ui.settings;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import teamprj.antrip.R;
 import teamprj.antrip.ui.function.OffActivity;
@@ -51,6 +59,8 @@ public class SettingsActivity extends AppCompatActivity {
 
             Preference logout = findPreference("logout");
             Preference travel = findPreference("downloaded_travel");
+            Preference contact = findPreference("contact");
+            Preference delete = findPreference("delete");
             Preference appVersion = findPreference("app_version");
 
             logout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -87,12 +97,34 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             travel.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                //TODO: 저장한 Travel의 수 Data 로드
-                int travelcnt = 0;
-
                 public boolean onPreferenceClick(Preference preference) {
                     Intent intent = new Intent(getActivity(), OffActivity.class);
                     startActivity(intent);
+                    return true;
+                }
+            });
+
+            contact.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:ilovejava@kakao.com"));
+                    startActivity(intent);
+                    return true;
+                }
+            });
+
+            delete.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                    user.delete()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(getContext(), "탈퇴 되었습니다.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                     return true;
                 }
             });
