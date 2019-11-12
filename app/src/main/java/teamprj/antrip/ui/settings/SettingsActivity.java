@@ -11,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import teamprj.antrip.R;
 import teamprj.antrip.ui.function.OffActivity;
 import teamprj.antrip.ui.login.LoginActivity;
@@ -22,7 +20,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_activity);
+        setContentView(R.layout.activity_settings);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.settings_Layout, new SettingsFragment())
@@ -93,14 +91,6 @@ public class SettingsActivity extends AppCompatActivity {
                 int travelcnt = 0;
 
                 public boolean onPreferenceClick(Preference preference) {
-                    /*
-                    if (travelcnt > 0)
-                        Snackbar.make(getActivity().findViewById(android.R.id.content), "다운로드한 Travel 출력", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    else
-                        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.empty_travel, Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    return true;
-
-                    */
                     Intent intent = new Intent(getActivity(), OffActivity.class);
                     startActivity(intent);
                     return true;

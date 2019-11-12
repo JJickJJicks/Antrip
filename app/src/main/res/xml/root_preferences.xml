@@ -72,7 +72,7 @@
             app:title="@string/menu_contact">
             <intent
                 android:action="android.intent.action.SENDTO"
-                android:data="mailto:wng2641@naver.com" />
+                android:data="mailto:ilovejava@kakao.com" />
         </Preference>
 
         <Preference

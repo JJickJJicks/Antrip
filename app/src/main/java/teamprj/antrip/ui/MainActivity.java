@@ -2,7 +2,6 @@ package teamprj.antrip.ui;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
@@ -33,11 +33,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import androidx.viewpager.widget.ViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 import teamprj.antrip.BuildConfig;
 import teamprj.antrip.R;
@@ -88,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Firebase 로드
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        email = user.getEmail();
         nav_emailview.setText(user.getEmail());
         nav_nameview.setText(user.getDisplayName());
 //        nav_profileview.setImageResource();
@@ -195,9 +194,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(this, NoticeActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_contact) {
-            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:wng2641@naver.com"));
+            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:ilovejava@kakao.com"));
             startActivity(intent);
-            //Toast.makeText(getApplicationContext(), "문의하기", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
