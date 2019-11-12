@@ -122,6 +122,9 @@ public class SettingsActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         Toast.makeText(getContext(), "탈퇴 되었습니다.", Toast.LENGTH_SHORT).show();
+                                        Intent i = new Intent(getActivity(), LoginActivity.class);
+                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(i);
                                     }
                                 }
                             });
