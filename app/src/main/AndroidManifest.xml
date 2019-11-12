@@ -24,10 +24,11 @@
         android:theme="@style/AppTheme"
         android:screenOrientation="portrait"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.function.SplashActivity">
+        <activity
+            android:name=".ui.function.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
             <action android:name="android.intent.action.MAIN" />
-
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
@@ -45,6 +46,7 @@
 
         <activity
             android:name=".ui.function.TravelPlannerActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_travel_planner">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -52,6 +54,7 @@
         </activity>
         <activity
             android:name=".ui.ProfileActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_profile"
             android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -59,13 +62,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="teamprj.antrip.ui.MainActivity"/>
         </activity>
-        <activity android:name=".ui.ProfileCorrectActivity" />
+        <activity
+            android:name=".ui.ProfileCorrectActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.function.NoticeArticleActivity"
+            android:screenOrientation="portrait"
             android:label="공지사항"/>
         <activity android:name=".ui.function.NoticeActivity"
+            android:screenOrientation="portrait"
             android:label="공지사항"/>
         <activity
             android:name=".ui.function.TravelInfoActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -74,15 +82,19 @@
         </activity>
         <activity
             android:name=".ui.settings.LicenseActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_license" />
         <activity
             android:name=".ui.login.AccountSearchActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".ui.login.SignupActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".ui.settings.SettingsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:parentActivityName=".ui.MainActivity">
             <meta-data
@@ -91,10 +103,12 @@
         </activity>
         <activity
             android:name=".ui.MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.login.LoginActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"></activity>
 
         <service android:name=".firebase.FireBaseMessagingService">
@@ -103,27 +117,39 @@
             </intent-filter>
         </service>
         <activity
-            android:name=".ui.function.TranslateActivity" />
+            android:name=".ui.function.TranslateActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.function.AuthorityAddActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog" />
 
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
 
-        <activity android:name=".ui.function.TravelPlanActivity"></activity>
+        <activity
+            android:name=".ui.function.TravelPlanActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.function.InputPlanActivity"
+            android:screenOrientation="portrait"
             android:label="여행일정 입력"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog">
         </activity>
-        <activity android:name=".ui.function.PlanResultActivity">
+        <activity
+            android:name=".ui.function.PlanResultActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.intro.IntroActivity">
+        <activity
+            android:name=".ui.intro.IntroActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name=".ui.function.MyPlanActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".ui.function.OffActivity">
+        <activity
+            android:name=".ui.function.OffActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
