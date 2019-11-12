@@ -97,23 +97,27 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithEmail:success");
-                            Toast.makeText(getApplicationContext(), R.string.welcome, Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
+        if (!email.equals(null) && !email.equals("") && !password.equals(null) && !password.equals("")) {
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "signInWithEmail:success");
+                                Toast.makeText(getApplicationContext(), R.string.welcome, Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
+        } else {
+            Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void searchClick(View v) {
