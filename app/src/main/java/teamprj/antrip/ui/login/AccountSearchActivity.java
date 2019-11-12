@@ -3,6 +3,7 @@ package teamprj.antrip.ui.login;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -12,9 +13,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import teamprj.antrip.R;
+
+import static com.android.volley.VolleyLog.TAG;
 
 public class AccountSearchActivity extends Activity {
     private FirebaseAuth mAuth;
@@ -58,14 +63,20 @@ public class AccountSearchActivity extends Activity {
     }
 
     private void PassResetViaEmail(){
-        String email = emailEditText.getText().toString().trim();
-        checkEmail();
-        if(mAuth != null) {
-            Toast.makeText(getApplicationContext(), "Recovery Email has been  sent to " + email, Toast.LENGTH_LONG).show();
-            mAuth.sendPasswordResetEmail(email);
+        final String email = emailEditText.getText().toString().trim();
+        if (checkEmail()) {
+            mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Email sent.");
+                        Toast.makeText(getApplicationContext(), "Recovery Email has been  sent to " + email, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
             finish();
-        } else {
-            Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_LONG).show();
         }
     }
 
