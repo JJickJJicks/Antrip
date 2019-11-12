@@ -70,7 +70,6 @@ public class TravelInfoActivity extends AppCompatActivity {
     SublimePickerFragment.Callback mFragmentCallback = new SublimePickerFragment.Callback() {
         @Override
         public void onCancelled() {
-            rlDateTimeRecurrenceInfo.setVisibility(View.GONE);
         }
 
         @Override
