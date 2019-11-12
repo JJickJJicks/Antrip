@@ -1,6 +1,8 @@
 package teamprj.antrip.data.model;
 
-public class Travel {
+import java.io.Serializable;
+
+public class Travel implements Serializable {
     private String name;
     private String country;
     private boolean accommodation;

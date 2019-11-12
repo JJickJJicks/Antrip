@@ -13,8 +13,10 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
@@ -37,13 +39,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import teamprj.antrip.R;
 import teamprj.antrip.data.model.Plan;
+import teamprj.antrip.data.model.Travel;
 import teamprj.antrip.fragment.SublimePickerFragment;
 
 public class TravelInfoActivity extends AppCompatActivity {
+    final private int TRAVEL_INFO_REQUEST_CODE = 100;
+    final private String GOOGLE_SEARCH_URL = "http://www.google.co.kr/search?complete=1&hl=ko&q=";
     ScrollView svMainContainer;
 
     // Views to display the chosen Date, Time & Recurrence options
@@ -301,10 +307,59 @@ public class TravelInfoActivity extends AppCompatActivity {
                 intent.putExtra("start_date", start_date);
                 intent.putExtra("end_date", end_date);
                 intent.putExtra("savedTrip", "false");
-                startActivity(intent);
+                startActivityForResult(intent, TRAVEL_INFO_REQUEST_CODE);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    // 일정 변경 적용
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == TRAVEL_INFO_REQUEST_CODE && resultCode == RESULT_OK) {
+            HashMap<String, ArrayList<Travel>> travelMap = (HashMap<String, ArrayList<Travel>>) data.getSerializableExtra("plan"); // plan data 로드됨 (이 데이터 이용해서 하단 뷰 생성)
+            updateWeatherView(travelMap);
+//            updateExchangeView(travelMap);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void updateWeatherView(HashMap<String, ArrayList<Travel>> travelMap) { // 날씨 정보 파싱
+        ArrayList<String> weatherData = getWeatherData(travelMap); // weather Data 파싱
+        StringBuffer weather = new StringBuffer("Weather");
+        for (String i : weatherData)
+            weather.append("\n" + i);
+        Toast.makeText(this, weather.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    private ArrayList<String> getWeatherData(HashMap<String, ArrayList<Travel>> travelMap) {
+        ArrayList<String> weather = new ArrayList<>();
+        for (int i = 0; i < travelMap.size(); i++) {
+            ArrayList<Travel> travelList = travelMap.get((i + 1) + "_day");
+            Travel travel = travelList.get(0);
+            String name = travel.getName();
+            weather.add(GOOGLE_SEARCH_URL + name + " Weather");
+        }
+        return weather;
+    }
+
+    private void updateExchangeView(HashMap<String, ArrayList<Travel>> travelMap) { // 환율 정보 파싱
+        ArrayList<String> exchangeData = getExchangeData(travelMap); // exchange rate Data 파싱
+        StringBuffer exchange = new StringBuffer("Exchange");
+        for (String i : exchangeData)
+            exchange.append("\n" + i);
+        Toast.makeText(this, exchange.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    private ArrayList<String> getExchangeData(HashMap<String, ArrayList<Travel>> travelMap) {
+        ArrayList<String> exchange = new ArrayList<>();
+        for (int i = 0; i < travelMap.size(); i++) {
+            ArrayList<Travel> travelList = travelMap.get(i + "_day");
+            Travel travel = travelList.get(0);
+            String country = travel.getCountry();
+            exchange.add(GOOGLE_SEARCH_URL + country + " Exchange Rate");
+        }
+        return exchange;
     }
 }

@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -230,6 +227,8 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         builder.setNegativeButton("아니요",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        setResult(RESULT_CANCELED, intent);
                         finish();
                     }
                 });
@@ -349,7 +348,11 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 
             myRef.child("plan").child(userName).child(tripName).setValue(plan);
 
+            Intent intent = new Intent();
+            intent.putExtra("plan", travelMap);
+
             OkAlertDialog.viewOkAlertDialogFinish(TravelPlanActivity.this, "저장 완료", "저장이 완료되었습니다.", isFinish);
+            setResult(RESULT_OK, intent);
         } catch (Exception e) {
             e.printStackTrace();
         }
