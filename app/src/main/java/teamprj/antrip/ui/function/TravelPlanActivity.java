@@ -389,9 +389,9 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         }
     }
 
-    private void savePlan(boolean isFinish)
+    private void savePlan(final boolean isFinish)
     {
-        LinkedHashMap<String, ArrayList<Travel>> travelMap = new LinkedHashMap<>();
+        final LinkedHashMap<String, ArrayList<Travel>> travelMap = new LinkedHashMap<>();
         ArrayList<Travel> travelLIst = new ArrayList<>();
         int day = 0;
         try {
@@ -433,24 +433,31 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             plan.setAuthority(authList);
             plan.setPeriod(period);
             plan.setTravel(travelMap);
+            final HashMap<String, ArrayList<Travel>> finalMap = travelMap;
             plan.setStart_date(start_date);
             plan.setEnd_date(end_date);
             plan.setSave(true);
             myRef.child("plan").child(userName).child(tripName).setValue(plan);
-            if (isFinish) {
-                Finish(travelMap);
-            }
 
-            OkAlertDialog.viewOkAlertDialogFinish(TravelPlanActivity.this, "저장 완료", "저장이 완료되었습니다.", isFinish);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle("저장 완료");
+            builder.setMessage("저장이 완료되었습니다.");
+            builder.setPositiveButton("확인",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (isFinish) {
+                                Intent intent = new Intent();
+                                intent.putExtra("plan", finalMap);
+                                setResult(RESULT_OK, intent);
+                                finish();
+                            }
+                        }
+                    });
+            builder.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void Finish(HashMap<String, ArrayList<Travel>> travelMap) {
-        Intent intent = new Intent();
-        intent.putExtra("plan", travelMap);
-        setResult(RESULT_OK, intent);
     }
 }
 
