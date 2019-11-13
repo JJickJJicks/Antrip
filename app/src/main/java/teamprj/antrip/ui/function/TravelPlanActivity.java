@@ -73,7 +73,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
     private ExpandableListAdapter.OnStartDragListner thisListener = this;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private String userName = user.getEmail().replace(".", "_");
-    private boolean isFinish = false;
     private String tripName;
     private ArrayList<String> authList = null;
     private int period;
@@ -82,7 +81,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
     private URL url = null;
     private String str, receiveMsg;
     private String headerText = "0일차";
-    private HashMap<String, ArrayList<Travel>> travelMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -288,7 +286,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 return true;
             }
             case R.id.action_save_title: {
-                clickSaveButton();
+                clickSaveButton(false);
                 return true;
             }
             case R.id.action_calc_title: {
@@ -317,11 +315,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         builder.setPositiveButton("예",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        isFinish = true;
-                        clickSaveButton();
-                        Intent intent = new Intent();
-                        intent.putExtra("plan", travelMap);
-                        setResult(RESULT_OK, intent);
+                        clickSaveButton(true);
                     }
                 });
         builder.setNegativeButton("아니요",
@@ -387,15 +381,15 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         return true;
     }
 
-    private void clickSaveButton() {
+    private void clickSaveButton(boolean isFinish) {
         if (!isAccommodationSelected()) {
             OkAlertDialog.viewOkAlertDialogFinish(TravelPlanActivity.this, "숙소를 선택하지 않았습니다.", "각 일차별로 숙소를 지정해주시기 바랍니다.", isFinish);
         } else {
-            savePlan();
+            savePlan(isFinish);
         }
     }
 
-    private void savePlan()
+    private void savePlan(boolean isFinish)
     {
         LinkedHashMap<String, ArrayList<Travel>> travelMap = new LinkedHashMap<>();
         ArrayList<Travel> travelLIst = new ArrayList<>();
@@ -439,16 +433,24 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             plan.setAuthority(authList);
             plan.setPeriod(period);
             plan.setTravel(travelMap);
-            this.travelMap = travelMap;
             plan.setStart_date(start_date);
             plan.setEnd_date(end_date);
             plan.setSave(true);
             myRef.child("plan").child(userName).child(tripName).setValue(plan);
+            if (isFinish) {
+                Finish(travelMap);
+            }
 
             OkAlertDialog.viewOkAlertDialogFinish(TravelPlanActivity.this, "저장 완료", "저장이 완료되었습니다.", isFinish);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void Finish(HashMap<String, ArrayList<Travel>> travelMap) {
+        Intent intent = new Intent();
+        intent.putExtra("plan", travelMap);
+        setResult(RESULT_OK, intent);
     }
 }
 

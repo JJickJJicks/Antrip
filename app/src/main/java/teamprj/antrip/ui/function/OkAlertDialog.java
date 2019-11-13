@@ -1,6 +1,5 @@
 package teamprj.antrip.ui.function;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,6 +28,7 @@ public class OkAlertDialog {
                 new DialogInterface.OnClickListener() {
                     public void onClick (DialogInterface dialog,int which){
                         if (isFinish) {
+
                             ((TravelPlanActivity) activity).finish();
                         }
                     }
