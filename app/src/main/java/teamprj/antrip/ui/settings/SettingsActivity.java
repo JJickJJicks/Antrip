@@ -114,20 +114,44 @@ public class SettingsActivity extends AppCompatActivity {
 
             delete.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("회원 탈퇴").setMessage("탈퇴하시겠습니까? 재가입의 제한은 없습니다.")
+                            .setPositiveButton("탈퇴", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                    user.delete()
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(getContext(), "탈퇴 되었습니다.", Toast.LENGTH_SHORT).show();
-                                        Intent i = new Intent(getActivity(), LoginActivity.class);
-                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(i);
-                                    }
+                                    user.delete()
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        // 자동 로그인 해제
+                                                        setting = getActivity().getSharedPreferences("setting", 0);
+                                                        editor = setting.edit();
+
+                                                        if (setting.getBoolean("Auto_Login_enabled", false)) {
+                                                            editor.remove("ID");
+                                                            editor.remove("PW");
+                                                            editor.remove("Auto_Login_enabled");
+                                                            editor.commit();
+                                                        }
+
+                                                        // 초기 화면 전환
+                                                        Toast.makeText(getContext(), "탈퇴 되었습니다.", Toast.LENGTH_SHORT).show();
+                                                        Intent i = new Intent(getActivity(), LoginActivity.class);
+                                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        startActivity(i);
+                                                    }
+                                                }
+                                            });
                                 }
-                            });
+                            })
+                            .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+
+                                }
+                            })
+                            .show();
                     return true;
                 }
             });
