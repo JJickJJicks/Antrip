@@ -24,6 +24,7 @@ import teamprj.antrip.R;
 import teamprj.antrip.map.GoogleMapFragment;
 import teamprj.antrip.ui.function.InputPlanActivity;
 import teamprj.antrip.ui.function.ItemTouchHelperCallback;
+import teamprj.antrip.ui.function.TravelPlanActivity;
 
 public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperCallback.OnItemMoveListener {
     public static final int HEADER = 0;
@@ -117,13 +118,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 break;
             case CHILD:
                 Button itemButton = (Button) holder.itemView.findViewById(R.id.btn_list_child);
-//                for (int i = position; i > 0; i--) {
-//                    Item tempItem = data.get(i);
-//                    if (tempItem.type == HEADER) {
-//                        itemButton.setId(tempItem.name.charAt(0));
-//                        break;
-//                    }
-//                }
+
                 itemButton.setText(data.get(position).name);
                 itemButton.setOnClickListener(new View.OnClickListener(){
                     @Override
@@ -243,6 +238,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onItemRemove(int position) {
         GoogleMapFragment.removePlace(data.get(position).name, data.get(position).country);
         data.remove(position);
+        TravelPlanActivity.synchronize(data);
         notifyItemRemoved(position);
     }
 
@@ -258,6 +254,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             Collections.swap(data, position, firstPosition);
             notifyItemMoved(position, firstPosition);
         }
+        TravelPlanActivity.synchronize(data);
         return firstPosition;
     }
 }

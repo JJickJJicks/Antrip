@@ -55,8 +55,8 @@ import teamprj.antrip.map.GoogleMapFragment;
 
 public class TravelPlanActivity extends AppCompatActivity implements ExpandableListAdapter.OnStartDragListner {
 
-    private static RecyclerView recyclerview;
     private static List<ExpandableListAdapter.Item> data;
+    private static RecyclerView recyclerview;
     private static ExpandableListAdapter mAdapter;
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -70,7 +70,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
     private ItemTouchHelper mItemTouchHelper;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
-    private ExpandableListAdapter.OnStartDragListner thisListener = this;
+    private ExpandableListAdapter.OnStartDragListner thisListener;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private String userName = user.getEmail().replace(".", "_");
     private String tripName;
@@ -95,6 +95,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                     .commit();
         }
 
+        thisListener = this;
         recyclerview = findViewById(R.id.recyclerView_travel_plan);
         recyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         data = new ArrayList<>();
@@ -128,6 +129,11 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                             data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "추가"));
                         }
                         mAdapter = new ExpandableListAdapter(data, thisListener);
+
+                        ItemTouchHelperCallback mCallback = new ItemTouchHelperCallback(mAdapter);
+                        mItemTouchHelper = new ItemTouchHelper(mCallback);
+                        mItemTouchHelper.attachToRecyclerView(recyclerview);
+                        recyclerview.setAdapter(mAdapter);
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -154,8 +160,12 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                     data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "추가"));
                     cal.add(Calendar.DATE, 1);
                 }
-
                 mAdapter = new ExpandableListAdapter(data, this);
+
+                ItemTouchHelperCallback mCallback = new ItemTouchHelperCallback(mAdapter);
+                mItemTouchHelper = new ItemTouchHelper(mCallback);
+                mItemTouchHelper.attachToRecyclerView(recyclerview);
+                recyclerview.setAdapter(mAdapter);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -176,11 +186,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                         Log.d("ErrorTravelPlanActivity", "data receive error");
                     }
                 });
-
-        ItemTouchHelperCallback mCallback = new ItemTouchHelperCallback(mAdapter);
-        mItemTouchHelper = new ItemTouchHelper(mCallback);
-        mItemTouchHelper.attachToRecyclerView(recyclerview);
-        recyclerview.setAdapter(mAdapter);
     }
 
     private long[][] distance;
@@ -189,6 +194,14 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         ArrayList<String>[] listArr = new ArrayList[date]; // 날짜별 여행지를 저장할 String ArrayList를 만듬
 
         // TODO : 위에 listArr에 날짜별로 여행지를 저장~
+
+        for (int i = 0, j = -1; i < data.size(); i++) {
+            if (data.get(i).type == ExpandableListAdapter.HEADER) {
+                j++;
+            } else if (data.get(i).type == ExpandableListAdapter.DATA) {
+                listArr[j].add(data.get(i).name);
+            }
+        }
 
         for (int i = 0; i < date; i++) {
             final int day = i + 1;
@@ -201,6 +214,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                             distance[j][k] = parseInfo(parsejson(list.get(j), list.get(k)));
                         }
                     }
+
 
                     // TODO : 위의 distance 정보를 이용해서 ArrayList<String>으로 정의된 여행 리스트 list를 정렬해야 함.
 
@@ -322,8 +336,8 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent();
-                        setResult(RESULT_CANCELED, intent);
                         finish();
+                        setResult(RESULT_CANCELED, intent);
                     }
                 });
         builder.show();
@@ -337,7 +351,10 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         recyclerview.scrollToPosition(index);
         recyclerview.setAdapter(mAdapter);
         GoogleMapFragment.selectPlace(latLng, name, country);
+    }
 
+    public static void synchronize(List<ExpandableListAdapter.Item> getData) {
+        data = getData;
     }
 
     public static int checkAccommodation(int position) {
