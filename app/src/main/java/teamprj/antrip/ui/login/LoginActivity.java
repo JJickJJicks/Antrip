@@ -40,6 +40,9 @@ public class LoginActivity extends AppCompatActivity {
         Button loginButton = findViewById(R.id.login_loginBtn);
         TextView signUpBtn = findViewById(R.id.login_signUpBtn);
 
+        Button templogin = findViewById(R.id.login_tempBtn);
+        templogin.setEnabled(false);
+
         //Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
 
@@ -97,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
-        if (!email.equals(null) && !email.equals("") && !password.equals(null) && !password.equals("")) {
+        if (!email.equals("") && !password.equals("")) {
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override

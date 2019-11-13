@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +25,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,6 +45,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import teamprj.antrip.BuildConfig;
 import teamprj.antrip.R;
 import teamprj.antrip.adapter.ExpandableListAdapter;
 import teamprj.antrip.data.model.Plan;
@@ -40,21 +55,32 @@ import teamprj.antrip.map.GoogleMapFragment;
 
 public class TravelPlanActivity extends AppCompatActivity implements ExpandableListAdapter.OnStartDragListner {
 
-    static RecyclerView recyclerview;
-    ItemTouchHelper mItemTouchHelper;
-    static List<ExpandableListAdapter.Item> data;
-    static ExpandableListAdapter mAdapter;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference();
-    ExpandableListAdapter.OnStartDragListner thisListener = this;
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    String userName = user.getDisplayName();
-    boolean isFinish = false;
-    String tripName = "새 여행";
-    ArrayList<String> authList = null;
-    int period;
-    String start_date;
-    String end_date;
+    private static RecyclerView recyclerview;
+    private static List<ExpandableListAdapter.Item> data;
+    private static ExpandableListAdapter mAdapter;
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            Bundle bun = msg.getData();
+            ArrayList<String> list = bun.getStringArrayList("Travel_Data");
+            int date = bun.getInt("date");  // i가 0이라도 1일차니까 1로 전송되게 +1 시켰으니 주의!
+
+            //TODO: 위에서 sort 된 list를 이용해서 실제 UI상에서 정렬하는 함수 만들어야 함
+        }
+    };
+    private ItemTouchHelper mItemTouchHelper;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = database.getReference();
+    private ExpandableListAdapter.OnStartDragListner thisListener = this;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String userName = user.getDisplayName();
+    private boolean isFinish = false;
+    private String tripName = "새 여행";
+    private ArrayList<String> authList = null;
+    private int period;
+    private String start_date;
+    private String end_date;
+    private URL url = null;
+    private String str, receiveMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +197,89 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         recyclerview.setAdapter(mAdapter);
     }
 
+    private long[][] distance;
+
+    void sort(int date) { // 정렬 (//TODO: 태구가 여기서 위치 정보를 같이 받아오던지 해야함)
+        ArrayList<String>[] listArr = new ArrayList[date]; // 날짜별 여행지를 저장할 String ArrayList를 만듬
+
+        // TODO : 위에 listArr에 날짜별로 여행지를 저장~
+
+        for (int i = 0; i < date; i++) {
+            final int day = i + 1;
+            final ArrayList<String> list = listArr[i];
+            distance = new long[list.size()][list.size()];
+            new Thread() {
+                public void run() {
+                    for (int j = 0; j < list.size(); j++) {
+                        for (int k = 0; k < list.size(); k++) {
+                            distance[j][k] = parseInfo(parsejson(list.get(j), list.get(k)));
+                        }
+                    }
+
+                    // TODO : 위의 distance 정보를 이용해서 ArrayList<String>으로 정의된 여행 리스트 list를 정렬해야 함.
+
+                    Bundle bun = new Bundle();
+                    bun.putStringArrayList("Travel_Data", list);
+                    bun.putInt("date", day);
+
+                    Message msg = handler.obtainMessage();
+                    msg.setData(bun);
+                    handler.sendMessage(msg);
+                }
+            }.start();
+        }
+    }
+
+    private long parseInfo(String json) {
+        long time = -1;
+        Log.d("jsonErr", json);
+        try {
+            if (new JSONObject(json).get("status").equals("OK")) {
+                JSONArray rtarr = new JSONObject(json).getJSONArray("routes");
+                JSONObject route = (JSONObject) rtarr.get(0);
+                JSONArray legsarr = (JSONArray) route.get("legs");
+                JSONObject legs = (JSONObject) legsarr.get(0);
+                JSONObject duration = (JSONObject) legs.get("duration");
+                time = (long) duration.get("value");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return time;
+    }
+
+    private String parsejson(String start, String end) {
+        try {
+            url = new URL("https://maps.googleapis.com/maps/api/directions/json?origin=" + start + "&destination=" + end + "&mode=transit&key=" + BuildConfig.places_api_key);
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                InputStreamReader tmp = new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8);
+                BufferedReader reader = new BufferedReader(tmp);
+                StringBuffer buffer = new StringBuffer();
+                while ((str = reader.readLine()) != null) {
+                    buffer.append(str);
+                }
+                receiveMsg = buffer.toString();
+                Log.i("receiveMsg : ", receiveMsg);
+
+                reader.close();
+            } else {
+                Log.i("통신 결과", conn.getResponseCode() + "에러");
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return receiveMsg;
+    }
 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder holder) {
