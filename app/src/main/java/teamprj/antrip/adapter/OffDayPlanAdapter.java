@@ -1,4 +1,4 @@
-package teamprj.antrip.ui.function;
+package teamprj.antrip.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,10 @@ import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 import java.util.List;
 
 import teamprj.antrip.R;
+import teamprj.antrip.data.model.OffDayPlan;
+import teamprj.antrip.data.model.OffPlans;
+import teamprj.antrip.ui.function.OffDayPlanViewHolder;
+import teamprj.antrip.ui.function.OffPlansViewHolder;
 
 public class OffDayPlanAdapter extends ExpandableRecyclerViewAdapter<OffPlansViewHolder, OffDayPlanViewHolder> {
 

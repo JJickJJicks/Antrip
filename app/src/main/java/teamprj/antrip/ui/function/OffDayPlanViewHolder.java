@@ -1,12 +1,12 @@
 package teamprj.antrip.ui.function;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
 
 import teamprj.antrip.R;
+import teamprj.antrip.data.model.OffDayPlan;
 
 public class OffDayPlanViewHolder extends ChildViewHolder {
     private TextView mTextView;

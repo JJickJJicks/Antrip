@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import teamprj.antrip.R;
+import teamprj.antrip.adapter.OffDayPlanAdapter;
+import teamprj.antrip.data.model.OffDayPlan;
+import teamprj.antrip.data.model.OffPlans;
 
 public class OffActivity extends AppCompatActivity {
     @Override

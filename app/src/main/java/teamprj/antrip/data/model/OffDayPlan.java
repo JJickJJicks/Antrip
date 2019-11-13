@@ -1,4 +1,4 @@
-package teamprj.antrip.ui.function;
+package teamprj.antrip.data.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
