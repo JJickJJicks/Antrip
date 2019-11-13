@@ -1,4 +1,4 @@
-package teamprj.antrip.ui.function;
+package teamprj.antrip.data.model;
 
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 

@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
 import teamprj.antrip.R;
+import teamprj.antrip.data.model.OffPlans;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
