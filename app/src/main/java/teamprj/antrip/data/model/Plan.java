@@ -10,8 +10,17 @@ public class Plan {
     private HashMap<String, ArrayList<Travel>> travel = new HashMap<>();
     private String start_date;
     private String end_date;
+    private boolean save;
 
     public Plan() { }
+
+    public boolean isSave() {
+        return save;
+    }
+
+    public void setSave(boolean save) {
+        this.save = save;
+    }
 
     public String getStart_date() {
         return start_date;

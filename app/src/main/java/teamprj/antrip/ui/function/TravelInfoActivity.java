@@ -64,7 +64,7 @@ public class TravelInfoActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    String userName = user.getDisplayName();
+    String userName = user.getEmail().replace(".", "_");
     private String tripName = "새 여행 1";
     private boolean isSelectTripName = false;
     SublimePickerFragment.Callback mFragmentCallback = new SublimePickerFragment.Callback() {
@@ -191,7 +191,7 @@ public class TravelInfoActivity extends AppCompatActivity {
         collapsingToolbar.setTitle(tripName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // 초기 여행 이름
+        // 초기 여행 이름 및 더미 설정
         myRef.child("plan").child(userName).addValueEventListener(
                 new ValueEventListener() {
                     @Override
@@ -204,7 +204,7 @@ public class TravelInfoActivity extends AppCompatActivity {
                         while (!isSelectTripName) {
                             if (!tripNameList.contains(tripName)) {
                                 collapsingToolbar.setTitle(tripName);
-                                myRef.child("plan").child(userName).child(tripName).setValue("dummy");
+                                myRef.child("plan").child(userName).child(tripName).child("save").setValue(false);
                                 isSelectTripName = true;
                                 break;
                             } else {
@@ -226,18 +226,35 @@ public class TravelInfoActivity extends AppCompatActivity {
         findViewById(R.id.travelInfo_tabBtn1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SublimePickerFragment pickerFrag = new SublimePickerFragment();
-                pickerFrag.setCallback(mFragmentCallback);
+                myRef.child("plan").child(userName).child(tripName).child("save").addValueEventListener(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if ((boolean)dataSnapshot.getValue()) {
+                                    Intent intent = new Intent(getApplicationContext(), TravelPlanActivity.class);
+                                    intent.putExtra("tripName", tripName);
+                                    intent.putExtra("savedTrip", "true");
+                                    startActivityForResult(intent, TRAVEL_INFO_REQUEST_CODE);
+                                } else {
+                                    SublimePickerFragment pickerFrag = new SublimePickerFragment();
+                                    pickerFrag.setCallback(mFragmentCallback);
 
-                // Options
-                Pair<Boolean, SublimeOptions> optionsPair = getOptions();
+                                    // Options
+                                    Pair<Boolean, SublimeOptions> optionsPair = getOptions();
 
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("SUBLIME_OPTIONS", optionsPair.second);
-                pickerFrag.setArguments(bundle);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putParcelable("SUBLIME_OPTIONS", optionsPair.second);
+                                    pickerFrag.setArguments(bundle);
 
-                pickerFrag.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-                pickerFrag.show(getSupportFragmentManager(), "SUBLIME_PICKER");
+                                    pickerFrag.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                                    pickerFrag.show(getSupportFragmentManager(), "SUBLIME_PICKER");
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Log.d("ErrorTravelInfoActivity", "data receive error");
+                            }
+                        });
             }
         });
 
@@ -300,7 +317,6 @@ public class TravelInfoActivity extends AppCompatActivity {
                 calDateDays = Math.abs(calDateDays) + 1;
 
                 Intent intent = new Intent(getApplicationContext(), TravelPlanActivity.class);
-                intent.putExtra("admin", "admin");
                 intent.putExtra("tripName", tripName);
                 intent.putExtra("period", String.valueOf(calDateDays));
                 intent.putExtra("start_date", start_date);

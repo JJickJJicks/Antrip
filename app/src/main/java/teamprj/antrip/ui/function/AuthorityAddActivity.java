@@ -38,7 +38,7 @@ public class AuthorityAddActivity extends Activity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    String userName = user.getDisplayName();
+    String userName = user.getEmail().replace(".", "_");
     List<String> authList;
 
     ProgressDialog progressDialog;
@@ -100,33 +100,11 @@ public class AuthorityAddActivity extends Activity {
                                     Log.d("ErrorTravelPlanActivity", "data receive error");
                                 }
                             });
-
-//                    DatabaseReference authRef = myRef.child("plan").child(userName).child(tripName);
-//                    HashMap authMap = new HashMap();
-//                    for (String auth : authList) {
-//
-//                    }
-//                    authMap.put("authority", );
-//                    authRef.updateChildren(authMap);
-
-//                    OkAlertDialog.viewOkAlertDialog(AuthorityAddActivity.this, "추가 실패", "이미 추가된 이메일 입니다.");
                 }
             }
         });
     }
 
-//    private void PassResetViaEmail(){
-//        String email = emailEditText.getText().toString().trim();
-//        checkEmail();
-//        if(mAuth != null) {
-//            Toast.makeText(getApplicationContext(), "Recovery Email has been  sent to " + email, Toast.LENGTH_LONG).show();
-//            mAuth.sendPasswordResetEmail(email);
-//            finish();
-//        } else {
-//            Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_LONG).show();
-//        }
-//    }
-//
     public boolean checkEmail() {
         emailEditText = findViewById(R.id.auth_add_emailText);
 
