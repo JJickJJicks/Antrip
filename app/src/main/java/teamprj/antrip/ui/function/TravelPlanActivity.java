@@ -82,6 +82,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
     private URL url = null;
     private String str, receiveMsg;
     private String headerText = "0일차";
+    private HashMap<String, ArrayList<Travel>> travelMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +144,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             Date startDate;
             SimpleDateFormat format;
             try {
-                format = new SimpleDateFormat("MMM d, yyyy");
+                format = new SimpleDateFormat("yyyy-MM-dd");
                 startDate = format.parse(start_date);
 
                 Calendar cal = Calendar.getInstance();
@@ -318,6 +319,9 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                     public void onClick(DialogInterface dialog, int which) {
                         isFinish = true;
                         clickSaveButton();
+                        Intent intent = new Intent();
+                        intent.putExtra("plan", travelMap);
+                        setResult(RESULT_OK, intent);
                     }
                 });
         builder.setNegativeButton("아니요",
@@ -435,16 +439,13 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             plan.setAuthority(authList);
             plan.setPeriod(period);
             plan.setTravel(travelMap);
+            this.travelMap = travelMap;
             plan.setStart_date(start_date);
             plan.setEnd_date(end_date);
             plan.setSave(true);
             myRef.child("plan").child(userName).child(tripName).setValue(plan);
 
-            Intent intent = new Intent();
-            intent.putExtra("plan", travelMap);
-
             OkAlertDialog.viewOkAlertDialogFinish(TravelPlanActivity.this, "저장 완료", "저장이 완료되었습니다.", isFinish);
-            setResult(RESULT_OK, intent);
         } catch (Exception e) {
             e.printStackTrace();
         }

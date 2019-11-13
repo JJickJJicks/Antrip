@@ -34,7 +34,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -305,22 +304,24 @@ public class TravelInfoActivity extends AppCompatActivity {
     // Show date, time & recurrence options that have been selected
     private void sendData() {
         if (mSelectedDate != null) {
-            String start_date = DateFormat.getDateInstance().format(mSelectedDate.getStartDate().getTime());
-            String end_date = DateFormat.getDateInstance().format(mSelectedDate.getEndDate().getTime());
+            Log.d("errorCheck", mSelectedDate.getStartDate().getTime().toString());
+            String start_date = mSelectedDate.getStartDate().getTime().toString();
+            String end_date = mSelectedDate.getEndDate().getTime().toString();
             try {
-                SimpleDateFormat format = new SimpleDateFormat("MMM d, yyyy");
+                SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM d hh:mm:ss z yyyy");
+                SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-                Date FirstDate = format.parse(end_date);
-                Date SecondDate = format.parse(start_date);
-                long calDate = FirstDate.getTime() - SecondDate.getTime();
+                Date StartDate = inputFormat.parse(start_date);
+                Date EndDate = inputFormat.parse(end_date);
+                long calDate = EndDate.getTime() - StartDate.getTime();
                 long calDateDays = calDate / (24 * 60 * 60 * 1000);
                 calDateDays = Math.abs(calDateDays) + 1;
 
                 Intent intent = new Intent(getApplicationContext(), TravelPlanActivity.class);
                 intent.putExtra("tripName", tripName);
                 intent.putExtra("period", String.valueOf(calDateDays));
-                intent.putExtra("start_date", start_date);
-                intent.putExtra("end_date", end_date);
+                intent.putExtra("start_date", outputFormat.format(StartDate));
+                intent.putExtra("end_date", outputFormat.format(EndDate));
                 intent.putExtra("savedTrip", "false");
                 startActivityForResult(intent, TRAVEL_INFO_REQUEST_CODE);
             } catch (ParseException e) {
