@@ -66,6 +66,7 @@ public class TravelInfoActivity extends AppCompatActivity {
     String userName = user.getEmail().replace(".", "_");
     private String tripName = "새 여행 1";
     private boolean isSelectTripName = false;
+    private boolean isSaved = false;
     SublimePickerFragment.Callback mFragmentCallback = new SublimePickerFragment.Callback() {
         @Override
         public void onCancelled() {
@@ -230,10 +231,7 @@ public class TravelInfoActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if ((boolean)dataSnapshot.getValue()) {
-                                    Intent intent = new Intent(getApplicationContext(), TravelPlanActivity.class);
-                                    intent.putExtra("tripName", tripName);
-                                    intent.putExtra("savedTrip", "true");
-                                    startActivityForResult(intent, TRAVEL_INFO_REQUEST_CODE);
+                                    isSaved = true;
                                 } else {
                                     SublimePickerFragment pickerFrag = new SublimePickerFragment();
                                     pickerFrag.setCallback(mFragmentCallback);
@@ -254,6 +252,12 @@ public class TravelInfoActivity extends AppCompatActivity {
                                 Log.d("ErrorTravelInfoActivity", "data receive error");
                             }
                         });
+                if (isSaved) {
+                    Intent intent = new Intent(getApplicationContext(), TravelPlanActivity.class);
+                    intent.putExtra("tripName", tripName);
+                    intent.putExtra("savedTrip", "true");
+                    startActivityForResult(intent, TRAVEL_INFO_REQUEST_CODE);
+                }
             }
         });
 
