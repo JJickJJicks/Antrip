@@ -4,8 +4,8 @@ import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
 import java.util.List;
 
-public class Plans extends ExpandableGroup<DayPlan> {
-    public Plans(String title, List<DayPlan> items) {
+public class OffPlans extends ExpandableGroup<OffDayPlan> {
+    public OffPlans(String title, List<OffDayPlan> items) {
         super(title, items);
     }
 }
