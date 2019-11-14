@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -49,7 +50,8 @@ import teamprj.antrip.ui.settings.SettingsActivity;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference("users");
-    private String email;
+    private final int PROFILE_CHANGE = 1;
+    private TextView nav_nameview, nav_emailview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,13 +82,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Nav 이메일, 이름 로드
         View nav_header_view = navigationView.getHeaderView(0);
-        TextView nav_nameview = nav_header_view.findViewById(R.id.nav_nameText);
-        TextView nav_emailview = nav_header_view.findViewById(R.id.nav_emailText);
+        nav_nameview = nav_header_view.findViewById(R.id.nav_nameText);
+        nav_emailview = nav_header_view.findViewById(R.id.nav_emailText);
         CircleImageView nav_profileview = nav_header_view.findViewById(R.id.nav_profileImg);
 
         // Firebase 로드
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        email = user.getEmail();
         nav_emailview.setText(user.getEmail());
         nav_nameview.setText(user.getDisplayName());
 //        nav_profileview.setImageResource();
@@ -100,14 +101,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // 동작부
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onPlaceSelected(Place place) {
+            public void onPlaceSelected(@NonNull Place place) {
                 Intent intent = new Intent(MainActivity.this, TravelInfoActivity.class);
                 intent.putExtra("name", place.getName());
                 startActivity(intent);
             }
 
             @Override
-            public void onError(Status status) {
+            public void onError(@NonNull Status status) {
                 // TODO: 장소 검색 에러 발생시 대응 방법
                 Snackbar.make(findViewById(android.R.id.content), "An error occurred: " + status, Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         } else if (id == R.id.nav_profile) {
             Intent intent = new Intent(this, ProfileActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, PROFILE_CHANGE);
         } else if (id == R.id.nav_notice) {
             Intent intent = new Intent(this, NoticeActivity.class);
             startActivity(intent);
@@ -204,5 +205,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PROFILE_CHANGE && resultCode == RESULT_OK) {
+            nav_emailview.setText(data.getStringExtra("email"));
+            nav_nameview.setText(data.getStringExtra("name"));
+        }
     }
 }

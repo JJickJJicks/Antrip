@@ -26,6 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
     ImageView ivProfileImg;
     private TextView tvHeaderName, tvHeaderEmail, tvContentName, tvContentEmail, btnEditProfile;
     private DatabaseReference myRef;
+    private boolean isChange = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PROFILE_CHANGE && resultCode == RESULT_OK) {
+            isChange = true;
             setProfile(data.getStringExtra("email"), data.getStringExtra("name"));
         }
     }
@@ -73,7 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Member member = dataSnapshot.getValue(Member.class);
-                String img = member.getProfile();
+                String img = member != null ? member.getProfile() : null;
                 switch (img) {
                     default: // 오류 떠도 일단 1번 사진으로..
                         ivProfileImg.setImageResource(R.drawable.img_sample1);
@@ -92,5 +94,17 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isChange) {
+            Intent intent = new Intent();
+            intent.putExtra("email", tvHeaderEmail.getText().toString());
+            intent.putExtra("name", tvHeaderName.getText().toString());
+            setResult(RESULT_OK, intent);
+        }
+        finish();
+
     }
 }
