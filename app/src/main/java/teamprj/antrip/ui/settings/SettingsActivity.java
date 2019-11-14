@@ -18,12 +18,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import teamprj.antrip.R;
 import teamprj.antrip.ui.function.OffActivity;
 import teamprj.antrip.ui.login.LoginActivity;
 
 public class SettingsActivity extends AppCompatActivity {
+    private static DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,11 +123,13 @@ public class SettingsActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+                                    myRef = FirebaseDatabase.getInstance().getReference("users");
+
                                     user.delete()
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
+                                                    if (task.isSuccessful()) { // Firebase Auth에서 정상적으로 user 정보가 삭제된다면
                                                         // 자동 로그인 해제
                                                         setting = getActivity().getSharedPreferences("setting", 0);
                                                         editor = setting.edit();

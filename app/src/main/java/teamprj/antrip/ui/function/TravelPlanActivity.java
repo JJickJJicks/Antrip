@@ -64,7 +64,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             ArrayList<String> list = bun.getStringArrayList("Travel_Data");
             int date = bun.getInt("date");  // i가 0이라도 1일차니까 1로 전송되게 +1 시켰으니 주의!
 
-            //TODO: 위에서 sort 된 list를 이용해서 실제 UI상에서 정렬하는 함수 만들어야 함
+            // TODO: (태구 업무) 위에서 sort 된 list를 이용해서 실제 UI상에서 정렬하는 함수 만들어야 함
         }
     };
     private ItemTouchHelper mItemTouchHelper;
@@ -190,10 +190,8 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 
     private long[][] distance;
 
-    void sort(int date) { // 정렬 (//TODO: 태구가 여기서 위치 정보를 같이 받아오던지 해야함)
+    void sort(int date) { // 정렬
         ArrayList<String>[] listArr = new ArrayList[date]; // 날짜별 여행지를 저장할 String ArrayList를 만듬
-
-        // TODO : 위에 listArr에 날짜별로 여행지를 저장~
 
         for (int i = 0, j = -1; i < data.size(); i++) {
             if (data.get(i).type == ExpandableListAdapter.HEADER) {
@@ -215,8 +213,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                         }
                     }
 
-
-                    // TODO : 위의 distance 정보를 이용해서 ArrayList<String>으로 정의된 여행 리스트 list를 정렬해야 함.
+                    // TODO : (진현씨 업무) 위의 distance 정보를 이용해서 ArrayList<String>으로 정의된 여행 리스트 list를 정렬해야 함.
 
                     Bundle bun = new Bundle();
                     bun.putStringArrayList("Travel_Data", list);
