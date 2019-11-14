@@ -3,27 +3,27 @@ package teamprj.antrip.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class OffDayPlan implements Parcelable {
+public class DayPlan implements Parcelable {
     public final String name;
 
-    public static final Creator<OffDayPlan> CREATOR = new Creator<OffDayPlan>() {
+    public static final Creator<DayPlan> CREATOR = new Creator<DayPlan>() {
         @Override
-        public OffDayPlan createFromParcel(Parcel in) {
-            return new OffDayPlan(in);
+        public DayPlan createFromParcel(Parcel in) {
+            return new DayPlan(in);
         }
 
         @Override
-        public OffDayPlan[] newArray(int size) {
-            return new OffDayPlan[size];
+        public DayPlan[] newArray(int size) {
+            return new DayPlan[size];
         }
     };
 
 
-    public OffDayPlan(String name) {
+    public DayPlan(String name) {
         this.name = name;
     }
 
-    protected OffDayPlan(Parcel in) {
+    protected DayPlan(Parcel in) {
         name = in.readString();
     }
 

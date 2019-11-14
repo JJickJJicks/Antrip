@@ -21,6 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
@@ -43,7 +45,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import teamprj.antrip.R;
+import teamprj.antrip.adapter.DayPlanAdapter;
+import teamprj.antrip.data.model.DayPlan;
 import teamprj.antrip.data.model.Plan;
+import teamprj.antrip.data.model.Plans;
 import teamprj.antrip.data.model.Travel;
 import teamprj.antrip.fragment.SublimePickerFragment;
 
@@ -69,7 +74,6 @@ public class TravelInfoActivity extends AppCompatActivity {
     private boolean isSelectTripName = false;
     private boolean isSaved = false;
 
-    String sd=null,ed=null;
     int rec = 0;
     Date StartDate = null;
 
@@ -375,24 +379,24 @@ public class TravelInfoActivity extends AppCompatActivity {
         if (requestCode == TRAVEL_INFO_REQUEST_CODE && resultCode == RESULT_OK) {
             HashMap<String, ArrayList<Travel>> travelMap = (HashMap<String, ArrayList<Travel>>) data.getSerializableExtra("plan"); // plan data 로드됨 (이 데이터 이용해서 하단 뷰 생성)
             updateWeatherView(travelMap);
-//            updateExchangeView(travelMap);
-//            RecyclerView recyclerView = findViewById(R.id.recyclerview);
-//            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//
-//            ArrayList<Plans> plansArrayList = new ArrayList<>();
-//
-//            ArrayList<DayPlan> dayPlanArrayList = new ArrayList<>();
-//
-//            for(int i=1;i<=travelMap.size();i++){
-//                for(int j=1;j<travelMap.get(i+"_day").size();j++){
-//                    dayPlanArrayList.add(new DayPlan(travelMap.get(i+"_day").get(j).getName()));
-//                }
-//                plansArrayList.add(new Plans(i+"일차 (" + travelMap.get(i+"_day").get(1).getName() + " ~ )",(List<DayPlan>) dayPlanArrayList.clone()));
-//                dayPlanArrayList.clear();
-//            }
-//
-//            DayPlanAdapter adapter = new DayPlanAdapter(plansArrayList);
-//            recyclerView.setAdapter(adapter);
+            updateExchangeView(travelMap);
+            RecyclerView recyclerView = findViewById(R.id.recyclerview);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+            ArrayList<Plans> plansArrayList = new ArrayList<>();
+
+            ArrayList<DayPlan> dayPlanArrayList = new ArrayList<>();
+
+            for(int i=1;i<=travelMap.size();i++){
+                for(int j=1;j<travelMap.get(i+"_day").size();j++){
+                    dayPlanArrayList.add(new DayPlan(travelMap.get(i+"_day").get(j).getName()));
+                }
+                plansArrayList.add(new Plans(i+"일차 (" + travelMap.get(i+"_day").get(1).getName() + " ~ )",(List<DayPlan>) dayPlanArrayList.clone()));
+                dayPlanArrayList.clear();
+            }
+
+            DayPlanAdapter adapter = new DayPlanAdapter(plansArrayList);
+            recyclerView.setAdapter(adapter);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -426,7 +430,7 @@ public class TravelInfoActivity extends AppCompatActivity {
 
     private ArrayList<String> getExchangeData(HashMap<String, ArrayList<Travel>> travelMap) {
         ArrayList<String> exchange = new ArrayList<>();
-        for (int i = 0; i < travelMap.size(); i++) {
+        for (int i = 1; i <= travelMap.size(); i++) {
             ArrayList<Travel> travelList = travelMap.get(i + "_day");
             Travel travel = travelList.get(0);
             String country = travel.getCountry();

@@ -100,8 +100,6 @@ public class SettingsActivity extends AppCompatActivity {
 
             travel.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    Intent intent = new Intent(getActivity(), OffActivity.class);
-                    startActivity(intent);
                     return true;
                 }
             });

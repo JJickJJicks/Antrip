@@ -131,7 +131,7 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.function.InputPlanActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="unspecified"
             android:label="여행일정 입력"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog">
         </activity>
