@@ -12,10 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,8 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
@@ -47,10 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import teamprj.antrip.R;
-import teamprj.antrip.adapter.DayPlanAdapter;
-import teamprj.antrip.data.model.DayPlan;
 import teamprj.antrip.data.model.Plan;
-import teamprj.antrip.data.model.Plans;
 import teamprj.antrip.data.model.Travel;
 import teamprj.antrip.fragment.SublimePickerFragment;
 
@@ -305,7 +298,7 @@ public class TravelInfoActivity extends AppCompatActivity {
             }
         });
 
-        ImageButton weather = (ImageButton) findViewById(R.id.weather_icon);
+        ImageButton weather = findViewById(R.id.weather_icon);
         weather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -383,23 +376,23 @@ public class TravelInfoActivity extends AppCompatActivity {
             HashMap<String, ArrayList<Travel>> travelMap = (HashMap<String, ArrayList<Travel>>) data.getSerializableExtra("plan"); // plan data 로드됨 (이 데이터 이용해서 하단 뷰 생성)
             updateWeatherView(travelMap);
 //            updateExchangeView(travelMap);
-            RecyclerView recyclerView = findViewById(R.id.recyclerview);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-            ArrayList<Plans> plansArrayList = new ArrayList<>();
-
-            ArrayList<DayPlan> dayPlanArrayList = new ArrayList<>();
-
-            for(int i=1;i<=travelMap.size();i++){
-                for(int j=1;j<travelMap.get(i+"_day").size();j++){
-                    dayPlanArrayList.add(new DayPlan(travelMap.get(i+"_day").get(j).getName()));
-                }
-                plansArrayList.add(new Plans(i+"일차 (" + travelMap.get(i+"_day").get(1).getName() + " ~ )",(List<DayPlan>) dayPlanArrayList.clone()));
-                dayPlanArrayList.clear();
-            }
-
-            DayPlanAdapter adapter = new DayPlanAdapter(plansArrayList);
-            recyclerView.setAdapter(adapter);
+//            RecyclerView recyclerView = findViewById(R.id.recyclerview);
+//            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//
+//            ArrayList<Plans> plansArrayList = new ArrayList<>();
+//
+//            ArrayList<DayPlan> dayPlanArrayList = new ArrayList<>();
+//
+//            for(int i=1;i<=travelMap.size();i++){
+//                for(int j=1;j<travelMap.get(i+"_day").size();j++){
+//                    dayPlanArrayList.add(new DayPlan(travelMap.get(i+"_day").get(j).getName()));
+//                }
+//                plansArrayList.add(new Plans(i+"일차 (" + travelMap.get(i+"_day").get(1).getName() + " ~ )",(List<DayPlan>) dayPlanArrayList.clone()));
+//                dayPlanArrayList.clear();
+//            }
+//
+//            DayPlanAdapter adapter = new DayPlanAdapter(plansArrayList);
+//            recyclerView.setAdapter(adapter);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
