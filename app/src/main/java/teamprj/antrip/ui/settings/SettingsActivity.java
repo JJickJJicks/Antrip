@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import teamprj.antrip.R;
-import teamprj.antrip.ui.function.OffActivity;
 import teamprj.antrip.ui.login.LoginActivity;
 
 public class SettingsActivity extends AppCompatActivity {

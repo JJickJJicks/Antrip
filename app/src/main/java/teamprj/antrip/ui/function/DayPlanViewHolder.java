@@ -6,12 +6,12 @@ import android.widget.TextView;
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
 
 import teamprj.antrip.R;
-import teamprj.antrip.data.model.OffDayPlan;
+import teamprj.antrip.data.model.DayPlan;
 
-public class OffDayPlanViewHolder extends ChildViewHolder {
+public class DayPlanViewHolder extends ChildViewHolder {
     private TextView mTextView;
 
-    public OffDayPlanViewHolder(View itemView) {
+    public DayPlanViewHolder(View itemView) {
         super(itemView);
 
         mTextView = itemView.findViewById(R.id.textView);
@@ -24,7 +24,7 @@ public class OffDayPlanViewHolder extends ChildViewHolder {
         });
     }
 
-    public void bind(OffDayPlan offDayPlan){
-        mTextView.setText(offDayPlan.name);
+    public void bind(DayPlan dayPlan){
+        mTextView.setText(dayPlan.name);
     }
 }
