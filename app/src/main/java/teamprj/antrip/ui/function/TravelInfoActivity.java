@@ -53,7 +53,7 @@ import teamprj.antrip.fragment.SublimePickerFragment;
 
 public class TravelInfoActivity extends AppCompatActivity {
     final private int TRAVEL_INFO_REQUEST_CODE = 100;
-    final private String GOOGLE_SEARCH_URL = "http://www.google.co.kr/search?complete=1&hl=ko&q=";
+    final private String GOOGLE_SEARCH_URL = "https://www.google.com/search?q=";
     ScrollView svMainContainer;
 
     // Views to display the chosen Date, Time & Recurrence options
@@ -310,16 +310,16 @@ public class TravelInfoActivity extends AppCompatActivity {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy MM dd");
                 Date now = new Date();
                 if(rec == 0){
-                    url = "https://www.google.com/search?q=" + name + "+weather";
+                    url = GOOGLE_SEARCH_URL + name + "+weather";
                 } else {
                     long calDate = 0;
                     calDate = StartDate.getTime() - now.getTime();
                     calDateDays = calDate / (24*60*60*1000);
                     if(Math.abs(calDateDays) > 9){
-                        url = "https://www.google.com/search?q=" + name + "+weather";
+                        url = GOOGLE_SEARCH_URL + name + "+weather";
                     } else {
                         String date = format.format(StartDate);
-                        url = "https://www.google.com/search?q=" + name + "+weather+" + date;
+                        url = GOOGLE_SEARCH_URL + name + "+weather+" + date;
                     }
                 }
                 Intent i = new Intent(Intent.ACTION_VIEW);

@@ -22,7 +22,7 @@ import teamprj.antrip.R;
 import teamprj.antrip.data.model.Member;
 
 public class ProfileActivity extends AppCompatActivity {
-    private final int PROFILE_CHANGE = 1;
+    private final int PROFILE_CHANGE = 10;
     ImageView ivProfileImg;
     private TextView tvHeaderName, tvHeaderEmail, tvContentName, tvContentEmail, btnEditProfile;
     private DatabaseReference myRef;
