@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -72,18 +75,13 @@ public class SignupActivity extends Activity {
         Glide.with(this).load(URL2).into(image2);
         Glide.with(this).load(URL3).into(image3);
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.rb_btn1:
-                        profile = URL1;
-                        break;
-                    case R.id.rb_btn2:
-                        profile = URL2;
-                        break;
-                    case R.id.rb_btn3:
-                        profile = URL3;
-                        break;
+                    case R.id.rb_btn1 : profile = URL1; break;
+                    case R.id.rb_btn2 : profile = URL2; break;
+                    case R.id.rb_btn3 : profile = URL3; break;
                 }
             }
         });
@@ -168,12 +166,12 @@ public class SignupActivity extends Activity {
 
     public void RegisterDB() {
         //유저가 회원가입 때 입력한 사항들 DB에 추가
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
         final String email = emailText.getText().toString().trim();
         final String name = nameText.getText().toString().trim();
         Member member = new Member(email, USER_TYPE, profile);
+        databaseReference.push().setValue(member.toMap());
 
-        final String userKey = email.replace(".", "_");
-        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userKey);
-        databaseReference.setValue(member.toMap());
+
     }
 }
