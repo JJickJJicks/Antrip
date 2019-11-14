@@ -8,23 +8,23 @@ import android.widget.TextView;
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
 import teamprj.antrip.R;
-import teamprj.antrip.data.model.OffPlans;
+import teamprj.antrip.data.model.Plans;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
-public class OffPlansViewHolder extends GroupViewHolder {
+public class PlansViewHolder extends GroupViewHolder {
     private TextView mTextView;
     private ImageView arrow;
 
-    public OffPlansViewHolder(View itemView) {
+    public PlansViewHolder(View itemView) {
         super(itemView);
 
         mTextView = itemView.findViewById(R.id.textView);
         arrow = itemView.findViewById(R.id.arrow);
     }
 
-    public void bind(OffPlans offPlans){
-        mTextView.setText(offPlans.getTitle());
+    public void bind(Plans plans){
+        mTextView.setText(plans.getTitle());
     }
 
     @Override

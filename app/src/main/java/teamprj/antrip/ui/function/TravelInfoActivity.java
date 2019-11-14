@@ -3,6 +3,7 @@ package teamprj.antrip.ui.function;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -10,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -21,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
@@ -42,7 +47,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import teamprj.antrip.R;
+import teamprj.antrip.adapter.DayPlanAdapter;
+import teamprj.antrip.data.model.DayPlan;
 import teamprj.antrip.data.model.Plan;
+import teamprj.antrip.data.model.Plans;
 import teamprj.antrip.data.model.Travel;
 import teamprj.antrip.fragment.SublimePickerFragment;
 
@@ -67,6 +75,11 @@ public class TravelInfoActivity extends AppCompatActivity {
     private String tripName = "새 여행 1";
     private boolean isSelectTripName = false;
     private boolean isSaved = false;
+
+    String sd=null,ed=null;
+    int rec = 0;
+    Date StartDate = null;
+
     SublimePickerFragment.Callback mFragmentCallback = new SublimePickerFragment.Callback() {
         @Override
         public void onCancelled() {
@@ -183,10 +196,10 @@ public class TravelInfoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        String name = intent.getExtras().getString("name");
+        final String name = intent.getExtras().getString("name");
 
-        TextView maintext = findViewById(R.id.travelInfo_text);
-        maintext.setText(name);
+        //TextView maintext = findViewById(R.id.travelInfo_text);
+        //maintext.setText(name);
 
         collapsingToolbar.setTitle(tripName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -291,6 +304,33 @@ public class TravelInfoActivity extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+        ImageButton weather = (ImageButton) findViewById(R.id.weather_icon);
+        weather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = null;
+                long calDateDays = 0;
+                SimpleDateFormat format = new SimpleDateFormat("yyyy MM dd");
+                Date now = new Date();
+                if(rec == 0){
+                    url = "https://www.google.com/search?q=" + name + "+weather";
+                } else {
+                    long calDate = 0;
+                    calDate = StartDate.getTime() - now.getTime();
+                    calDateDays = calDate / (24*60*60*1000);
+                    if(Math.abs(calDateDays) > 9){
+                        url = "https://www.google.com/search?q=" + name + "+weather";
+                    } else {
+                        String date = format.format(StartDate);
+                        url = "https://www.google.com/search?q=" + name + "+weather+" + date;
+                    }
+                }
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
     }
 
     Pair<Boolean, SublimeOptions> getOptions() {
@@ -315,11 +355,13 @@ public class TravelInfoActivity extends AppCompatActivity {
                 SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM d hh:mm:ss z yyyy");
                 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-                Date StartDate = inputFormat.parse(start_date);
+                StartDate = inputFormat.parse(start_date);
                 Date EndDate = inputFormat.parse(end_date);
                 long calDate = EndDate.getTime() - StartDate.getTime();
                 long calDateDays = calDate / (24 * 60 * 60 * 1000);
                 calDateDays = Math.abs(calDateDays) + 1;
+
+                rec++;
 
                 Intent intent = new Intent(getApplicationContext(), TravelPlanActivity.class);
                 intent.putExtra("tripName", tripName);
@@ -341,6 +383,23 @@ public class TravelInfoActivity extends AppCompatActivity {
             HashMap<String, ArrayList<Travel>> travelMap = (HashMap<String, ArrayList<Travel>>) data.getSerializableExtra("plan"); // plan data 로드됨 (이 데이터 이용해서 하단 뷰 생성)
             updateWeatherView(travelMap);
 //            updateExchangeView(travelMap);
+            RecyclerView recyclerView = findViewById(R.id.recyclerview);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+            ArrayList<Plans> plansArrayList = new ArrayList<>();
+
+            ArrayList<DayPlan> dayPlanArrayList = new ArrayList<>();
+
+            for(int i=1;i<=travelMap.size();i++){
+                for(int j=1;j<travelMap.get(i+"_day").size();j++){
+                    dayPlanArrayList.add(new DayPlan(travelMap.get(i+"_day").get(j).getName()));
+                }
+                plansArrayList.add(new Plans(i+"일차 (" + travelMap.get(i+"_day").get(1).getName() + " ~ )",(List<DayPlan>) dayPlanArrayList.clone()));
+                dayPlanArrayList.clear();
+            }
+
+            DayPlanAdapter adapter = new DayPlanAdapter(plansArrayList);
+            recyclerView.setAdapter(adapter);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
