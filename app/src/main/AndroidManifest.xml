@@ -45,19 +45,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ui.function.TravelPlannerActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_travel_planner">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="teamprj.antrip.ui.function.TravelInfoActivity" />
-        </activity>
-        <activity
             android:name=".ui.ProfileActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_profile"
             android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.ProfileTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="teamprj.antrip.ui.MainActivity"/>

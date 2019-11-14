@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -378,17 +377,14 @@ public class TravelInfoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == TRAVEL_INFO_REQUEST_CODE && resultCode == RESULT_OK) {
             HashMap<String, ArrayList<Travel>> travelMap = (HashMap<String, ArrayList<Travel>>) data.getSerializableExtra("plan"); // plan data 로드됨 (이 데이터 이용해서 하단 뷰 생성)
-            updateWeatherView(travelMap);
-            updateExchangeView(travelMap);
             RecyclerView recyclerView = findViewById(R.id.recyclerview);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
             ArrayList<Plans> plansArrayList = new ArrayList<>();
-
             ArrayList<DayPlan> dayPlanArrayList = new ArrayList<>();
 
-            for(int i=1;i<=travelMap.size();i++){
-                for(int j=1;j<travelMap.get(i+"_day").size();j++){
+            for (int i = 1; i <= travelMap.size(); i++) {
+                for (int j = 1; j < travelMap.get(i + "_day").size(); j++) {
                     dayPlanArrayList.add(new DayPlan(travelMap.get(i+"_day").get(j).getName()));
                 }
                 plansArrayList.add(new Plans(i+"일차 (" + travelMap.get(i+"_day").get(1).getName() + " ~ )",(List<DayPlan>) dayPlanArrayList.clone()));
@@ -399,43 +395,5 @@ public class TravelInfoActivity extends AppCompatActivity {
             recyclerView.setAdapter(adapter);
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void updateWeatherView(HashMap<String, ArrayList<Travel>> travelMap) { // 날씨 정보 파싱
-        ArrayList<String> weatherData = getWeatherData(travelMap); // weather Data 파싱
-        StringBuffer weather = new StringBuffer("Weather");
-        for (String i : weatherData)
-            weather.append("\n" + i);
-        Toast.makeText(this, weather.toString(), Toast.LENGTH_SHORT).show();
-    }
-
-    private ArrayList<String> getWeatherData(HashMap<String, ArrayList<Travel>> travelMap) {
-        ArrayList<String> weather = new ArrayList<>();
-        for (int i = 0; i < travelMap.size(); i++) {
-            ArrayList<Travel> travelList = travelMap.get((i + 1) + "_day");
-            Travel travel = travelList.get(0);
-            String name = travel.getName();
-            weather.add(GOOGLE_SEARCH_URL + name + " Weather");
-        }
-        return weather;
-    }
-
-    private void updateExchangeView(HashMap<String, ArrayList<Travel>> travelMap) { // 환율 정보 파싱
-        ArrayList<String> exchangeData = getExchangeData(travelMap); // exchange rate Data 파싱
-        StringBuffer exchange = new StringBuffer("Exchange");
-        for (String i : exchangeData)
-            exchange.append("\n" + i);
-        Toast.makeText(this, exchange.toString(), Toast.LENGTH_SHORT).show();
-    }
-
-    private ArrayList<String> getExchangeData(HashMap<String, ArrayList<Travel>> travelMap) {
-        ArrayList<String> exchange = new ArrayList<>();
-        for (int i = 1; i <= travelMap.size(); i++) {
-            ArrayList<Travel> travelList = travelMap.get(i + "_day");
-            Travel travel = travelList.get(0);
-            String country = travel.getCountry();
-            exchange.add(GOOGLE_SEARCH_URL + country + " Exchange Rate");
-        }
-        return exchange;
     }
 }

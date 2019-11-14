@@ -25,8 +25,6 @@ import teamprj.antrip.R;
 import teamprj.antrip.ui.login.LoginActivity;
 
 public class SettingsActivity extends AppCompatActivity {
-    private static DatabaseReference myRef;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,30 +117,39 @@ public class SettingsActivity extends AppCompatActivity {
                             .setPositiveButton("탈퇴", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                                    myRef = FirebaseDatabase.getInstance().getReference("users");
-
+                                    final String userKey = user.getEmail().replace(".", "_");
+                                    final DatabaseReference userDB = FirebaseDatabase.getInstance().getReference("users").child(userKey);
+                                    final DatabaseReference planDB = FirebaseDatabase.getInstance().getReference("plan").child(userKey);
                                     user.delete()
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) { // Firebase Auth에서 정상적으로 user 정보가 삭제된다면
-                                                        // 자동 로그인 해제
-                                                        setting = getActivity().getSharedPreferences("setting", 0);
-                                                        editor = setting.edit();
+                                                        userDB.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    planDB.removeValue();
 
-                                                        if (setting.getBoolean("Auto_Login_enabled", false)) {
-                                                            editor.remove("ID");
-                                                            editor.remove("PW");
-                                                            editor.remove("Auto_Login_enabled");
-                                                            editor.commit();
-                                                        }
+                                                                    // 자동 로그인 해제
+                                                                    setting = getActivity().getSharedPreferences("setting", 0);
+                                                                    editor = setting.edit();
 
-                                                        // 초기 화면 전환
-                                                        Toast.makeText(getContext(), "탈퇴 되었습니다.", Toast.LENGTH_SHORT).show();
-                                                        Intent i = new Intent(getActivity(), LoginActivity.class);
-                                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                        startActivity(i);
+                                                                    if (setting.getBoolean("Auto_Login_enabled", false)) {
+                                                                        editor.remove("ID");
+                                                                        editor.remove("PW");
+                                                                        editor.remove("Auto_Login_enabled");
+                                                                        editor.commit();
+                                                                    }
+
+                                                                    // 초기 화면 전환
+                                                                    Toast.makeText(getContext(), "탈퇴 되었습니다.", Toast.LENGTH_SHORT).show();
+                                                                    Intent i = new Intent(getActivity(), LoginActivity.class);
+                                                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    startActivity(i);
+                                                                }
+                                                            }
+                                                        });
                                                     }
                                                 }
                                             });

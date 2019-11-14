@@ -5,52 +5,194 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/profileBackground"
     tools:context=".ui.ProfileActivity">
-
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/profile.appBar"
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
-
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/profile.toolbarLayout"
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/profile.toolbar">
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleTextAppearance="@style/TransparentText"
+            app:toolbarId="@+id/toolbar">
 
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@color/colorPrimary"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivProfileImg"
+                    android:layout_width="142dp"
+                    android:layout_height="142dp"
+                    android:src="@drawable/img_sample1" />
+
+                <TextView
+                    android:id="@+id/tvHeaderName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="UserName"
+                    android:textColor="@android:color/white"
+                    android:textSize="28dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvHeaderEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="UserEmail"
+                    android:textColor="@android:color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/profileBackground"
+                    android:gravity="center">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_alignParentTop="true"
+                        android:background="@color/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/btnEditProfile"
+                        style="@style/profileStyledBackButton"
+                        android:text="프로필\n변경" />
+                </RelativeLayout>
+            </LinearLayout>
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/profile.toolbar"
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
-
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/profile.swipeLayout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".ui.ProfileActivity"
         tools:showIn="@layout/activity_profile">
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
             <TextView
-                android:id="@+id/profile.text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin" />
+                style="@style/headerText"
+                android:layout_marginBottom="20dp"
+                android:text="계정 정보" />
 
-        </androidx.core.widget.NestedScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <RelativeLayout style="@style/profileDetailsLayout">
 
+                <ImageView
+                    android:id="@+id/nameImageView"
+                    style="@style/profileDetailsImage"
+                    android:src="@drawable/ic_name" />
+
+                <TextView
+                    android:id="@+id/nameTextView"
+                    style="@style/profileDetailsTextMain"
+                    android:layout_toRightOf="@id/nameImageView"
+                    android:text="닉네임" />
+
+                <TextView
+                    android:id="@+id/tvContentName"
+                    style="@style/profileDetailsMiniText"
+                    android:layout_toRightOf="@id/nameImageView"
+                    android:text="userName" />
+            </RelativeLayout>
+
+            <View style="@style/proifleDetailsView" />
+            <!--        <RelativeLayout style="@style/profileDetailsLayout">-->
+            <!--            <ImageView-->
+            <!--                android:id="@+id/mobileImageView"-->
+            <!--                android:src="@drawable/ic_mobile"-->
+            <!--                style="@style/profileDetailsImage" />-->
+            <!--            <TextView-->
+            <!--                android:text="Mobile"-->
+            <!--                android:layout_toRightOf="@id/mobileImageView"-->
+            <!--                style="@style/profileDetailsTextMain"/>-->
+            <!--            <TextView-->
+            <!--                android:text="+91-8129999999"-->
+            <!--                android:layout_toRightOf="@id/mobileImageView"-->
+            <!--                style="@style/profileDetailsMiniText" />-->
+            <!--        </RelativeLayout>-->
+            <!--        <View style="@style/proifleDetailsView" />-->
+            <RelativeLayout style="@style/profileDetailsLayout">
+
+                <ImageView
+                    android:id="@+id/emailImageView"
+                    style="@style/profileDetailsImage"
+                    android:src="@drawable/ic_email" />
+
+                <TextView
+                    style="@style/profileDetailsTextMain"
+                    android:layout_toRightOf="@id/emailImageView"
+                    android:text="이메일" />
+
+                <TextView
+                    android:id="@+id/tvContentEmail"
+                    style="@style/profileDetailsMiniText"
+                    android:layout_toRightOf="@id/emailImageView"
+                    android:text="developer@appsnipp.com" />
+            </RelativeLayout>
+
+            <View style="@style/proifleDetailsView" />
+            <!--        <RelativeLayout style="@style/profileDetailsLayout">-->
+            <!--            <ImageView-->
+            <!--                android:id="@+id/addressImageView"-->
+            <!--                android:src="@drawable/ic_address"-->
+            <!--                style="@style/profileDetailsImage" />-->
+            <!--            <TextView-->
+            <!--                android:text="Address"-->
+            <!--                android:layout_toRightOf="@id/addressImageView"-->
+            <!--                style="@style/profileDetailsTextMain" />-->
+            <!--            <TextView-->
+            <!--                android:text="Avenue 2nd Street NW SY."-->
+            <!--                android:layout_toRightOf="@id/addressImageView"-->
+            <!--                style="@style/profileDetailsMiniText" />-->
+            <!--        </RelativeLayout>-->
+            <!--        <View style="@style/proifleDetailsView" />-->
+            <!--        <RelativeLayout style="@style/profileDetailsLayout">-->
+            <!--            <ImageView-->
+            <!--                android:id="@+id/dobImageView"-->
+            <!--                android:src="@drawable/ic_dob"-->
+            <!--                style="@style/profileDetailsImage" />-->
+            <!--            <TextView-->
+            <!--                android:text="D.O.B"-->
+            <!--                android:layout_toRightOf="@id/dobImageView"-->
+            <!--                style="@style/profileDetailsTextMain" />-->
+            <!--            <TextView-->
+            <!--                android:text="12-05-1990"-->
+            <!--                android:layout_toRightOf="@id/dobImageView"-->
+            <!--                style="@style/profileDetailsMiniText" />-->
+            <!--        </RelativeLayout>-->
+            <!--        <View style="@style/proifleDetailsView" />-->
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

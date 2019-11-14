@@ -1,5 +1,6 @@
 package teamprj.antrip.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -66,6 +67,11 @@ public class ProfileCorrectActivity extends AppCompatActivity {
                                 }
                             });
                     Toast.makeText(getApplicationContext(), R.string.success, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent();
+                    intent.putExtra("email", emailText.getText().toString());
+                    intent.putExtra("name", nameText.getText().toString());
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
             }
         });
