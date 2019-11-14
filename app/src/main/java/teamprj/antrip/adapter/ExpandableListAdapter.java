@@ -217,6 +217,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     }
                 }
                 notifyItemMoved(fromPosition, toPosition);
+                TravelPlanActivity.synchronize(data);
                 return;
             }
         }
@@ -231,6 +232,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 }
             }
             notifyItemMoved(fromPosition, toPosition);
+            TravelPlanActivity.synchronize(data);
         }
     }
 
