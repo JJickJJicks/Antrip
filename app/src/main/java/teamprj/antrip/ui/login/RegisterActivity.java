@@ -1,19 +1,20 @@
 package teamprj.antrip.ui.login;
 
-
-import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,32 +26,31 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 import teamprj.antrip.R;
 import teamprj.antrip.data.model.Member;
 
-public class SignupActivity extends Activity {
-    private FirebaseAuth mAuth;
-    private DatabaseReference databaseReference;
+public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "signUp";
     private static final int USER_TYPE = 1;
+    private final String URL1 = "https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1993704_960_720.jpg";
+    private final String URL2 = "https://cdn.pixabay.com/photo/2014/12/15/17/16/pier-569314_960_720.jpg";
+    private final String URL3 = "https://cdn.pixabay.com/photo/2018/10/01/11/45/landscape-3715977_960_720.jpg";
+    SharedPreferences mSharedPreferences;
+    SharedPreferences.Editor mEditor;
+    private FirebaseAuth mAuth;
+    private DatabaseReference databaseReference;
     private EditText emailText, passwordText, pwCheckText, nameText;
     private ImageView image1, image2, image3;
     private RadioGroup radioGroup;
     private String profile = "";
-
-    private final String URL1 = "https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1993704_960_720.jpg";
-    private final String URL2 = "https://cdn.pixabay.com/photo/2014/12/15/17/16/pier-569314_960_720.jpg";
-    private final String URL3 = "https://cdn.pixabay.com/photo/2018/10/01/11/45/landscape-3715977_960_720.jpg";
-
-    SharedPreferences mSharedPreferences;
-    SharedPreferences.Editor mEditor;
+    private CircularProgressButton btnSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //타이틀바 없애기
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_register);
+        changeStatusBarColor();
 
         mSharedPreferences = getSharedPreferences("profileInfo", MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
@@ -58,11 +58,12 @@ public class SignupActivity extends Activity {
         //Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
 
-        emailText = findViewById(R.id.signup_emailText);
-        passwordText = findViewById(R.id.signup_pwText);
-        pwCheckText = findViewById(R.id.signup_pwCheckText);
-        nameText = findViewById(R.id.signup_nameText);
+        emailText = findViewById(R.id.editTextEmail);
+        passwordText = findViewById(R.id.editTextPassword);
+        pwCheckText = findViewById(R.id.editTextPasswordCheck);
+        nameText = findViewById(R.id.editTextName);
         radioGroup = findViewById(R.id.rg_radioGroup);
+        btnSignUp = findViewById(R.id.cirRegisterButton);
 
         image1 = findViewById(R.id.iv_image1);
         image2 = findViewById(R.id.iv_image2);
@@ -87,25 +88,33 @@ public class SignupActivity extends Activity {
                 }
             }
         });
+
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkError()) {
+                    register();
+                }
+            }
+        });
     }
 
-    public void signUp(View v) {
-        emailText = findViewById(R.id.signup_emailText);
-        passwordText = findViewById(R.id.signup_pwText);
-        pwCheckText = findViewById(R.id.signup_pwCheckText);
-        nameText = findViewById(R.id.signup_nameText);
-
-        if (checkError()) {
-            register();
+    private void changeStatusBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(Color.TRANSPARENT);
+            window.setStatusBarColor(getResources().getColor(R.color.register_bk_color));
         }
     }
 
-    public boolean checkError() {
-        emailText = findViewById(R.id.signup_emailText);
-        passwordText = findViewById(R.id.signup_pwText);
-        pwCheckText = findViewById(R.id.signup_pwCheckText);
-        nameText = findViewById(R.id.signup_nameText);
+    public void onLoginClick(View view) {
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
 
+
+    public boolean checkError() {
         if (emailText.getText().toString().equals("") || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches()) {
             emailText.setError(getText(R.string.wrongEmail));
             return false;
@@ -121,7 +130,7 @@ public class SignupActivity extends Activity {
             return false;
         } else
             nameText.setError(null);
-        if (profile == "") {
+        if (profile.equals("")) {
             Toast.makeText(this, "프로필을 선택 하세요.", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -134,7 +143,7 @@ public class SignupActivity extends Activity {
         final String name = nameText.getText().toString().trim();
 
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -151,19 +160,14 @@ public class SignupActivity extends Activity {
                                         }
                                     });
                             Toast.makeText(getApplicationContext(), "가입을 환영합니다.", Toast.LENGTH_LONG).show();
-                            finish();
+                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                            overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "가입에 실패하였습니다.", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        //바깥레이어 클릭시 안닫히게
-        return event.getAction() != MotionEvent.ACTION_OUTSIDE;
     }
 
     public void RegisterDB() {
@@ -177,3 +181,4 @@ public class SignupActivity extends Activity {
         databaseReference.setValue(member.toMap());
     }
 }
+

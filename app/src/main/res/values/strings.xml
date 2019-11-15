@@ -91,5 +91,8 @@
     <string name="add">추가</string>
     <string name="auth_add_share">공유하기</string>
 
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
+
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

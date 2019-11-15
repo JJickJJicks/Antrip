@@ -48,4 +48,8 @@
     <dimen name="dp_size_120">120dp</dimen>
     <dimen name="dp_size_260">260dp</dimen>
     <dimen name="headerTextSize">28sp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="newsMoreTextSize">12sp</dimen>
+    <dimen name="loginViewsMargin">20dp</dimen>
 </resources>

@@ -2,14 +2,13 @@ package teamprj.antrip.ui.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 import teamprj.antrip.R;
 import teamprj.antrip.ui.MainActivity;
 
@@ -27,7 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private static final String TAG = "Login";
 
-    private EditText emailEditText, passwordEditText;
+    private EditText editTextEmail, editTextPassword;
+    private CircularProgressButton loginButton;
     private SharedPreferences.Editor editor;
 
     @Override
@@ -35,16 +36,18 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        emailEditText = findViewById(R.id.login_emailText);
-        passwordEditText = findViewById(R.id.login_passwordText);
-        Button loginButton = findViewById(R.id.login_loginBtn);
-        TextView signUpBtn = findViewById(R.id.login_signUpBtn);
+        //for changing status bar icon colors
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
 
-        Button templogin = findViewById(R.id.login_tempBtn);
-        templogin.setEnabled(false);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        loginButton = findViewById(R.id.cirLoginButton);
 
         //Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
+
 
         // 로그인 버튼
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -54,22 +57,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
-                startActivity(intent);
-            }
-        });
-
         // 자동 로그인
         CheckBox autoLogin = findViewById(R.id.login_autologin);
         SharedPreferences setting = getSharedPreferences("setting", 0);
         editor = setting.edit();
 
         if (setting.getBoolean("Auto_Login_enabled", false)) {
-            emailEditText.setText(setting.getString("ID", ""));
-            passwordEditText.setText(setting.getString("PW", ""));
+            editTextEmail.setText(setting.getString("ID", ""));
+            editTextPassword.setText(setting.getString("PW", ""));
             autoLogin.setChecked(true);
 
             login();
@@ -79,8 +74,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    String ID = emailEditText.getText().toString();
-                    String PW = passwordEditText.getText().toString();
+                    String ID = editTextEmail.getText().toString();
+                    String PW = editTextPassword.getText().toString();
 
                     editor.putString("ID", ID);
                     editor.putString("PW", PW);
@@ -96,9 +91,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    public void onSignUpClick(View View) {
+        startActivity(new Intent(this, RegisterActivity.class));
+        overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
+
+    }
+
     public void login() {
-        String email = emailEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString().trim();
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
 
         if (!email.equals("") && !password.equals("")) {
             mAuth.signInWithEmailAndPassword(email, password)
@@ -124,15 +125,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void searchClick(View v) {
-        //데이터 담아서 팝업(액티비티) 호출
         Intent intent = new Intent(this, AccountSearchActivity.class);
         startActivity(intent);
-    }
-
-    public void temploginClick(View v) {
-        final EditText emailEditText = findViewById(R.id.login_emailText);
-        final EditText passwordEditText = findViewById(R.id.login_passwordText);
-        emailEditText.setText("admin@test.com");
-        passwordEditText.setText("123456");
     }
 }

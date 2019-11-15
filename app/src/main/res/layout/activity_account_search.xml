@@ -4,7 +4,7 @@
     style="@android:style/Theme.Dialog"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    android:background="#eeeeee"
+    android:background="@color/login_bk_color"
     android:orientation="vertical">
 
     <!-- 타이틀바 -->
@@ -20,7 +20,7 @@
             android:id="@+id/acc_search.toolbar"
             android:layout_width="match_parent"
             android:layout_height="53dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/themeColor"
             android:gravity="center"
             android:text="@string/action_search_account_short"
             android:textColor="#fff"
@@ -52,7 +52,7 @@
         android:id="@+id/acc_search.view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#66bdbdbd" />
+        android:background="@color/login_bk_color" />
 
     <!-- 닫기 버튼 -->
     <LinearLayout
