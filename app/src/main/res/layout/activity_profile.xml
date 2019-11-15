@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/colorPrimary"
+            app:contentScrim="@color/themeColor"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
@@ -30,15 +30,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="@color/colorPrimary"
+                android:background="@color/themeColor"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/ivProfileImg"
                     android:layout_width="142dp"
                     android:layout_height="142dp"
-                    android:src="@drawable/img_sample1" />
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/img_sample1"
+                    app:civ_border_color="@color/black"
+                    app:civ_border_width="2dp" />
 
                 <TextView
                     android:id="@+id/tvHeaderName"
@@ -70,7 +73,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_alignParentTop="true"
-                        android:background="@color/colorPrimary" />
+                        android:background="@color/themeColor" />
 
                     <TextView
                         android:id="@+id/btnEditProfile"

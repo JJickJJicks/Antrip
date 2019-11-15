@@ -1,9 +1,98 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:background="@color/contentBodyColor"
+    tools:context=".ui.settings.SettingsActivity">
 
-    <FrameLayout
-        android:id="@+id/settings.Layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="30dp">
+
+        <RelativeLayout
+            android:id="@+id/btnProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivProfileImg"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/img_sample1"
+                app:civ_border_color="@color/black"
+                app:civ_border_width="2dp" />
+
+            <TextView
+                android:id="@+id/usernameTextView"
+                style="@style/viewParent.headerText"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/ivProfileImg"
+                android:text="userName"
+                android:textSize="18sp" />
+
+            <TextView
+                style="@style/viewParent.headerText"
+                android:layout_below="@id/usernameTextView"
+                android:layout_toRightOf="@id/ivProfileImg"
+                android:text="프로필 보기"
+                android:textColor="#5D5C5C"
+                android:textSize="16sp" />
+
+            <ImageView
+                style="@style/viewParent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_more" />
+        </RelativeLayout>
+
+        <TextView
+            style="@style/viewParent.headerText.settingsMiniTitle"
+            android:text="@string/login_header" />
+
+        <TextView
+            android:id="@+id/btnSignOut"
+            style="@style/viewParent.headerText.settingsTextIcon"
+            android:drawableLeft="@drawable/ic_power_settings_new_24px"
+            android:text="@string/logout_title" />
+
+        <TextView
+            android:id="@+id/btnDeleteData"
+            style="@style/viewParent.headerText.settingsTextIcon"
+            android:drawableLeft="@drawable/ic_edit_24px"
+            android:text="@string/delete_title" />
+
+        <TextView
+            style="@style/viewParent.headerText.settingsMiniTitle"
+            android:text="@string/system_header" />
+
+        <TextView
+            android:id="@+id/btnShowNotice"
+            style="@style/viewParent.headerText.settingsTextIcon"
+            android:drawableLeft="@drawable/ic_menu_notice"
+            android:text="공지사항" />
+
+        <TextView
+            android:id="@+id/btnContact"
+            style="@style/viewParent.headerText.settingsTextIcon"
+            android:drawableLeft="@drawable/ic_menu_send"
+            android:text="문의하기" />
+
+        <TextView
+            android:id="@+id/btnOpenSource"
+            style="@style/viewParent.headerText.settingsTextIcon"
+            android:drawableLeft="@drawable/ic_public_24px"
+            android:text="오픈소스 라이선스" />
+
+        <TextView
+            android:id="@+id/tvAppVersion"
+            style="@style/viewParent.headerText.settingsMiniTitle"
+            android:text="App ver 2.0.1"
+            android:textAlignment="center" />
+    </LinearLayout>
+</ScrollView>

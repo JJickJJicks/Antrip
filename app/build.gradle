@@ -64,6 +64,7 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.1.0'
     //animated button for login
     implementation 'br.com.simplepass:loading-button-android:1.14.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 
 }
 repositories {
