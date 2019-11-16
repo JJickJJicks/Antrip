@@ -77,7 +77,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Member member = dataSnapshot.getValue(Member.class);
-                String img = member != null ? member.getProfile() : null;
+                String img = member != null ? member.getProfile() : "";
                 switch (img) {
                     default: // 오류 떠도 일단 1번 사진으로..
                         ivProfileImg.setImageResource(R.drawable.img_sample1);

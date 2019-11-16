@@ -33,9 +33,6 @@ import teamprj.antrip.data.model.Member;
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "signUp";
     private static final int USER_TYPE = 1;
-    private final String URL1 = "https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1993704_960_720.jpg";
-    private final String URL2 = "https://cdn.pixabay.com/photo/2014/12/15/17/16/pier-569314_960_720.jpg";
-    private final String URL3 = "https://cdn.pixabay.com/photo/2018/10/01/11/45/landscape-3715977_960_720.jpg";
     SharedPreferences mSharedPreferences;
     SharedPreferences.Editor mEditor;
     private FirebaseAuth mAuth;
@@ -69,21 +66,22 @@ public class RegisterActivity extends AppCompatActivity {
         image2 = findViewById(R.id.iv_image2);
         image3 = findViewById(R.id.iv_image3);
 
-        Glide.with(this).load(URL1).into(image1);
-        Glide.with(this).load(URL2).into(image2);
-        Glide.with(this).load(URL3).into(image3);
+        image1.setImageResource(R.drawable.img_sample1);
+        image2.setImageResource(R.drawable.img_sample2);
+        image3.setImageResource(R.drawable.img_sample3);
+
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rb_btn1:
-                        profile = URL1;
+                        profile = "img_sample1";
                         break;
                     case R.id.rb_btn2:
-                        profile = URL2;
+                        profile = "img_sample2";
                         break;
                     case R.id.rb_btn3:
-                        profile = URL3;
+                        profile = "img_sample3";
                         break;
                 }
             }

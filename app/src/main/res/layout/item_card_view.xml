@@ -14,20 +14,22 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_basic_constraint"
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="200dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_card_imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical_guideLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="382dp" />
+            app:layout_constraintGuide_percent="0.05"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/horizontal_start_guideLine"

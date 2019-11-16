@@ -19,7 +19,6 @@ class SwipeAndDragHelper : ItemTouchHelper.Callback {
     }
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        contract.onViewMoved(viewHolder.adapterPosition, target.adapterPosition)
         return true
     }
 
@@ -41,7 +40,6 @@ class SwipeAndDragHelper : ItemTouchHelper.Callback {
     }
 
     interface ActionCompletionContract {
-        fun onViewMoved(oldPosition: Int, newPosition: Int)
         fun onViewSwiped(position: Int)
     }
 }

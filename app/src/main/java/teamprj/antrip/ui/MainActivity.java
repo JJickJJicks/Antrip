@@ -3,6 +3,9 @@ package teamprj.antrip.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +44,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import teamprj.antrip.BuildConfig;
 import teamprj.antrip.R;
 import teamprj.antrip.adapter.ImageFragmentAdapter;
+import teamprj.antrip.data.model.LoginUserInfo;
 import teamprj.antrip.fragment.ImageFragment;
 import teamprj.antrip.ui.function.MyPlanActivity;
 import teamprj.antrip.ui.function.NoticeActivity;
@@ -49,9 +53,16 @@ import teamprj.antrip.ui.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference myRef = database.getReference("users");
     private final int PROFILE_CHANGE = 1;
     private TextView nav_nameview, nav_emailview;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String userName = user.getEmail().replace(".", "_");
+    private DatabaseReference myRef = database.getReference("users").child(userName);
+    private static final int MESSAGE_OK = 1;
+    NavigationView navigationView;
+    View nav_header_view;
+    CircleImageView nav_profileview;
+    LoginUserInfo userInfo = new LoginUserInfo();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
+        navigationView = findViewById(R.id.main_navView);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.main_navView);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -71,7 +82,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                if (dataSnapshot.exists()) {
+                    userInfo = dataSnapshot.getValue(LoginUserInfo.class);
+                    Log.d("user", userInfo.toString());
+                    mHandler.sendEmptyMessage(MESSAGE_OK);
+                }
             }
 
             @Override
@@ -81,16 +96,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         // Nav 이메일, 이름 로드
-        View nav_header_view = navigationView.getHeaderView(0);
+        nav_header_view = navigationView.getHeaderView(0);
         nav_nameview = nav_header_view.findViewById(R.id.nav_nameText);
         nav_emailview = nav_header_view.findViewById(R.id.nav_emailText);
-        CircleImageView nav_profileview = nav_header_view.findViewById(R.id.nav_profileImg);
+        nav_profileview = nav_header_view.findViewById(R.id.nav_profileImg);
 
         // Firebase 로드
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         nav_emailview.setText(user.getEmail());
         nav_nameview.setText(user.getDisplayName());
-//        nav_profileview.setImageResource();
 
         // 주소 자동 완성 정의
         Places.initialize(getApplicationContext(), BuildConfig.places_api_key);
@@ -142,6 +156,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         fragmentAdapter.notifyDataSetChanged();
     }
+
+    public Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MESSAGE_OK:
+                    switch (userInfo.getProfile()) {
+                        case "img_sample1" : nav_profileview.setImageResource(R.drawable.img_sample1); break;
+                        case "img_sample2" : nav_profileview.setImageResource(R.drawable.img_sample2); break;
+                        case "img_sample3" : nav_profileview.setImageResource(R.drawable.img_sample3); break;
+                    }
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onBackPressed() {
