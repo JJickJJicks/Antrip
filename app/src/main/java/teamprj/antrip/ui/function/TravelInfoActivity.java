@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import teamprj.antrip.R;
 import teamprj.antrip.adapter.DayPlanAdapter;
@@ -348,8 +349,10 @@ public class TravelInfoActivity extends AppCompatActivity {
             String start_date = mSelectedDate.getStartDate().getTime().toString();
             String end_date = mSelectedDate.getEndDate().getTime().toString();
             try {
-                SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM d hh:mm:ss z yyyy");
+                SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
                 SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                Log.d("problemCheck", inputFormat.format(outputFormat.parse("2019-11-13")));
 
                 StartDate = inputFormat.parse(start_date);
                 Date EndDate = inputFormat.parse(end_date);
