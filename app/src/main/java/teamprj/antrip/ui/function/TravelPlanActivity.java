@@ -103,6 +103,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
     private URL url = null;
     private String str, receiveMsg;
     private String headerText = "0일차";
+    private ArrayList<String> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,11 +211,10 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 });
     }
 
-    private long[][] distance;
+    //private long[][] distance;
 
     void sort(int date) { // 정렬
         ArrayList<String>[] listArr = new ArrayList[date]; // 날짜별 여행지를 저장할 String ArrayList를 만듬
-
         for (int i = 0, j = -1; i < data.size(); i++) {
             if (data.get(i).type == ExpandableListAdapter.HEADER) {
                 j++;
@@ -225,16 +225,26 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 
         for (int i = 0; i < date; i++) {
             final int day = i + 1;
-            final ArrayList<String> list = listArr[i];
-            distance = new long[list.size()][list.size()];
+            list = listArr[i];
+            //distance = new long[list.size()][list.size()];
             new Thread() {
                 public void run() {
+                    /*
                     for (int j = 0; j < list.size(); j++) {
                         for (int k = 0; k < list.size(); k++) {
                             distance[j][k] = parseInfo(parsejson(list.get(j), list.get(k)));
                         }
                     }
+                     */
 
+                    EAX eax = new EAX(list);
+                    ArrayList<Integer> orderRs = eax.run();
+
+                    ArrayList<String> nameRs = new ArrayList<>();
+                    for(int j=0;j<orderRs.size();j++){
+                        nameRs.add(list.get(orderRs.get(j)));
+                    }
+                    list = (ArrayList<String>) nameRs.clone();
                     // TODO : (진현씨 업무) 위의 distance 정보를 이용해서 ArrayList<String>으로 정의된 여행 리스트 list를 정렬해야 함.
 
                     Bundle bun = new Bundle();
@@ -249,6 +259,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         }
     }
 
+    /*
     private long parseInfo(String json) {
         long time = -1;
         Log.d("jsonErr", json);
@@ -299,6 +310,10 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 
         return receiveMsg;
     }
+
+     */
+
+
 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder holder) {
