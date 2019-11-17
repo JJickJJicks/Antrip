@@ -7,8 +7,8 @@ import android.view.ContextThemeWrapper;
 
 import teamprj.antrip.R;
 
-public class OkAlertDialog {
-    public static void viewOkAlertDialog(Context activity, String title, String message) {
+class OkAlertDialog {
+     static void viewOkAlertDialog(Context activity, String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.AppTheme));
 
         builder.setTitle(title);
@@ -22,7 +22,7 @@ public class OkAlertDialog {
         builder.show();
     }
 
-    public static void viewOkAlertDialogFinish(final Context activity, String title, String message, final boolean isFinish) {
+    static void viewOkAlertDialogFinish(final Context activity, String title, String message, final boolean isFinish) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         builder.setTitle(title);

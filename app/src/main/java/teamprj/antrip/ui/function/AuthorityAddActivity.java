@@ -39,6 +39,7 @@ public class AuthorityAddActivity extends Activity {
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private String userName = user.getEmail().replace(".", "_");
     private List<String> authList;
+    private List<String> userList;
 
     ProgressDialog progressDialog;
 
@@ -55,6 +56,8 @@ public class AuthorityAddActivity extends Activity {
 
         Intent intent = getIntent();
         tripName = Objects.requireNonNull(intent.getExtras()).getString("tripName");
+
+        userList = new ArrayList<>();
 
         // Progress dialog
         progressDialog = new ProgressDialog(this);
@@ -73,6 +76,19 @@ public class AuthorityAddActivity extends Activity {
 
         changePassword = findViewById(R.id.auth_add_confirmBtn);
 
+        myRef.child("users").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            userList.add(snapshot.child("email").getValue().toString());
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d("AuthorityAdd", "data receive error");
+                    }
+                });
 
         changePassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,20 +103,22 @@ public class AuthorityAddActivity extends Activity {
                                     if (dataSnapshot.hasChild("authority")) {
                                         authList = (ArrayList) ((HashMap) dataSnapshot.getValue()).get("authority");
                                     }
-                                    if (inputName.equals(userName)) {
+                                    if (inputName.equals(userName.replace("_", "."))) {
                                         OkAlertDialog.viewOkAlertDialog(AuthorityAddActivity.this, "추가 실패", "자신의 이메일은 추가할 수 없습니다.");
                                     }
-                                    else if (authList.contains(inputName)) {
+                                    else if (authList.contains(inputName.replace(".", "_"))) {
                                         OkAlertDialog.viewOkAlertDialog(AuthorityAddActivity.this, "추가 실패", "이미 추가된 이메일 입니다.");
+                                    } else if (!userList.contains(inputName)) {
+                                        OkAlertDialog.viewOkAlertDialog(AuthorityAddActivity.this, "추가 실패", "존재하지 않는 이메일 입니다.");
                                     } else {
-                                        authList.add(inputName);
+                                        authList.add(inputName.replace(".", "_"));
                                         myRef.child("plan").child(userName).child(tripName).child("authority").setValue(authList);
                                         OkAlertDialog.viewOkAlertDialog(AuthorityAddActivity.this, "추가 성공", "추가가 완료되었습니다.");
                                     }
                                 }
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    Log.d("ErrorTravelPlanActivity", "data receive error");
+                                    Log.d("AuthorityAdd", "authority add error");
                                 }
                             });
                 }
