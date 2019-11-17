@@ -21,9 +21,9 @@ import teamprj.antrip.adapter.RecyclerViewAdapter
 import teamprj.antrip.data.model.MyPlan
 
 class MyPlanActivity : AppCompatActivity() {
-    lateinit var recyclerAdapter: RecyclerViewAdapter
-    lateinit var mContext: Context
-    val user = FirebaseAuth.getInstance().currentUser
+    private lateinit var recyclerAdapter: RecyclerViewAdapter
+    private lateinit var mContext: Context
+    private val user = FirebaseAuth.getInstance().currentUser
     private val TAG = "MyPlanActivity"
     private val database = FirebaseDatabase.getInstance()
     private val userName = user!!.email!!.replace(".", "_")
@@ -38,7 +38,7 @@ class MyPlanActivity : AppCompatActivity() {
 
         val data = ArrayList<MyPlan>()
 
-        myRef.addValueEventListener(object : ValueEventListener {
+        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (i in dataSnapshot.children.iterator()) {
@@ -60,9 +60,5 @@ class MyPlanActivity : AppCompatActivity() {
             recyclerAdapter.setTouchHelper(touchHelper)
             rv_recyclerView.adapter = recyclerAdapter
             touchHelper.attachToRecyclerView(rv_recyclerView)
-    }
-
-    fun createSnackBar(view: View, content: String) {
-        Snackbar.make(view, content, Snackbar.LENGTH_SHORT).show()
     }
 }

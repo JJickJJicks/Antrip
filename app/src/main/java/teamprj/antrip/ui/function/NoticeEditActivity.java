@@ -21,8 +21,8 @@ import teamprj.antrip.R;
 import teamprj.antrip.data.model.Notice;
 
 public class NoticeEditActivity extends AppCompatActivity {
-    String title, content, notice_id;
-    ArticleFragment articleFragment;
+    private String title, content, notice_id;
+    private ArticleFragment articleFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

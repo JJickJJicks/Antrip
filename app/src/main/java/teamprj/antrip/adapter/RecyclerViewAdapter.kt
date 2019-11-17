@@ -14,7 +14,7 @@ import com.test.ui_practice.helper.SwipeAndDragHelper
 import kotlinx.android.synthetic.main.item_card_view.view.*
 import teamprj.antrip.R
 import teamprj.antrip.data.model.MyPlan
-import teamprj.antrip.ui.function.DestinationDetailActivity
+import teamprj.antrip.map.DestinationDetailActivity
 
 class RecyclerViewAdapter(private val data: ArrayList<MyPlan>) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(), SwipeAndDragHelper.ActionCompletionContract {
     private val TAG = "MyPlanRecyclerView"

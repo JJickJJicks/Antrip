@@ -26,8 +26,8 @@ import teamprj.antrip.data.model.Member;
 import teamprj.antrip.data.model.Notice;
 
 public class NoticeCreateActivity extends AppCompatActivity {
-    ArticleFragment articleFragment;
-    int count;
+    private ArticleFragment articleFragment;
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

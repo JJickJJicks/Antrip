@@ -16,10 +16,10 @@ import teamprj.antrip.R
 import teamprj.antrip.ui.login.LoginActivity
 
 class FourthFragment : Fragment {
-    lateinit var mContext: Context
-    lateinit var mLayout: LinearLayout
-    lateinit var bounceAnimation: Animation
-    lateinit var interpolator: BounceInterpolator
+    private lateinit var mContext: Context
+    private lateinit var mLayout: LinearLayout
+    private lateinit var bounceAnimation: Animation
+    private lateinit var interpolator: BounceInterpolator
 
     constructor() : super()
 

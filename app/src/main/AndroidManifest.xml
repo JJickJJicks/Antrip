@@ -119,8 +119,6 @@
             android:name=".ui.function.AuthorityAddActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog" />
-        <activity
-            android:name=".map.TempDirectionActivity" />
 
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
 
@@ -146,9 +144,8 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity android:name=".ui.function.DestinationDetailActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".map.DestinationDetailActivity"
+            android:screenOrientation="portrait"/>
 
         <uses-library
             android:name="org.apache.http.legacy"

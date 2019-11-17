@@ -38,8 +38,8 @@ import teamprj.antrip.R;
 import teamprj.antrip.adapter.ExpandableListAdapter;
 import teamprj.antrip.data.model.Plan;
 import teamprj.antrip.data.model.Travel;
+import teamprj.antrip.map.DestinationDetailActivity;
 import teamprj.antrip.map.GoogleMapFragment;
-import teamprj.antrip.map.TempDirectionActivity;
 
 
 public class TravelPlanActivity extends AppCompatActivity implements ExpandableListAdapter.OnStartDragListner {
@@ -281,7 +281,8 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                     Log.d("calcList", calcList.get(i).getName() + ", " + calcList.get(i).isAccommodation() + ", " +
                             calcList.get(i).getLatitude() + ", " + calcList.get(i).getLongitude());
                 }
-                Intent intent = new Intent(getApplicationContext(), TempDirectionActivity.class);
+                Intent intent = new Intent(getApplicationContext(), DestinationDetailActivity.class);
+                intent.putExtra("TripName", tripName);
                 startActivity(intent);
                 return true;
             }
@@ -371,7 +372,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 
     private void clickSaveButton(boolean isFinish) {
         if (!isAccommodationSelected()) {
-            OkAlertDialog.viewOkAlertDialogFinish(TravelPlanActivity.this, "숙소를 선택하지 않았습니다.", "각 일차별로 숙소를 지정해주시기 바랍니다.", isFinish);
+            OkAlertDialog.viewOkAlertDialog(TravelPlanActivity.this, "숙소를 선택하지 않았습니다.", "각 일차별로 숙소를 지정해주시기 바랍니다.");
         } else {
             savePlan(isFinish);
         }

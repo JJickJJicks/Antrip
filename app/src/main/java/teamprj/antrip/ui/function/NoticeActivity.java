@@ -29,9 +29,9 @@ import teamprj.antrip.adapter.NoticeAdapter;
 import teamprj.antrip.data.model.Notice;
 
 public class NoticeActivity extends AppCompatActivity {
-    RecyclerView recyclerView;
-    RecyclerView.Adapter adapter;
-    RecyclerView.LayoutManager layoutManager;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
     private static final String ADMINTYPE = "1";
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference("notice");

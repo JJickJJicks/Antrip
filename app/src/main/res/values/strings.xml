@@ -18,6 +18,7 @@
     <string name="menu_contact">문의하기</string>
     <string name="menu_manage">설정</string>
     <string name="menu_notice">공지사항</string>
+    <string name="fail_destination">내용이 없거나 불러올 수 없습니다.</string>
     <string name="fail_notice">공지사항을 불러올 수 없습니다.</string>
     <string name="notice_title_hint">공지사항 제목을 입력하세요.</string>
     <string name="notice_content_hint">내용을 입력하세요.</string>
