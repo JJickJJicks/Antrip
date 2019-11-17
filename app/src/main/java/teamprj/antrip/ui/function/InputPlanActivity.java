@@ -70,8 +70,8 @@ public class InputPlanActivity extends FragmentActivity {
                 if (place == null) {
                     OkAlertDialog.viewOkAlertDialog(InputPlanActivity.this, "장소를 선택하지 않았습니다.", "장소를 선택해주시기 바랍니다.");
                 } else if (accommodationCheck.isChecked() && TravelPlanActivity.checkAccommodation(index) == -1) {
-                    OkAlertDialog.viewOkAlertDialog(InputPlanActivity.this, "숙소를 이미 선택하셨습니다.", "숙소는 최대 두 군데 까지만 지정할 수 있습니다.");
-                } else if (!TravelPlanActivity.checkDuplicateData(place.getName(), getCountry(place))) {
+                    OkAlertDialog.viewOkAlertDialog(InputPlanActivity.this, "숙소를 이미 선택하셨습니다.", "숙소는 한 군데만 선택할 수 있습니다.");
+                } else if (!TravelPlanActivity.checkDuplicateData(index, place.getName(), getCountry(place))) {
                     OkAlertDialog.viewOkAlertDialog(InputPlanActivity.this, "이미 선택한 여행지 입니다.", "같은 여행지는 추가할 수 없습니다.");
                 } else {
                     finish();

@@ -31,6 +31,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView;
     private static GoogleMap googleMap;
     private static HashMap<String, Marker> markerHashMap;
+    private static HashMap<String, Integer> coutHashMap;
     private static LatLngBounds.Builder builder;
 
     public GoogleMapFragment() {
@@ -47,6 +48,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         builder = new LatLngBounds.Builder();
         markerHashMap = new HashMap<>();
+        coutHashMap = new HashMap<>();
     }
 
     @Override
@@ -85,29 +87,50 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public static void selectPlace(LatLng latLng, String name, String country) {
-        MarkerOptions markerOption = new MarkerOptions().position(latLng).title(name);
-        Marker marker = googleMap.addMarker(markerOption);
+        String key = name + ", " + country;
 
-        builder.include(latLng);
+        if (markerHashMap.containsKey(key)) {
+            Integer count = coutHashMap.get(key);
+            if (count != null) {
+                coutHashMap.put(key, count + 1);
+            } else {
+                coutHashMap.put(key, 1);
+            }
+
+        } else {
+            MarkerOptions markerOption = new MarkerOptions().position(latLng).title(key);
+            Marker marker = googleMap.addMarker(markerOption);
+
+            builder.include(latLng);
+
+            markerHashMap.put(key, marker);
+            coutHashMap.put(key, 1);
+        }
         LatLngBounds bounds = builder.build();
 
         googleMap.setPadding(0, 100, 0, 0);
         googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds,17));
-        markerHashMap.put(name + country, marker);
     }
 
     public static void removePlace(String name, String country) {
-        if (markerHashMap.containsKey(name + country)) {
-            markerHashMap.get(name + country).remove();
-            markerHashMap.remove(name + country);
+        String key = name + ", " + country;
 
-            builder = new LatLngBounds.Builder();
-            if (markerHashMap.size() > 0) {
-                for (Marker marker : markerHashMap.values()) {
-                    builder.include(marker.getPosition());
+        if (markerHashMap.containsKey(key)) {
+            Integer count = coutHashMap.get(key);
+            if (count != null && count > 1) {
+                coutHashMap.put(key, count - 1);
+            } else {
+                markerHashMap.get(key).remove();
+                markerHashMap.remove(key);
+
+                builder = new LatLngBounds.Builder();
+                if (markerHashMap.size() > 0) {
+                    for (Marker marker : markerHashMap.values()) {
+                        builder.include(marker.getPosition());
+                    }
+                    LatLngBounds bounds = builder.build();
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 17));
                 }
-                LatLngBounds bounds = builder.build();
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 17));
             }
         }
     }

@@ -326,12 +326,10 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
     }
 
     public static int checkAccommodation(int position) {
-        int count = 0;
         for (int i = position; i >= 0; i--) {
             if (data.get(i).type == ExpandableListAdapter.DATA) {
                 if (data.get(i).accommodation) {
-                    count++;
-                    if (count >= 2) return -1;
+                    return -1;
                 }
             } else if (data.get(i).type == ExpandableListAdapter.HEADER) {
                 break;
@@ -340,10 +338,15 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         return 0;
     }
 
-    public static boolean checkDuplicateData(String name, String country) {
-        for (ExpandableListAdapter.Item item : data) {
-            if (item.name.equals(name) && item.country.equals(country))
-                return false;
+    public static boolean checkDuplicateData(int index, String name, String country) {
+        for (int i = index; i >= 0; i--) {
+            if (data.get(i).type == ExpandableListAdapter.DATA) {
+                if (data.get(i).name.equals(name) && data.get(i).country.equals(country)) {
+                    return false;
+                }
+            } else if (data.get(i).type == ExpandableListAdapter.HEADER) {
+                return true;
+            }
         }
         return true;
     }
