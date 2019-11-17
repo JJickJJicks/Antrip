@@ -29,10 +29,10 @@ import teamprj.antrip.R;
 public class InputPlanActivity extends FragmentActivity {
 
     Intent intent;
-    int index;
-    Place place;
-    LatLng latLng;
-    CheckBox accommodationCheck;
+    private int index;
+    private Place place;
+    private LatLng latLng;
+    private CheckBox accommodationCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -33,13 +33,11 @@ import teamprj.antrip.R;
 import teamprj.antrip.data.model.Plan;
 
 public class AuthorityAddActivity extends Activity {
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference();
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    String userName = user.getEmail().replace(".", "_");
-    List<String> authList;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = database.getReference();
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String userName = user.getEmail().replace(".", "_");
+    private List<String> authList;
 
     ProgressDialog progressDialog;
 
@@ -63,14 +61,14 @@ public class AuthorityAddActivity extends Activity {
 
         emailEditText = findViewById(R.id.auth_add_emailText);
 
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() == null) {
-                }
-            }
-        };
+//        mAuth = FirebaseAuth.getInstance();
+//        mAuthListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                if (firebaseAuth.getCurrentUser() == null) {
+//                }
+//            }
+//        };
 
         changePassword = findViewById(R.id.auth_add_confirmBtn);
 
