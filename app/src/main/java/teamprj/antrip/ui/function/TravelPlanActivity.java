@@ -118,40 +118,41 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 
         if (intent.getStringExtra("savedTrip").equals("true")) { // 이미 저장된 여행
             myRef.child("plan").child(userName).child(tripName).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Plan plan = dataSnapshot.getValue(Plan.class);
-                        period = plan.getPeriod();
-                        start_date = plan.getStart_date();
-                        end_date = plan.getEnd_date();
-                        HashMap<String, ArrayList<Travel>> planHashMap = plan.getTravel();
-                        for (int i = 1; i <= plan.getPeriod(); i++) {
-                            ArrayList<Travel> travelList = planHashMap.get(i + "_day");
-                            headerText = headerText.replace(Integer.toString(i - 1), Integer.toString(i));
-                            data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, headerText));
-                            for (int j = 0; j < travelList.size(); j++) {
-                                String name = travelList.get(j).getName();
-                                String country = travelList.get(j).getCountry();
-                                LatLng latLng = new LatLng(travelList.get(j).getLatitude(), travelList.get(j).getLongitude());
-                                data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.DATA,
-                                        name, country, latLng, travelList.get(j).isAccommodation()));
-                                GoogleMapFragment.selectPlace(latLng, name, country);
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Plan plan = dataSnapshot.getValue(Plan.class);
+                            period = plan.getPeriod();
+                            start_date = plan.getStart_date();
+                            end_date = plan.getEnd_date();
+                            HashMap<String, ArrayList<Travel>> planHashMap = plan.getTravel();
+                            for (int i = 1; i <= plan.getPeriod(); i++) {
+                                ArrayList<Travel> travelList = planHashMap.get(i + "_day");
+                                headerText = headerText.replace(Integer.toString(i - 1), Integer.toString(i));
+                                data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, headerText));
+                                for (int j = 0; j < travelList.size(); j++) {
+                                    String name = travelList.get(j).getName();
+                                    String country = travelList.get(j).getCountry();
+                                    LatLng latLng = new LatLng(travelList.get(j).getLatitude(), travelList.get(j).getLongitude());
+                                    data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.DATA,
+                                            name, country, latLng, travelList.get(j).isAccommodation()));
+                                    GoogleMapFragment.selectPlace(latLng, name, country);
+                                }
+                                data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "추가"));
                             }
-                            data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "추가"));
-                        }
-                        mAdapter = new ExpandableListAdapter(data, thisListener);
+                            mAdapter = new ExpandableListAdapter(data, thisListener);
 
-                        ItemTouchHelperCallback mCallback = new ItemTouchHelperCallback(mAdapter);
-                        mItemTouchHelper = new ItemTouchHelper(mCallback);
-                        mItemTouchHelper.attachToRecyclerView(recyclerview);
-                        recyclerview.setAdapter(mAdapter);
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d("ErrorTravelPlanActivity", "data receive error");
-                    }
-                });
+                            ItemTouchHelperCallback mCallback = new ItemTouchHelperCallback(mAdapter);
+                            mItemTouchHelper = new ItemTouchHelper(mCallback);
+                            mItemTouchHelper.attachToRecyclerView(recyclerview);
+                            recyclerview.setAdapter(mAdapter);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.d("ErrorTravelPlanActivity", "data receive error");
+                        }
+                    });
         } else {
             start_date = intent.getStringExtra("start_date");
             end_date = intent.getStringExtra("end_date");
@@ -193,6 +194,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                             authList = new ArrayList<>();
                         }
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         Log.d("ErrorTravelPlanActivity", "data receive error");
@@ -281,9 +283,11 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                     Log.d("calcList", calcList.get(i).getName() + ", " + calcList.get(i).isAccommodation() + ", " +
                             calcList.get(i).getLatitude() + ", " + calcList.get(i).getLongitude());
                 }
-                Intent intent = new Intent(getApplicationContext(), DestinationDetailActivity.class);
-                intent.putExtra("TripName", tripName);
-                startActivity(intent);
+                if (isAccommodationSelected()) {
+                    savePlan();
+                } else {
+                    OkAlertDialog.viewOkAlertDialog(TravelPlanActivity.this, "숙소를 선택하지 않았습니다.", "각 일차별로 숙소를 지정해주시기 바랍니다.");
+                }
                 return true;
             }
         }
@@ -312,7 +316,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         builder.show();
     }
 
-    public static void addItem(int index, String name, String country, LatLng latLng, boolean accommodation){
+    public static void addItem(int index, String name, String country, LatLng latLng, boolean accommodation) {
         data.add(index, new ExpandableListAdapter.Item(ExpandableListAdapter.DATA, name, country, latLng, accommodation));
         if (accommodation) {
             index = mAdapter.moveAccommodation(index);
@@ -361,8 +365,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                     if (!invisibleChild.get(0).accommodation) { // 접힌 데이터 중 첫번째
                         return false;
                     }
-                }
-                else if (!data.get(i + 1).accommodation) {
+                } else if (!data.get(i + 1).accommodation) {
                     return false;
                 }
             }
@@ -378,14 +381,12 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         }
     }
 
-    private void savePlan(final boolean isFinish)
-    {
+    private void savePlan(final boolean isFinish) {
         final LinkedHashMap<String, ArrayList<Travel>> travelMap = new LinkedHashMap<>();
         ArrayList<Travel> travelLIst = new ArrayList<>();
         int day = 0;
         try {
-            for (int i = 0; i < data.size(); i++)
-            {
+            for (int i = 0; i < data.size(); i++) {
                 int type = data.get(i).type;
                 String name = data.get(i).name;
                 String country = data.get(i).country;
@@ -394,17 +395,16 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 if (type == ExpandableListAdapter.CHILD) {
                     // 한 일차의 마지막 지점
                     day++;
-                    travelMap.put(day +"_day", travelLIst);
+                    travelMap.put(day + "_day", travelLIst);
                     travelLIst = new ArrayList<>();
-                }
-                else if (type == ExpandableListAdapter.HEADER) {
+                } else if (type == ExpandableListAdapter.HEADER) {
                     List<ExpandableListAdapter.Item> invisibleChild = data.get(i).invisibleChildren;
                     if (invisibleChild != null) {
                         for (int j = 0; j < invisibleChild.size(); j++) {
                             if (invisibleChild.get(j).type == ExpandableListAdapter.CHILD) {
                                 // 접힌 부분의 추가 버튼
                                 day++;
-                                travelMap.put(day +"_day", travelLIst);
+                                travelMap.put(day + "_day", travelLIst);
                                 travelLIst = new ArrayList<>();
                             } else {
                                 LatLng latLng = invisibleChild.get(j).latLng;
@@ -412,8 +412,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                             }
                         }
                     }
-                }
-                else if (type == ExpandableListAdapter.DATA) {
+                } else if (type == ExpandableListAdapter.DATA) {
                     LatLng latLng = data.get(i).latLng;
                     travelLIst.add(new Travel(name, country, latLng.latitude, latLng.longitude, accommodation));
                 }
@@ -441,6 +440,75 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                                 setResult(RESULT_OK, intent);
                                 finish();
                             }
+                        }
+                    });
+            builder.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void savePlan() {
+        final LinkedHashMap<String, ArrayList<Travel>> travelMap = new LinkedHashMap<>();
+        ArrayList<Travel> travelLIst = new ArrayList<>();
+        int day = 0;
+        try {
+            for (int i = 0; i < data.size(); i++) {
+                int type = data.get(i).type;
+                String name = data.get(i).name;
+                String country = data.get(i).country;
+                boolean accommodation = data.get(i).accommodation;
+
+                if (type == ExpandableListAdapter.CHILD) {
+                    // 한 일차의 마지막 지점
+                    day++;
+                    travelMap.put(day + "_day", travelLIst);
+                    travelLIst = new ArrayList<>();
+                } else if (type == ExpandableListAdapter.HEADER) {
+                    List<ExpandableListAdapter.Item> invisibleChild = data.get(i).invisibleChildren;
+                    if (invisibleChild != null) {
+                        for (int j = 0; j < invisibleChild.size(); j++) {
+                            if (invisibleChild.get(j).type == ExpandableListAdapter.CHILD) {
+                                // 접힌 부분의 추가 버튼
+                                day++;
+                                travelMap.put(day + "_day", travelLIst);
+                                travelLIst = new ArrayList<>();
+                            } else {
+                                LatLng latLng = invisibleChild.get(j).latLng;
+                                travelLIst.add(new Travel(invisibleChild.get(j).name, country, latLng.latitude, latLng.longitude, accommodation));
+                            }
+                        }
+                    }
+                } else if (type == ExpandableListAdapter.DATA) {
+                    LatLng latLng = data.get(i).latLng;
+                    travelLIst.add(new Travel(name, country, latLng.latitude, latLng.longitude, accommodation));
+                }
+            }
+            Plan plan = new Plan();
+            plan.setAuthority(authList);
+            plan.setPeriod(period);
+            plan.setTravel(travelMap);
+            final HashMap<String, ArrayList<Travel>> finalMap = travelMap;
+            plan.setStart_date(start_date);
+            plan.setEnd_date(end_date);
+            plan.setSave(true);
+            myRef.child("plan").child(userName).child(tripName).setValue(plan);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle("저장 완료");
+            builder.setMessage("저장이 완료되었습니다.");
+            builder.setPositiveButton("확인",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent();
+                            intent.putExtra("plan", finalMap);
+                            setResult(RESULT_OK, intent);
+
+                            Intent intent2 = new Intent(getApplicationContext(), DestinationDetailActivity.class);
+                            intent2.putExtra("TripName", tripName);
+                            startActivity(intent2);
                         }
                     });
             builder.show();

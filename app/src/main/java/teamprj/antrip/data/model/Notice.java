@@ -3,16 +3,15 @@ package teamprj.antrip.data.model;
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class Notice {
-    private String id;
+    private String author;
     private String title;
     private String date;
     private String content;
 
-    public Notice(String id, String title, String date, String content) {
-        this.id = id;
+    public Notice(String author, String title, String date, String content) {
+        this.author = author;
         this.title = title;
         this.date = date;
         this.content = content;
@@ -22,12 +21,12 @@ public class Notice {
 
     }
 
-    public String getId() {
-        return id;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String author) {
+        this.author = author;
     }
 
     public String getTitle() {
@@ -57,7 +56,7 @@ public class Notice {
     @Exclude
     public HashMap<String, String> toMap(){
         HashMap<String, String> result = new HashMap<>();
-        result.put("id", id);
+        result.put("author", author);
         result.put("title", title);
         result.put("date", date);
         result.put("content", content);
