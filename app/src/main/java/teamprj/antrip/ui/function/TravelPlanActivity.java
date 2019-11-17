@@ -25,18 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,12 +34,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import teamprj.antrip.BuildConfig;
 import teamprj.antrip.R;
 import teamprj.antrip.adapter.ExpandableListAdapter;
 import teamprj.antrip.data.model.Plan;
 import teamprj.antrip.data.model.Travel;
 import teamprj.antrip.map.GoogleMapFragment;
+import teamprj.antrip.map.TempDirectionActivity;
 
 
 public class TravelPlanActivity extends AppCompatActivity implements ExpandableListAdapter.OnStartDragListner {
@@ -349,6 +338,8 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                     Log.d("calcList", calcList.get(i).getName() + ", " + calcList.get(i).isAccommodation() + ", " +
                             calcList.get(i).getLatitude() + ", " + calcList.get(i).getLongitude());
                 }
+                Intent intent = new Intent(getApplicationContext(), TempDirectionActivity.class);
+                startActivity(intent);
                 return true;
             }
         }
