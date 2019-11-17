@@ -207,6 +207,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         for (int i = 0, j = -1; i < data.size(); i++) {
             if (data.get(i).type == ExpandableListAdapter.HEADER) {
                 j++;
+                listArr[j] = new ArrayList<>();
             } else if (data.get(i).type == ExpandableListAdapter.DATA) {
                 listArr[j].add(data.get(i).name);
             }
@@ -214,18 +215,11 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 
         for (int i = 0; i < date; i++) {
             final int day = i + 1;
-            list = listArr[i];
-            //distance = new long[list.size()][list.size()];
+            list = new ArrayList<>();
+            list.addAll(listArr[i]);
+
             new Thread() {
                 public void run() {
-                    /*
-                    for (int j = 0; j < list.size(); j++) {
-                        for (int k = 0; k < list.size(); k++) {
-                            distance[j][k] = parseInfo(parsejson(list.get(j), list.get(k)));
-                        }
-                    }
-                     */
-
                     EAX eax = new EAX(list);
                     ArrayList<Integer> orderRs = eax.run();
 
@@ -234,7 +228,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                         nameRs.add(list.get(orderRs.get(j)));
                     }
                     list = (ArrayList<String>) nameRs.clone();
-                    // TODO : (진현씨 업무) 위의 distance 정보를 이용해서 ArrayList<String>으로 정의된 여행 리스트 list를 정렬해야 함.
 
                     Bundle bun = new Bundle();
                     bun.putStringArrayList("Travel_Data", list);
@@ -247,62 +240,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             }.start();
         }
     }
-
-    /*
-    private long parseInfo(String json) {
-        long time = -1;
-        Log.d("jsonErr", json);
-        try {
-            if (new JSONObject(json).get("status").equals("OK")) {
-                JSONArray rtarr = new JSONObject(json).getJSONArray("routes");
-                JSONObject route = (JSONObject) rtarr.get(0);
-                JSONArray legsarr = (JSONArray) route.get("legs");
-                JSONObject legs = (JSONObject) legsarr.get(0);
-                JSONObject duration = (JSONObject) legs.get("duration");
-                time = (long) duration.get("value");
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return time;
-    }
-
-    private String parsejson(String start, String end) {
-        try {
-            url = new URL("https://maps.googleapis.com/maps/api/directions/json?origin=" + start + "&destination=" + end + "&mode=transit&key=" + BuildConfig.places_api_key);
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                InputStreamReader tmp = new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8);
-                BufferedReader reader = new BufferedReader(tmp);
-                StringBuffer buffer = new StringBuffer();
-                while ((str = reader.readLine()) != null) {
-                    buffer.append(str);
-                }
-                receiveMsg = buffer.toString();
-                Log.i("receiveMsg : ", receiveMsg);
-
-                reader.close();
-            } else {
-                Log.i("통신 결과", conn.getResponseCode() + "에러");
-            }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return receiveMsg;
-    }
-
-     */
-
-
 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder holder) {
@@ -327,6 +264,8 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 return true;
             }
             case R.id.action_calc_title: {
+                sort(period);
+
                 List<Travel> calcList = new ArrayList<>();
                 for (int i = 0; i < data.size(); i++) {
                     ExpandableListAdapter.Item getData = data.get(i);
