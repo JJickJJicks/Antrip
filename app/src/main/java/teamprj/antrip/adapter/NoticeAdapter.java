@@ -53,6 +53,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
                         intent.putExtra("articleTitle", noticeList.get(position).getTitle());
                         intent.putExtra("articleDate", noticeList.get(position).getDate());
                         intent.putExtra("articleContent", noticeList.get(position).getContent());
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
                 }

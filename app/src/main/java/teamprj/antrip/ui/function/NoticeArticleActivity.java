@@ -2,6 +2,7 @@ package teamprj.antrip.ui.function;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -17,9 +18,9 @@ public class NoticeArticleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notice_article);
 
         Intent intent = getIntent();
-        String main_title = intent.getStringExtra("main_title");
-        String sub_title = intent.getStringExtra("sub_title");
-        String contents = intent.getStringExtra("contents");
+        String main_title = intent.getStringExtra("articleTitle");
+        String sub_title = intent.getStringExtra("articleDate");
+        String contents = intent.getStringExtra("articleContent");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView temp = findViewById(R.id.main_title);

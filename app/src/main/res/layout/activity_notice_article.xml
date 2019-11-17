@@ -61,7 +61,6 @@
         android:backgroundTint="@color/colorBlack"
         android:src="@drawable/ic_edit"
         android:visibility="invisible"
-        android:onClick="onClick"
         app:elevation="6dp"
         app:pressedTranslationZ="10dp" />
 
@@ -73,7 +72,6 @@
         android:layout_marginRight="10dp"
         android:layout_gravity="bottom|right"
         android:backgroundTint="@color/colorBlack"
-        android:onClick="onClick"
         android:src="@drawable/ic_plus"
         android:visibility="invisible"/>
 </FrameLayout>
