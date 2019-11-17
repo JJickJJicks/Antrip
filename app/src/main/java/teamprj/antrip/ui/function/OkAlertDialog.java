@@ -3,10 +3,13 @@ package teamprj.antrip.ui.function;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.ContextThemeWrapper;
+
+import teamprj.antrip.R;
 
 public class OkAlertDialog {
     public static void viewOkAlertDialog(Context activity, String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.AppTheme));
 
         builder.setTitle(title);
         builder.setMessage(message);

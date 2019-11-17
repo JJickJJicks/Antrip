@@ -3,6 +3,7 @@ package teamprj.antrip.ui.function;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -82,13 +83,17 @@ public class AuthorityAddActivity extends Activity {
                             new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    String inputName = emailEditText.getText().toString();
                                     if (dataSnapshot.hasChild("authority")) {
                                         authList = (ArrayList) ((HashMap) dataSnapshot.getValue()).get("authority");
                                     }
-                                    if (authList.contains(emailEditText.getText().toString())) {
+                                    if (inputName.equals(userName)) {
+                                        OkAlertDialog.viewOkAlertDialog(AuthorityAddActivity.this, "추가 실패", "자신의 이메일은 추가할 수 없습니다.");
+                                    }
+                                    else if (authList.contains(inputName)) {
                                         OkAlertDialog.viewOkAlertDialog(AuthorityAddActivity.this, "추가 실패", "이미 추가된 이메일 입니다.");
                                     } else {
-                                        authList.add(emailEditText.getText().toString());
+                                        authList.add(inputName);
                                         myRef.child("plan").child(userName).child(tripName).child("authority").setValue(authList);
                                         OkAlertDialog.viewOkAlertDialog(AuthorityAddActivity.this, "추가 성공", "추가가 완료되었습니다.");
                                     }
