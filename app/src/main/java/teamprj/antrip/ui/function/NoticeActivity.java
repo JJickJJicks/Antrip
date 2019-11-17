@@ -1,13 +1,14 @@
 package teamprj.antrip.ui.function;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,10 +29,11 @@ import teamprj.antrip.adapter.NoticeAdapter;
 import teamprj.antrip.data.model.Notice;
 
 public class NoticeActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private static final String ADMINTYPE = "1";
+    final private static int NOTICE_CREATE = 20;
+
+    RecyclerView recyclerView;
+    RecyclerView.Adapter adapter;
+    final private String ADMIN_TYPE = "1";
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference("notice");
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -40,6 +41,7 @@ public class NoticeActivity extends AppCompatActivity {
     private ArrayList<Notice> noticeList = new ArrayList<>();
     private FloatingActionButton fab;
     private String type = "1";
+    private LinearLayout li_fail;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -47,7 +49,7 @@ public class NoticeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
 
-        final LinearLayout li_fail = findViewById(R.id.notice_fail);
+        li_fail = findViewById(R.id.notice_fail);
 
         curntUserInfo.orderByChild("email").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -68,40 +70,71 @@ public class NoticeActivity extends AppCompatActivity {
 
 
         fab = findViewById(R.id.notice_fab);
+        recyclerView = findViewById(R.id.notice_recycler_view);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        if (type.equals(ADMINTYPE))
-        {
+        if (type.equals(ADMIN_TYPE)) {
             fab.setVisibility(View.VISIBLE);
         }
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    li_fail.setVisibility(View.GONE);
-                } else {
-                    li_fail.setVisibility(View.VISIBLE);
-                }
-                for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-                    Notice notice = dataSnapshot.getValue(Notice.class);
-                    noticeList.add(notice);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), NoticeCreateActivity.class);
+                startActivityForResult(intent, NOTICE_CREATE);
             }
         });
 
-        recyclerView = findViewById(R.id.notice_recycler_view);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    li_fail.setVisibility(View.INVISIBLE);
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Notice notice = snapshot.getValue(Notice.class);
+                        noticeList.add(notice);
+                    }
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    adapter = new NoticeAdapter(noticeList, getApplicationContext());
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    li_fail.setVisibility(View.VISIBLE);
+                }
+            }
 
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-        adapter = new NoticeAdapter(noticeList, this);
-        recyclerView.setAdapter(adapter);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == NOTICE_CREATE && resultCode == RESULT_OK) {
+            noticeList.clear();
+
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Notice notice = snapshot.getValue(Notice.class);
+                        noticeList.add(notice);
+                    }
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    adapter = new NoticeAdapter(noticeList, getApplicationContext());
+                    recyclerView.setAdapter(adapter);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     @Override
