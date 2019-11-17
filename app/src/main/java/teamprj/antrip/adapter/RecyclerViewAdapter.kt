@@ -1,6 +1,8 @@
 package teamprj.antrip.adapter
 
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import com.test.ui_practice.helper.SwipeAndDragHelper
 import kotlinx.android.synthetic.main.item_card_view.view.*
 import teamprj.antrip.R
 import teamprj.antrip.data.model.MyPlan
+import teamprj.antrip.ui.function.DestinationDetailActivity
 
 class RecyclerViewAdapter(private val data: ArrayList<MyPlan>) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(), SwipeAndDragHelper.ActionCompletionContract {
     private val TAG = "MyPlanRecyclerView"
@@ -46,6 +49,12 @@ class RecyclerViewAdapter(private val data: ArrayList<MyPlan>) : RecyclerView.Ad
                     touchHelper.startDrag(holder)
                     true
                 }
+
+                setOnClickListener {
+                    var intent = Intent(mContext, DestinationDetailActivity::class.java)
+                    intent.putExtra("TripName", tv_title.text.toString())
+                    mContext.startActivity(intent)
+                }
             }
         }
     }
@@ -56,10 +65,12 @@ class RecyclerViewAdapter(private val data: ArrayList<MyPlan>) : RecyclerView.Ad
     }
 
     override fun onViewSwiped(position: Int) {
-        data.removeAt(position)
+        Log.d("size1", data.size.toString())
         myRef.child(data[position].tripName).removeValue()
+        data.remove(data[position])
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, data.size)
+        Log.d("size2", data.size.toString())
     }
 
     fun setTouchHelper(touchHelper: ItemTouchHelper) {

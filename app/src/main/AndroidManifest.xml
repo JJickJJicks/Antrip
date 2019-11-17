@@ -146,6 +146,10 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity android:name=".ui.function.DestinationDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
