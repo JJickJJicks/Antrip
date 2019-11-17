@@ -50,12 +50,12 @@ class DestinationAdapter(private val data: ArrayList<PlaceInfo>, var googleMapFr
                     val origin = LatLng(item.lat, item.lon)
                     if(position == data.size - 1) {
                         val destination = LatLng(data[0].lat, data[0].lon)
-                        Log.d(TAG, "${item.name}, ${data[0].name}")
+                        Log.d(TAG, "${item.name}, ${data[0].name}, ${item.lat}, ${item.lon}, ${data[0].lat}, ${data[0].lon}")
                         googleMapFragment.draw(origin, destination, item.name, data[0].name)
 
                     } else {
-                        val destination = LatLng(data[position+1].lat, data[position].lon)
-                        Log.d(TAG, "${item.name}, ${data[position+1].name}")
+                        val destination = LatLng(data[position+1].lat, data[position+1].lon)
+                        Log.d(TAG, "${item.name}, ${data[position+1].name}, ${item.lat}, ${item.lon}, ${data[position+1].lat}, ${data[position+1].lon}")
                         googleMapFragment.draw(origin, destination, item.name, data[position+1].name)
                     }
                 }
