@@ -220,17 +220,21 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 
             new Thread() {
                 public void run() {
-                    EAX eax = new EAX(list);
-                    ArrayList<Integer> orderRs = eax.run();
+//                    EAX eax = new EAX(list);
+//                    ArrayList<Integer> orderRs = eax.run();
+//
+//                    ArrayList<String> nameRs = new ArrayList<>();
+//                    for(int j=0;j<orderRs.size();j++){
+//                        nameRs.add(list.get(orderRs.get(j)));
+//                    }
+//                    list = (ArrayList<String>) nameRs.clone();
 
-                    ArrayList<String> nameRs = new ArrayList<>();
-                    for(int j=0;j<orderRs.size();j++){
-                        nameRs.add(list.get(orderRs.get(j)));
-                    }
-                    list = (ArrayList<String>) nameRs.clone();
+                    TempShortCut tempShortCut = new TempShortCut(list);
+                    ArrayList<String> result = tempShortCut.tsp();
+                    Log.d("JsonCheck", result.toString());
 
                     Bundle bun = new Bundle();
-                    bun.putStringArrayList("Travel_Data", list);
+                    bun.putStringArrayList("Travel_Data", result);
                     bun.putInt("date", day);
 
                     Message msg = handler.obtainMessage();
