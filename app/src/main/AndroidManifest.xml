@@ -150,7 +150,8 @@
             android:name=".ui.function.NoticeCreateActivity"
             android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".ui.function.DestinationDetailActivity"
+        <activity
+            android:name=".map.DestinationDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
