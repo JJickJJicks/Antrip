@@ -191,19 +191,37 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             for (int j = 0; j < data.size(); j++) { // Header 탐색(일차 찾아가기)
                 if (data.get(j).type == ExpandableListAdapter.HEADER) {
                     days++;
-                    if (days == date) {
+                    if (days == day) {
                         startPosition = j + 1;      // j는 Header 위치이므로 Data 부터 접근하기 위해 + 1
                         break;
                     }
                 }
             }
-            for (int k = 0; k < result.size(); k++) {
-                for (int j = startPosition; j < data.size(); j++) {
-                    if (data.get(j).name.equals(result.get(k))) {
-                        mAdapter.onItemMove(startPosition + k, j);
+//            for (int k = 0; k < result.size(); k++) {
+//                for (int j = startPosition; j < data.size(); j++) {
+//                    if (data.get(j).name.equals(result.get(k))) {
+//                        mAdapter.onItemMove(startPosition + k, j);
+//                        break;
+//                    }
+//                }
+//            }
+
+            List<ExpandableListAdapter.Item> tempData = new ArrayList<>();
+
+            for (int k = 1; k < result.size(); k++) {
+                for (int n = startPosition; n < data.size(); n++) {
+                    if (data.get(n).name.equals(result.get(k))) {
+//                        mAdapter.onItemMove(startPosition + i, j);
+                        tempData.add(data.get(n));
+                        data.remove(n);
                         break;
                     }
                 }
+            }
+
+            for (int k = 1; k < tempData.size(); k++) {
+                ExpandableListAdapter.Item it = tempData.get(k);
+                data.add(startPosition + k, it);
             }
         }
     }
@@ -233,6 +251,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             case R.id.action_calc_title: {
                 sort(period);
 
+                recyclerview.setAdapter(mAdapter);
                 List<Travel> calcList = new ArrayList<>();
                 for (int i = 0; i < data.size(); i++) {
                     ExpandableListAdapter.Item getData = data.get(i);
