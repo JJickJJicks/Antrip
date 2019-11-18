@@ -1,5 +1,6 @@
 package teamprj.antrip.ui.function;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -16,6 +17,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 import teamprj.antrip.BuildConfig;
 
@@ -105,59 +107,72 @@ public class TempShortCut {
 
         for (int i = 0; i < travelList.size(); i++) {
             for (int j = 0; j < travelList.size(); j++) {
-                result[i][j] = parsejson(travelList.get(i), travelList.get(j));
+                try {
+                    result[i][j] = new Task().execute(travelList.get(i), travelList.get(j)).get();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
         return result;
     }
 
-    private int parsejson(String start, String end) {
-        try {
-            url = new URL("https://maps.googleapis.com/maps/api/directions/json?origin=" + start + "&destination=" + end + "&mode=transit&key=" + BuildConfig.places_api_key);
+    class Task extends AsyncTask<String, Void, Integer> {
+        private URL url = null;
+        private String str, receiveMsg;
 
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
+        @Override
+        protected Integer doInBackground(String... strings) {
+            String start = strings[0];
+            String end = strings[1];
+            try {
+                url = new URL("https://maps.googleapis.com/maps/api/directions/json?origin=" + start + "&destination=" + end + "&mode=transit&key=" + BuildConfig.places_api_key);
 
-            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                InputStreamReader tmp = new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8);
-                BufferedReader reader = new BufferedReader(tmp);
-                StringBuffer buffer = new StringBuffer();
-                while ((str = reader.readLine()) != null) {
-                    buffer.append(str);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    InputStreamReader tmp = new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8);
+                    BufferedReader reader = new BufferedReader(tmp);
+                    StringBuffer buffer = new StringBuffer();
+                    while ((str = reader.readLine()) != null) {
+                        buffer.append(str);
+                    }
+                    receiveMsg = buffer.toString();
+
+                    reader.close();
+                } else {
+                    Log.i("통신 결과", conn.getResponseCode() + "에러");
                 }
-                receiveMsg = buffer.toString();
-//                Log.i("receiveMsg : ", receiveMsg);
-
-                reader.close();
-            } else {
-                Log.i("통신 결과", conn.getResponseCode() + "에러");
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            int time = -1;
+            try {
+                if (new JSONObject(receiveMsg).get("status").equals("OK")) {
+                    JSONArray rtarr = new JSONObject(receiveMsg).getJSONArray("routes");
+                    JSONObject route = (JSONObject) rtarr.get(0);
+                    JSONArray legsarr = (JSONArray) route.get("legs");
+                    JSONObject legs = (JSONObject) legsarr.get(0);
+                    JSONObject duration = (JSONObject) legs.get("duration");
+                    time = (int) duration.get("value");
+                } else
+                    Log.d("jsonErr", receiveMsg);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d("JsonResult", start + ", " + end + " : " + time);
+
+            return time;
         }
-
-        int time = -1;
-        try {
-            if (new JSONObject(receiveMsg).get("status").equals("OK")) {
-                JSONArray rtarr = new JSONObject(receiveMsg).getJSONArray("routes");
-                JSONObject route = (JSONObject) rtarr.get(0);
-                JSONArray legsarr = (JSONArray) route.get("legs");
-                JSONObject legs = (JSONObject) legsarr.get(0);
-                JSONObject duration = (JSONObject) legs.get("duration");
-                time = (int) duration.get("value");
-            } else
-                Log.d("jsonErr", receiveMsg);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("JsonResult", start + ", " + end + " : " + time);
-
-        return time;
     }
 }
