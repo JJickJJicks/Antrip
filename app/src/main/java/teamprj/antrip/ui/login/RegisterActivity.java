@@ -16,7 +16,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -168,10 +167,9 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
-    public void RegisterDB() {
+    private void RegisterDB() {
         //유저가 회원가입 때 입력한 사항들 DB에 추가
         final String email = emailText.getText().toString().trim();
-        final String name = nameText.getText().toString().trim();
         Member member = new Member(email, USER_TYPE, profile);
 
         final String userKey = email.replace(".", "_");

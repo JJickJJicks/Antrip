@@ -39,12 +39,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import teamprj.antrip.BuildConfig;
 import teamprj.antrip.R;
 import teamprj.antrip.adapter.ImageFragmentAdapter;
 import teamprj.antrip.data.model.LoginUserInfo;
+import teamprj.antrip.data.model.RecommandCity;
 import teamprj.antrip.fragment.ImageFragment;
 import teamprj.antrip.ui.function.MyPlanActivity;
 import teamprj.antrip.ui.function.NoticeActivity;
@@ -140,17 +142,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewPager.setPadding(margin, 0, margin, 0);
         viewPager.setPageMargin(margin/2);
 
-        ArrayList<Integer> listImage = new ArrayList<>();
-        listImage.add(R.drawable.img_sample4);
-        listImage.add(R.drawable.img_sample3);
-        listImage.add(R.drawable.img_sample2);
-        listImage.add(R.drawable.img_sample1);
+        HashMap<String, Integer> cityMap = new HashMap<>(RecommandCity.getRandomCity(4));
 
-        for (int i = 0; i < listImage.size(); i++) {
+        ArrayList<Integer> cityImageList = new ArrayList<>();
+        ArrayList<String> cityNameList = new ArrayList<>(Arrays.asList(cityMap.keySet().toArray(new String[0])));
+        for (String i : cityNameList) {
+            cityImageList.add(cityMap.get(i));
+        }
+
+        for (int i = 0; i < cityImageList.size(); i++) {
             ImageFragment imageFragment = new ImageFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("imgRes", listImage.get(i));
-            bundle.putString("text", "London");
+            bundle.putInt("imgRes", cityImageList.get(i));
+            bundle.putString("text", cityNameList.get(i));
             imageFragment.setArguments(bundle);
             fragmentAdapter.addItem(imageFragment);
         }
