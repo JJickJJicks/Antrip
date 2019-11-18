@@ -37,7 +37,7 @@ public class NoticeActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference("notice");
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private DatabaseReference curntUserInfo = database.getReference("users");
+    private DatabaseReference curntUserInfo;
     private ArrayList<Notice> noticeList = new ArrayList<>();
     private FloatingActionButton fab;
     private String type = "1";
@@ -50,15 +50,19 @@ public class NoticeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notice);
 
         li_fail = findViewById(R.id.notice_fail);
+        fab = findViewById(R.id.notice_fab);
 
-        curntUserInfo.orderByChild("email").addListenerForSingleValueEvent(new ValueEventListener() {
+        fab.setVisibility(View.INVISIBLE);
+
+        curntUserInfo = database.getReference("users").child(user.getEmail().replace(".", "_")).child("type");
+        curntUserInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    if (snapshot.child("email").getValue().equals(user.getEmail())) {
-                       type = snapshot.child("type").getValue().toString();
-                    }
-                }
+                type = dataSnapshot.getValue().toString();
+                if (type.equals(ADMIN_TYPE))
+                    fab.setVisibility(View.VISIBLE);
+                else
+                    fab.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -67,15 +71,9 @@ public class NoticeActivity extends AppCompatActivity {
             }
         });
 
-
-
-        fab = findViewById(R.id.notice_fab);
         recyclerView = findViewById(R.id.notice_recycler_view);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (type.equals(ADMIN_TYPE)) {
-            fab.setVisibility(View.VISIBLE);
-        }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
