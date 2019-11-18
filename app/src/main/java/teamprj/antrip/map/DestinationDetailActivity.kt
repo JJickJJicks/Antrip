@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_destination_detail.*
 import teamprj.antrip.R
 import teamprj.antrip.data.model.PlaceInfo
+import java.lang.NullPointerException
 
 class DestinationDetailActivity : AppCompatActivity() {
     private val TAG = "DestinationDetail"
@@ -28,6 +29,8 @@ class DestinationDetailActivity : AppCompatActivity() {
     private lateinit var data: ArrayList<PlaceInfo>
     private lateinit var sDate: String
     private lateinit var eDate: String
+    private var startPoint =  ArrayList<Int>()
+    private var dayCount = ArrayList<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +46,11 @@ class DestinationDetailActivity : AppCompatActivity() {
         var intent = intent
         val tripName = intent.extras.getString("TripName")
 
+        mContext = this
+
         data = ArrayList()
 
-        myRef.child(tripName).addValueEventListener(object : ValueEventListener {
+        myRef.child(tripName).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.child("save").value.toString() == "true") {
                     if (dataSnapshot.exists()) {
@@ -64,8 +69,19 @@ class DestinationDetailActivity : AppCompatActivity() {
                                 data.add(place)
                             }
                         }
-                        Log.d(TAG, "${data.size}")
-                        recyclerAdapter.notifyDataSetChanged()
+
+                        var tempCount = 0
+                        for (i in 0 until data.size) {
+                            if (data[i].num == 0) {
+                                tempCount++
+                                startPoint.add(i)
+                            }
+                            dayCount.add(tempCount)
+                        }
+
+                        recyclerAdapter = DestinationAdapter(data, googleMapFragment, dayCount, startPoint )
+                        rv_item_recycler_view.layoutManager = LinearLayoutManager(mContext)
+                        rv_item_recycler_view.adapter = recyclerAdapter
                     }
                 } else {
                     ll_date_linear_layout.visibility = View.GONE
@@ -77,9 +93,7 @@ class DestinationDetailActivity : AppCompatActivity() {
 
             }
         })
-        recyclerAdapter = DestinationAdapter(data, googleMapFragment)
-        rv_item_recycler_view.layoutManager = LinearLayoutManager(this)
-        rv_item_recycler_view.adapter = recyclerAdapter
+
     }
 }
 

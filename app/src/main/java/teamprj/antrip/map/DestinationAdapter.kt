@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_card_view_plan.view.*
 import teamprj.antrip.R
 import teamprj.antrip.data.model.PlaceInfo
 
-class DestinationAdapter(private val data: ArrayList<PlaceInfo>, var googleMapFragment: DirectionFragment) : RecyclerView.Adapter<DestinationAdapter.ViewHolder>() {
+class DestinationAdapter(private val data: ArrayList<PlaceInfo>, var googleMapFragment: DirectionFragment, val dayCount: ArrayList<Int>, val startPoint: ArrayList<Int>) : RecyclerView.Adapter<DestinationAdapter.ViewHolder>() {
     private val TAG = "MyPlanRecyclerView"
     private lateinit var mContext: Context
     private lateinit var touchHelper: ItemTouchHelper
@@ -22,7 +22,6 @@ class DestinationAdapter(private val data: ArrayList<PlaceInfo>, var googleMapFr
     private val database = FirebaseDatabase.getInstance()
     private val userName = user!!.email!!.replace(".", "_")
     private val myRef = database.getReference("plan").child(userName)
-    private var dayCount = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         mContext = parent.context
@@ -38,8 +37,7 @@ class DestinationAdapter(private val data: ArrayList<PlaceInfo>, var googleMapFr
             with(holder.itemView) {
                 if (item.num == 0) {
                     ll_day.visibility = View.VISIBLE
-                    tv_day.text = "${dayCount}Day"
-                    dayCount++
+                    tv_day.text = "${dayCount[position]}Day"
                 } else {
                     ll_day.visibility = View.GONE
                 }
@@ -48,23 +46,24 @@ class DestinationAdapter(private val data: ArrayList<PlaceInfo>, var googleMapFr
 
                 setOnClickListener {
                     val origin = LatLng(item.lat, item.lon)
-                    if(position == data.size - 1) {
-                        val destination = LatLng(data[0].lat, data[0].lon)
-                        Log.d(TAG, "${item.name}, ${data[0].name}, ${item.lat}, ${item.lon}, ${data[0].lat}, ${data[0].lon}")
-                        googleMapFragment.draw(origin, destination, item.name, data[0].name)
-
-                    } else {
-                        val destination = LatLng(data[position+1].lat, data[position+1].lon)
-                        Log.d(TAG, "${item.name}, ${data[position+1].name}, ${item.lat}, ${item.lon}, ${data[position+1].lat}, ${data[position+1].lon}")
-                        googleMapFragment.draw(origin, destination, item.name, data[position+1].name)
+                    when {
+                        position == data.size - 1 || data[position + 1].num == 0 -> {
+                            val destination = LatLng(data[startPoint[dayCount[position] - 1]].lat, data[startPoint[dayCount[position] - 1]].lon)
+                            Log.d(TAG, "${item.name}, ${data[startPoint[dayCount[position] - 1]].name}")
+                            googleMapFragment.draw(origin, destination, item.name, data[dayCount[position] - 1].name)
+                        }
+                        else -> {
+                            val destination = LatLng(data[position + 1].lat, data[position + 1].lon)
+                            Log.d(TAG, "${item.name}, ${data[position + 1].name}, ${item.lat}, ${item.lon}, ${data[position + 1].lat}, ${data[position + 1].lon}")
+                            googleMapFragment.draw(origin, destination, item.name, data[position + 1].name)
+                        }
                     }
+
                 }
             }
         }
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        init {
-        }
     }
 }
