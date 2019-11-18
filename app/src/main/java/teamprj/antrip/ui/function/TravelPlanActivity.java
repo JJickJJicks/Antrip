@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,37 +44,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
     private static List<ExpandableListAdapter.Item> data;
     private static RecyclerView recyclerview;
     private static ExpandableListAdapter mAdapter;
-    Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            Bundle bun = msg.getData();
-            ArrayList<String> list = bun.getStringArrayList("Travel_Data");
-            int date = bun.getInt("date");  // i가 0이라도 1일차니까 1로 전송되게 +1 시켰으니 주의!
-
-            int day = 0;
-            int startPosition = 0;
-            for (int j = 0; j < data.size(); j++) { // Header 탐색(일차 찾아가기)
-                if (data.get(j).type == ExpandableListAdapter.HEADER) {
-                    day++;
-                    if (day == date) {
-                        startPosition = j + 1;      // j는 Header 위치이므로 Data 부터 접근하기 위해 + 1
-                        break;
-                    }
-                }
-            }
-            // Header 밑의 Data 차례로 전부 탐색하면서 list의 이름과 같은지
-            // 확인하고 같으면 list 이름에 해당하는 Data 위치와 그 일차의
-            // 첫 번째(1씩 계속 증가) 위치를 swap.
-            for (int i = 0; i < list.size(); i++) {
-                for (int j = startPosition; j < data.size(); j++) {
-                    if (data.get(i).name.equals(list.get(i))) {
-                        mAdapter.onItemMove(startPosition + i, j);
-                        break;
-                    }
-                }
-            }
-            // TODO: (태구 업무) 위에서 sort 된 list를 이용해서 실제 UI상에서 정렬하는 함수 만들어야 함
-        }
-    };
     private ItemTouchHelper mItemTouchHelper;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
@@ -89,8 +55,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
     private int period;
     private String start_date;
     private String end_date;
-    private URL url = null;
-    private String str, receiveMsg;
     private String headerText = "0일차";
     private ArrayList<String> list;
 
@@ -202,8 +166,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 });
     }
 
-    //private long[][] distance;
-
     void sort(int date) { // 정렬
         ArrayList<String>[] listArr = new ArrayList[date]; // 날짜별 여행지를 저장할 String ArrayList를 만듬
         for (int i = 0, j = -1; i < data.size(); i++) {
@@ -220,30 +182,29 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             list = new ArrayList<>();
             list.addAll(listArr[i]);
 
-            new Thread() {
-                public void run() {
-//                    EAX eax = new EAX(list);
-//                    ArrayList<Integer> orderRs = eax.run();
-//
-//                    ArrayList<String> nameRs = new ArrayList<>();
-//                    for(int j=0;j<orderRs.size();j++){
-//                        nameRs.add(list.get(orderRs.get(j)));
-//                    }
-//                    list = (ArrayList<String>) nameRs.clone();
+            TempShortCut tempShortCut = new TempShortCut(list);
+            ArrayList<String> result = tempShortCut.tsp();
+            Log.d("JsonCheck", result.toString());
 
-                    TempShortCut tempShortCut = new TempShortCut(list);
-                    ArrayList<String> result = tempShortCut.tsp();
-                    Log.d("JsonCheck", result.toString());
-
-                    Bundle bun = new Bundle();
-                    bun.putStringArrayList("Travel_Data", result);
-                    bun.putInt("date", day);
-
-                    Message msg = handler.obtainMessage();
-                    msg.setData(bun);
-                    handler.sendMessage(msg);
+            int days = 0;
+            int startPosition = 0;
+            for (int j = 0; j < data.size(); j++) { // Header 탐색(일차 찾아가기)
+                if (data.get(j).type == ExpandableListAdapter.HEADER) {
+                    days++;
+                    if (days == date) {
+                        startPosition = j + 1;      // j는 Header 위치이므로 Data 부터 접근하기 위해 + 1
+                        break;
+                    }
                 }
-            }.start();
+            }
+            for (int k = 0; k < result.size(); k++) {
+                for (int j = startPosition; j < data.size(); j++) {
+                    if (data.get(j).name.equals(result.get(k))) {
+                        mAdapter.onItemMove(startPosition + k, j);
+                        break;
+                    }
+                }
+            }
         }
     }
 
