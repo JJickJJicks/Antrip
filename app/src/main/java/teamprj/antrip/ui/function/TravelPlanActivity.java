@@ -219,9 +219,9 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 }
             }
 
-            for (int k = 1; k < tempData.size(); k++) {
+            for (int k = 0; k < tempData.size(); k++) {
                 ExpandableListAdapter.Item it = tempData.get(k);
-                data.add(startPosition + k, it);
+                data.add(startPosition + k + 1, it);
             }
         }
     }
