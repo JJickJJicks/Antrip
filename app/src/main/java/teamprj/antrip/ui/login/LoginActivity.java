@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextEmail, editTextPassword;
     private CircularProgressButton loginButton;
     private SharedPreferences.Editor editor;
+    private CheckBox autoLogin;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // 자동 로그인
-        CheckBox autoLogin = findViewById(R.id.login_autologin);
+        autoLogin = findViewById(R.id.login_autologin);
         SharedPreferences setting = getSharedPreferences("setting", 0);
         editor = setting.edit();
 
@@ -70,7 +70,15 @@ public class LoginActivity extends AppCompatActivity {
 
             login();
         }
+    }
 
+    public void onSignUpClick(View View) {
+        startActivity(new Intent(this, RegisterActivity.class));
+        overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
+
+    }
+
+    public void login() {
         autoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -90,15 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-    }
 
-    public void onSignUpClick(View View) {
-        startActivity(new Intent(this, RegisterActivity.class));
-        overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
-
-    }
-
-    public void login() {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
