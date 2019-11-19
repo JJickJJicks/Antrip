@@ -29,7 +29,7 @@ public class EAX {
             bestB = new ArrayList<>();
     static int TotalCities, times = 2000;
     long bestCostA, bestCostB;
-    boolean done = false;
+    boolean done = false, stop = false;
 
     private URL url = null;
     private String str, receiveMsg;
@@ -44,18 +44,22 @@ public class EAX {
         order.add(0);
 
         costs = new long[TotalCities][TotalCities];
-
+/*
         new Thread(){
             public void run() {
-                for (int i = 0; i < TotalCities; i++) {
-                    for (int j = 0; j < TotalCities; j++) {
-                        if (i != j)
-                            costs[i][j] = parseInfo(parsejson(list.get(i), list.get(j)));
+                while (!stop) {
+                    for (int i = 0; i < TotalCities; i++) {
+                        for (int j = 0; j < TotalCities; j++) {
+                            if (i != j)
+                                costs[i][j] = parseInfo(parsejson(list.get(i), list.get(j)));
+                        }
                     }
+                    done = true;
                 }
-                done = true;
             }
         }.start();
+
+ */
     }
 
     private long parseInfo(String json) {
@@ -520,11 +524,28 @@ public class EAX {
     }
 
     ArrayList<String> run() {
+        try {
+            Thread thread = new Thread() {
+                public void run() {
+                    for (int i = 0; i < TotalCities; i++)
+                        for (int j = 0; j < TotalCities; j++)
+                            if (i != j)
+                                costs[i][j] = parseInfo(parsejson(list.get(i), list.get(j)));
+                }
+            };
+            thread.start();
+            thread.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int x = 0;
         double min = 0.0;
-
+/*
         while(!done);
+        if(done)
+            stop = true;
 
+ */
         if(TotalCities <= 10) {
             perm(order,1);
         } else {

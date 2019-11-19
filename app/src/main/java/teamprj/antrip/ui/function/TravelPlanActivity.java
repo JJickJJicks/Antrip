@@ -1,7 +1,6 @@
 package teamprj.antrip.ui.function;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -59,7 +58,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
     private String end_date;
     private String headerText = "0일차";
     private ArrayList<String> list;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,7 +246,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 return true;
             }
             case R.id.action_save_title: {
-                StartProgress();
                 clickSaveButton(false);
                 return true;
             }
@@ -263,7 +260,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                         calcList.add(new Travel(getData.name, getData.country, getData.latLng.latitude, getData.latLng.longitude, getData.accommodation));
                     }
                 }
-                StopProgress();
                 for (int i = 0; i < calcList.size(); i++) {
                     Log.d("calcList", calcList.get(i).getName() + ", " + calcList.get(i).isAccommodation() + ", " +
                             calcList.get(i).getLatitude() + ", " + calcList.get(i).getLongitude());
@@ -500,17 +496,6 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void StartProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("계산중입니다...");
-        progressDialog.setCancelable(true);
-        progressDialog.setProgressStyle(R.style.Widget_AppCompat_ProgressBar_Horizontal);
-    }
-
-    private void StopProgress() {
-        progressDialog.dismiss();
     }
 }
 
