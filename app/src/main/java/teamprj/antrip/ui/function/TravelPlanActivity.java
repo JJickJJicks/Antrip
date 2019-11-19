@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -182,8 +183,8 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             list = new ArrayList<>();
             list.addAll(listArr[i]);
 
-            TempShortCut tempShortCut = new TempShortCut(list);
-            ArrayList<String> result = tempShortCut.tsp();
+            EAX eax = new EAX(list);
+            ArrayList<String> result = eax.run();
             Log.d("JsonCheck", result.toString());
 
             int days = 0;

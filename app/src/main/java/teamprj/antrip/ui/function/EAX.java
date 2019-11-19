@@ -20,6 +20,7 @@ import java.util.Random;
 import teamprj.antrip.BuildConfig;
 
 public class EAX {
+    long costs[][];
     ArrayList<String> list;
     ArrayList<Long> pre_cost = new ArrayList<>(), next_cost = new ArrayList<>(), cost_results = new ArrayList<>();
     ArrayList<ArrayList<Integer>> subTour = new ArrayList<>(), oldGene = new ArrayList<>(), nextGene = new ArrayList<>(), results = new ArrayList<>();
@@ -28,18 +29,33 @@ public class EAX {
             bestB = new ArrayList<>();
     static int TotalCities, times = 2000;
     long bestCostA, bestCostB;
+    boolean done = false;
 
     private URL url = null;
     private String str, receiveMsg;
 
-    EAX(ArrayList<String> list) {
+    EAX(final ArrayList<String> list) {
         TotalCities = list.size();
-        this.list = (ArrayList<String>) list.clone();
-
-        for (int i = 0; i < TotalCities; i++) {
-            order.add(i);
+        for(int a=0;a<TotalCities;a++){
+            order.add(a);
         }
+
+        this.list = (ArrayList<String>) list.clone();
         order.add(0);
+
+        costs = new long[TotalCities][TotalCities];
+
+        new Thread(){
+            public void run() {
+                for (int i = 0; i < TotalCities; i++) {
+                    for (int j = 0; j < TotalCities; j++) {
+                        if (i != j)
+                            costs[i][j] = parseInfo(parsejson(list.get(i), list.get(j)));
+                    }
+                }
+                done = true;
+            }
+        }.start();
     }
 
     private long parseInfo(String json) {
@@ -96,14 +112,33 @@ public class EAX {
         return receiveMsg;
     }
 
+    public void perm(ArrayList<Integer> arr, int pivot) {
+        if (pivot == arr.size() - 1) {
+            cost_results.add(calCost(arr));
+            results.add((ArrayList<Integer>) arr.clone());
+            return;
+        }
+        for (int i = pivot; i < arr.size() - 1; i++) {
+            swapOrder(arr, i, pivot);
+            perm(arr, pivot + 1);
+            swapOrder(arr, i, pivot);
+        }
+    }
+
+    public void swapOrder(ArrayList<Integer> arr, int i, int j) {
+        int temp = arr.get(i);
+        arr.set(i, arr.get(j));
+        arr.set(j, temp);
+    }
+
     private long calDistance(int a, int b) {
-        return parseInfo(parsejson(list.get(a), list.get(b)));
+        return costs[a][b];
     }
 
     private long calCost(ArrayList<Integer> arr) {
         long sum = 0;
         for (int i = 0; i < TotalCities; i++) {
-            sum += parseInfo(parsejson(list.get(arr.get(i)), list.get(arr.get(i + 1))));
+            sum += costs[arr.get(i)][arr.get(i+1)];
         }
         return sum;
     }
@@ -484,23 +519,35 @@ public class EAX {
         results.add((ArrayList<Integer>) oldGene.get(x).clone());
     }
 
-    ArrayList<Integer> run() {
+    ArrayList<String> run() {
         int x = 0;
         double min = 0.0;
 
-        for (int i = 0; i < 100; i++) {
-            pre_cost.clear();
-            next_cost.clear();
-            oldGene.clear();
-            nextGene.clear();
-            TRY();
+        while(!done);
+
+        if(TotalCities <= 10) {
+            perm(order,1);
+        } else {
+            for (int i = 0; i < 100; i++) {
+                pre_cost.clear();
+                next_cost.clear();
+                oldGene.clear();
+                nextGene.clear();
+                TRY();
+            }
         }
 
-        for (int i = 0; i < cost_results.size(); i++)
+        for (int i = 0; i < cost_results.size(); i++) {
             if (min == 0.0 || cost_results.get(i) < min) {
                 min = cost_results.get(i);
                 x = i;
             }
+        }
+
+        ArrayList<String> rs = new ArrayList<>();
+        for(int i=0;i<TotalCities;i++){
+            rs.add(list.get(results.get(x).get(i)));
+        }
 /*
         double[][] result = new double[TotalCities][2];
         for(int i=0;i<TotalCities;i++) {
@@ -508,6 +555,6 @@ public class EAX {
             result[i][1] = cities[results.get(x).get(i)][1];
         }
  */
-        return results.get(x);
+        return rs;
     }
 }
