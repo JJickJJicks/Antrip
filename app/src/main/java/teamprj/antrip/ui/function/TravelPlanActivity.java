@@ -1,8 +1,6 @@
 package teamprj.antrip.ui.function;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -510,6 +507,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 
                             Intent intent2 = new Intent(getApplicationContext(), DestinationDetailActivity.class);
                             intent2.putExtra("TripName", tripName);
+                            intent2.putExtra("Mode", 0);
                             startActivity(intent2);
                             sDialog.dismiss();
                         }

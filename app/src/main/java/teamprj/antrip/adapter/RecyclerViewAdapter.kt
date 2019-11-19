@@ -53,6 +53,7 @@ class RecyclerViewAdapter(private val data: ArrayList<MyPlan>) : RecyclerView.Ad
                 setOnClickListener {
                     var intent = Intent(mContext, DestinationDetailActivity::class.java)
                     intent.putExtra("TripName", tv_title.text.toString())
+                    intent.putExtra("Mode", 1)
                     mContext.startActivity(intent)
                 }
             }
