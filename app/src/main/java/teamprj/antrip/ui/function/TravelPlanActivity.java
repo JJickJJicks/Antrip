@@ -517,6 +517,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
         progressDialog.setMessage("계산중입니다...");
         progressDialog.setCancelable(true);
         progressDialog.setProgressStyle(R.style.Widget_AppCompat_ProgressBar_Horizontal);
+        progressDialog.show();
     }
 
     private void StopProgress() {

@@ -152,8 +152,7 @@
 
         <activity
             android:name=".map.DestinationDetailActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:screenOrientation="portrait" />
 
         <uses-library
             android:name="org.apache.http.legacy"
