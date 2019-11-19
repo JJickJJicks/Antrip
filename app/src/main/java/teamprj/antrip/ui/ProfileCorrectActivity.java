@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import teamprj.antrip.R;
 
 public class ProfileCorrectActivity extends AppCompatActivity {
@@ -66,12 +66,20 @@ public class ProfileCorrectActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                    Toast.makeText(getApplicationContext(), R.string.success, Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent();
-                    intent.putExtra("email", emailText.getText().toString());
-                    intent.putExtra("name", nameText.getText().toString());
-                    setResult(RESULT_OK, intent);
-                    finish();
+                    new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("완료되었습니다!")
+                            .setConfirmText("확인")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra("email", emailText.getText().toString());
+                                    intent.putExtra("name", nameText.getText().toString());
+                                    setResult(RESULT_OK, intent);
+                                    finish();
+                                }
+                            })
+                            .show();
                 }
             }
         });
@@ -90,17 +98,29 @@ public class ProfileCorrectActivity extends AppCompatActivity {
         nameText = findViewById(R.id.acc_correct_nameText);
 
         if (emailText.getText().toString().equals("") || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailText.getText().toString()).matches()) {
-            emailText.setError(getText(R.string.wrongEmail));
+            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("경고")
+                    .setContentText(getResources().getString(R.string.wrongEmail))
+                    .setConfirmText("확인")
+                    .show();
             return false;
         } else
             emailText.setError(null);
         if (passwordText.getText().toString().equals("") || !passwordText.getText().toString().equals(pwCheckText.getText().toString())) {
-            passwordText.setError(getText(R.string.wrongPassword));
+            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("경고")
+                    .setContentText(getResources().getString(R.string.wrongPassword))
+                    .setConfirmText("확인")
+                    .show();
             return false;
         } else
             passwordText.setError(null);
         if (nameText.getText().toString().equals("")) {
-            nameText.setError(getText(R.string.wrongName));
+            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("경고")
+                    .setContentText(getResources().getString(R.string.wrongName))
+                    .setConfirmText("확인")
+                    .show();
             return false;
         } else
             nameText.setError(null);

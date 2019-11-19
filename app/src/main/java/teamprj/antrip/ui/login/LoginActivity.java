@@ -20,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import teamprj.antrip.R;
 import teamprj.antrip.ui.MainActivity;
 
@@ -74,7 +75,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onSignUpClick(View View) {
         startActivity(new Intent(this, RegisterActivity.class));
-        overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
+            overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
+        }
 
     }
 
@@ -116,12 +119,16 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
+                                new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                                        .setTitleText("로그인 실패")
+                                        .show();
                             }
                         }
                     });
         } else {
-            Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
+            new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("로그인 실패")
+                    .show();
         }
     }
 

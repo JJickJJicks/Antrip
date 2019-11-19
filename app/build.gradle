@@ -66,6 +66,7 @@ dependencies {
     //animated button for login
     implementation 'br.com.simplepass:loading-button-android:1.14.0'
     implementation 'de.hdodenhof:circleimageview:3.0.1'
+    implementation 'com.github.f0ris.sweetalert:library:1.5.1'
     //direction api
     implementation 'com.liulishuo.okdownload:okdownload:1.0.6'
     implementation 'com.liulishuo.okdownload:okhttp:1.0.5'

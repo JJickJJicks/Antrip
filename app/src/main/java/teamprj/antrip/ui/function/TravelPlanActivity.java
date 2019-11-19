@@ -1,8 +1,6 @@
 package teamprj.antrip.ui.function;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +31,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import teamprj.antrip.R;
 import teamprj.antrip.adapter.ExpandableListAdapter;
 import teamprj.antrip.data.model.Plan;
@@ -271,7 +270,11 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 if (isAccommodationSelected()) {
                     savePlan();
                 } else {
-                    OkAlertDialog.viewOkAlertDialog(TravelPlanActivity.this, "숙소를 선택하지 않았습니다.", "각 일차별로 숙소를 지정해주시기 바랍니다.");
+                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("숙소를 선택하지 않았습니다.")
+                            .setContentText("각 일차별로 숙소를 지정해주시기 바랍니다.")
+                            .setConfirmText("확인")
+                            .show();
                 }
                 return true;
             }
@@ -281,24 +284,27 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(TravelPlanActivity.this);
-        builder.setTitle("저장 확인");
-        builder.setMessage("저장 하시겠습니까?.");
-        builder.setPositiveButton("예",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("저장 확인")
+                .setContentText("저장 하시겠습니까?")
+                .setConfirmText("예")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
                         clickSaveButton(true);
                     }
-                });
-        builder.setNegativeButton("아니요",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                })
+                .showCancelButton(true)
+                .setCancelText("아니요")
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
                         Intent intent = new Intent();
                         finish();
                         setResult(RESULT_CANCELED, intent);
                     }
-                });
-        builder.show();
+                })
+                .show();
     }
 
     public static void addItem(int index, String name, String country, LatLng latLng, boolean accommodation) {
@@ -360,7 +366,11 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
 
     private void clickSaveButton(boolean isFinish) {
         if (!isAccommodationSelected()) {
-            OkAlertDialog.viewOkAlertDialog(TravelPlanActivity.this, "숙소를 선택하지 않았습니다.", "각 일차별로 숙소를 지정해주시기 바랍니다.");
+            new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("숙소를 선택하지 않았습니다.")
+                    .setContentText("각 일차별로 숙소를 지정해주시기 바랍니다.")
+                    .setConfirmText("확인")
+                    .show();
         } else {
             savePlan(isFinish);
         }
@@ -412,22 +422,23 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             plan.setSave(true);
             myRef.child("plan").child(userName).child(tripName).setValue(plan);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            builder.setTitle("저장 완료");
-            builder.setMessage("저장이 완료되었습니다.");
-            builder.setPositiveButton("확인",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
+            new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                    .setTitleText("저장 완료")
+                    .setContentText("저장이 완료되었습니다.")
+                    .setConfirmText("확인")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
                             if (isFinish) {
                                 Intent intent = new Intent();
                                 intent.putExtra("plan", finalMap);
                                 setResult(RESULT_OK, intent);
                                 finish();
-                            }
+                            } else
+                                sDialog.dismiss();
                         }
-                    });
-            builder.show();
+                    })
+                    .show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -480,13 +491,13 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             plan.setSave(true);
             myRef.child("plan").child(userName).child(tripName).setValue(plan);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            builder.setTitle("저장 완료");
-            builder.setMessage("저장이 완료되었습니다.");
-            builder.setPositiveButton("확인",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
+            new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                    .setTitleText("저장 완료")
+                    .setContentText("저장이 완료되었습니다.")
+                    .setConfirmText("확인")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
                             Intent intent = new Intent();
                             intent.putExtra("plan", finalMap);
                             setResult(RESULT_OK, intent);
@@ -495,8 +506,8 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                             intent2.putExtra("TripName", tripName);
                             startActivity(intent2);
                         }
-                    });
-            builder.show();
+                    })
+                    .show();
         } catch (Exception e) {
             e.printStackTrace();
         }
