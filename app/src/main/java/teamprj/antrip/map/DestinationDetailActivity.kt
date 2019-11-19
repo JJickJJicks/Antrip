@@ -1,8 +1,10 @@
 package teamprj.antrip.map
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,7 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_destination_detail.*
 import teamprj.antrip.R
 import teamprj.antrip.data.model.PlaceInfo
+import teamprj.antrip.ui.function.TravelPlanActivity
 import java.lang.NullPointerException
 
 class DestinationDetailActivity : AppCompatActivity() {
@@ -31,6 +34,7 @@ class DestinationDetailActivity : AppCompatActivity() {
     private lateinit var eDate: String
     private var startPoint =  ArrayList<Int>()
     private var dayCount = ArrayList<Int>()
+    private var tripName = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +47,10 @@ class DestinationDetailActivity : AppCompatActivity() {
                     .commit()
         }
 
-        var intent = intent
-        val tripName = intent.extras.getString("TripName")
+        val intent = intent
+        tripName = intent.extras.getString("TripName")
+
+        title = tripName
 
         mContext = this
 
@@ -95,5 +101,24 @@ class DestinationDetailActivity : AppCompatActivity() {
         })
 
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_go_plan -> {
+                val intent = Intent(applicationContext, TravelPlanActivity::class.java)
+                intent.putExtra("tripName", tripName)
+                intent.putExtra("savedTrip", "true")
+                startActivity(intent)
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: android.view.Menu):Boolean {
+        menuInflater.inflate(R.menu.menu_travel_result, menu)
+    return true
+}
 }
 
