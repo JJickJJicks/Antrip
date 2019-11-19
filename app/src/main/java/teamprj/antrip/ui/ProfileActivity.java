@@ -27,13 +27,13 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView tvHeaderName, tvHeaderEmail, tvContentName, tvContentEmail, btnEditProfile;
     private DatabaseReference myRef;
     private boolean isChange = false;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         tvHeaderName = findViewById(R.id.tvHeaderName);
         tvHeaderEmail = findViewById(R.id.tvHeaderEmail);
         tvContentName = findViewById(R.id.tvContentName);
