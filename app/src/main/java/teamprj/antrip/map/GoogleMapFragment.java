@@ -20,11 +20,13 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import teamprj.antrip.R;
+import teamprj.antrip.adapter.ExpandableListAdapter;
 
 public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private View rootView;
@@ -33,6 +35,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private static HashMap<String, Marker> markerHashMap;
     private static HashMap<String, Integer> coutHashMap;
     private static LatLngBounds.Builder builder;
+    private static ArrayList<ExpandableListAdapter.Item> itemStorage;
+    private static boolean isSaved = false;
 
     public GoogleMapFragment() {
     }
@@ -84,6 +88,14 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(this.getActivity());
         this.googleMap = googleMap;
+        if (isSaved) {
+            for (int i = 0; i < itemStorage.size(); i++) {
+                ExpandableListAdapter.Item it = itemStorage.get(i);
+                selectPlace(it.latLng, it.name, it.country);
+            }
+            isSaved = false;
+            itemStorage = null;
+        }
     }
 
     public static void selectPlace(LatLng latLng, String name, String country) {
@@ -133,6 +145,11 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         }
+    }
+
+    public static void addMarkerList(ArrayList<ExpandableListAdapter.Item> rItemStorage) {
+        itemStorage = rItemStorage;
+        isSaved = true;
     }
 }
 

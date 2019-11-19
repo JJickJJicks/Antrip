@@ -86,6 +86,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                     new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            ArrayList<ExpandableListAdapter.Item> itemStorage = new ArrayList<>();
                             Plan plan = dataSnapshot.getValue(Plan.class);
                             period = plan.getPeriod();
                             start_date = plan.getStart_date();
@@ -99,14 +100,17 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                                     String name = travelList.get(j).getName();
                                     String country = travelList.get(j).getCountry();
                                     LatLng latLng = new LatLng(travelList.get(j).getLatitude(), travelList.get(j).getLongitude());
-                                    data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.DATA,
-                                            name, country, latLng, travelList.get(j).isAccommodation()));
-                                    GoogleMapFragment.selectPlace(latLng, name, country);
+                                    ExpandableListAdapter.Item it = new ExpandableListAdapter.Item(ExpandableListAdapter.DATA,
+                                            name, country, latLng, travelList.get(j).isAccommodation());
+                                    data.add(it);
+                                    itemStorage.add(it);
+//                                    GoogleMapFragment.selectPlace(latLng, name, country);
                                 }
                                 data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.CHILD, "추가"));
                             }
                             mAdapter = new ExpandableListAdapter(data, thisListener);
 
+                            GoogleMapFragment.addMarkerList(itemStorage);
                             ItemTouchHelperCallback mCallback = new ItemTouchHelperCallback(mAdapter);
                             mItemTouchHelper = new ItemTouchHelper(mCallback);
                             mItemTouchHelper.attachToRecyclerView(recyclerview);
