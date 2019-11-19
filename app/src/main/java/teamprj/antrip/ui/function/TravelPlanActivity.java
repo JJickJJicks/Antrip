@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -247,11 +246,11 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 return true;
             }
             case R.id.action_save_title: {
-                StartProgress();
                 clickSaveButton(false);
                 return true;
             }
             case R.id.action_calc_title: {
+                StartProgress();
                 sort(period);
 
                 recyclerview.setAdapter(mAdapter);
