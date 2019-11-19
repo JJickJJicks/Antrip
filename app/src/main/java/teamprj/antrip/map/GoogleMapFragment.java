@@ -53,6 +53,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         builder = new LatLngBounds.Builder();
         markerHashMap = new HashMap<>();
         coutHashMap = new HashMap<>();
+        googleMap = null;
     }
 
     @Override
@@ -148,8 +149,15 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public static void addMarkerList(ArrayList<ExpandableListAdapter.Item> rItemStorage) {
-        itemStorage = rItemStorage;
-        isSaved = true;
+        if (googleMap != null) {
+            for (int i = 0; i < rItemStorage.size(); i++) {
+                ExpandableListAdapter.Item it = rItemStorage.get(i);
+                selectPlace(it.latLng, it.name, it.country);
+            }
+        } else {
+            itemStorage = rItemStorage;
+            isSaved = true;
+        }
     }
 }
 
