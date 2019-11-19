@@ -183,9 +183,13 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
             list = new ArrayList<>();
             list.addAll(listArr[i]);
 
+//            TempShortCut tempShortCut = new TempShortCut(list);
+//            ArrayList<String> tempres = tempShortCut.tsp();
+//            Log.d("JsonCheck - dfs", tempres.toString());
+
             EAX eax = new EAX(list);
             ArrayList<String> result = eax.run();
-            Log.d("JsonCheck", result.toString());
+            Log.d("JsonCheck - eax", result.toString());
 
             int days = 0;
             int startPosition = 0;
@@ -504,6 +508,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                             Intent intent2 = new Intent(getApplicationContext(), DestinationDetailActivity.class);
                             intent2.putExtra("TripName", tripName);
                             startActivity(intent2);
+                            sDialog.dismiss();
                         }
                     })
                     .show();
