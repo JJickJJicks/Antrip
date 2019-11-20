@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4"/>
+        app:layout_constraintGuide_percent="0.35"/>
 
     <!-- 세로 가이드라인-->
     <androidx.constraintlayout.widget.Guideline
@@ -36,7 +36,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
+        android:gravity="left"
+        android:paddingLeft="@dimen/dp_size_20"
+        android:paddingBottom="@dimen/dp_size_5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@id/guide_horizontal_20"
         app:layout_constraintRight_toRightOf="parent"
@@ -46,17 +48,26 @@
             android:id="@+id/tv_start_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/primary_text_light"
             tools:text="test"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="~"/>
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/primary_text_light"
+            android:text=" ~ "/>
 
         <TextView
             android:id="@+id/tv_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/primary_text_light"
             tools:text="test"/>
 
     </LinearLayout>

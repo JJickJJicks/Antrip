@@ -1,6 +1,7 @@
 package teamprj.antrip.map
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ class DestinationAdapter(private val data: ArrayList<PlaceInfo>, var googleMapFr
     private val database = FirebaseDatabase.getInstance()
     private val userName = user!!.email!!.replace(".", "_")
     private val myRef = database.getReference("plan").child(userName)
+    private val boldTypeface = Typeface.defaultFromStyle(Typeface.BOLD)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         mContext = parent.context
@@ -38,6 +40,8 @@ class DestinationAdapter(private val data: ArrayList<PlaceInfo>, var googleMapFr
                 if (item.num == 0) {
                     ll_day.visibility = View.VISIBLE
                     tv_day.text = "${dayCount[position]}Day"
+                    tv_day.setPadding(30, 10, 0, 0);
+                    tv_day.typeface = boldTypeface
                 } else {
                     ll_day.visibility = View.GONE
                 }
