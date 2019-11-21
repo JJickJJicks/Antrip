@@ -46,19 +46,26 @@ class DestinationAdapter(private val data: ArrayList<PlaceInfo>, var googleMapFr
                     ll_day.visibility = View.GONE
                 }
                 tv_name.text = item.name
-                tv_country.text = item.counry
+                when {
+                    position == data.size - 1 || data[position + 1].num == 0 -> {
+                        tv_country.text = data[startPoint[dayCount[position] - 1]].name
+                    }
+                    else -> {
+                        tv_country.text = data[position + 1].name
+                    }
+                }
 
                 setOnClickListener {
                     val origin = LatLng(item.lat, item.lon)
                     when {
                         position == data.size - 1 || data[position + 1].num == 0 -> {
                             val destination = LatLng(data[startPoint[dayCount[position] - 1]].lat, data[startPoint[dayCount[position] - 1]].lon)
-                            Log.d(TAG, "${item.name}, ${data[startPoint[dayCount[position] - 1]].name}")
+//                            Log.d(TAG, "${item.name}, ${data[startPoint[dayCount[position] - 1]].name}")
                             googleMapFragment.draw(origin, destination, item.name, data[dayCount[position] - 1].name)
                         }
                         else -> {
                             val destination = LatLng(data[position + 1].lat, data[position + 1].lon)
-                            Log.d(TAG, "${item.name}, ${data[position + 1].name}, ${item.lat}, ${item.lon}, ${data[position + 1].lat}, ${data[position + 1].lon}")
+//                            Log.d(TAG, "${item.name}, ${data[position + 1].name}, ${item.lat}, ${item.lon}, ${data[position + 1].lat}, ${data[position + 1].lon}")
                             googleMapFragment.draw(origin, destination, item.name, data[position + 1].name)
                         }
                     }

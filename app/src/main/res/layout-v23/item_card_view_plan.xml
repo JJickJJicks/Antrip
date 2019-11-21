@@ -57,32 +57,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/frame_fill_circle"
-            app:layout_constraintStart_toStartOf="@id/guide_vertical_10"
-            app:layout_constraintTop_toTopOf="@id/guide_horizontal_20"
+            app:layout_constraintLeft_toLeftOf="@id/guide_vertical_10"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toLeftOf="@id/tv_name"
-            app:layout_constraintBottom_toTopOf="@id/tv_country" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
+
             android:layout_marginLeft="@dimen/dp_size_12"
             android:textSize="@dimen/dp_size_16"
             tools:text="test"
             app:layout_constraintLeft_toRightOf="@id/iv_circular_numbering"
-            app:layout_constraintTop_toTopOf="@id/guide_horizontal_20"
-            app:layout_constraintBottom_toTopOf="@id/tv_country"/>
+            app:layout_constraintRight_toLeftOf="@id/tv_arrow"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tv_arrow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:src="@drawable/ic_arrow_right_24px"
+            app:layout_constraintLeft_toRightOf="@id/tv_name"
+            app:layout_constraintRight_toLeftOf="@id/tv_country"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_country"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:textSize="@dimen/dp_size_16"
+            android:visibility="visible"
+            android:layout_marginRight="@dimen/dp_size_8"
             tools:text="test"
-            app:layout_constraintStart_toStartOf="@id/tv_name"
+            app:layout_constraintLeft_toRightOf="@id/tv_arrow"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_name"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
