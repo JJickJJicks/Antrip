@@ -258,7 +258,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                 return true;
             }
             case R.id.action_calc_title: {
-                StartProgress();
+//                StartProgress();
                 sort(period);
 
                 recyclerview.setAdapter(mAdapter);
@@ -269,11 +269,12 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
                         calcList.add(new Travel(getData.name, getData.country, getData.latLng.latitude, getData.latLng.longitude, getData.accommodation));
                     }
                 }
-                StopProgress();
+
                 for (int i = 0; i < calcList.size(); i++) {
                     Log.d("calcList", calcList.get(i).getName() + ", " + calcList.get(i).isAccommodation() + ", " +
                             calcList.get(i).getLatitude() + ", " + calcList.get(i).getLongitude());
                 }
+//                StopProgress();
                 if (isAccommodationSelected()) {
                     savePlan();
                 } else {
@@ -523,7 +524,7 @@ public class TravelPlanActivity extends AppCompatActivity implements ExpandableL
     }
 
     private void StartProgress() {
-        progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(TravelPlanActivity.this);
         progressDialog.setMessage("계산중입니다...");
         progressDialog.setCancelable(true);
         progressDialog.setProgressStyle(R.style.Widget_AppCompat_ProgressBar_Horizontal);
