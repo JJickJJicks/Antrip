@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -25,14 +25,16 @@
                 style="@style/NoticeArticleTitleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="[공지사항]출력 테스트" />
+                tools:text="[공지사항]출력 테스트"
+                tools:textSize="24sp" />
 
             <TextView
                 android:id="@+id/sub_title"
                 style="@style/NoticeItemSubTitleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="2019.09.12 12:12" />
+                tools:text="2019.09.12 12:12"
+                tools:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -46,7 +48,8 @@
                 style="@style/NoticeArticleContentStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="문자(文字, Writing system)는 언어를 기록하기 위한 상징 체계이다.\n대부분 음성 언어를 기록하기 위해 생겨나거나 만들어졌다.\n메시지를 전달하기 위해 문자와 구어(口語)는 둘 다 유용하지만, 문자의 경우 정보의 저장과 전달을 신뢰할 수 있다는 점에서 차이가 있다." />
+                tools:text="문자(文字, Writing system)는 언어를 기록하기 위한 상징 체계이다.\n대부분 음성 언어를 기록하기 위해 생겨나거나 만들어졌다.\n메시지를 전달하기 위해 문자와 구어(口語)는 둘 다 유용하지만, 문자의 경우 정보의 저장과 전달을 신뢰할 수 있다는 점에서 차이가 있다."
+                tools:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 
