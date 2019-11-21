@@ -119,14 +119,14 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                                new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
                                         .setTitleText("로그인 실패")
                                         .show();
                             }
                         }
                     });
         } else {
-            new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+            new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
                     .setTitleText("로그인 실패")
                     .show();
         }

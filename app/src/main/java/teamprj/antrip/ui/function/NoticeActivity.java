@@ -54,7 +54,8 @@ public class NoticeActivity extends AppCompatActivity {
 
         fab.setVisibility(View.INVISIBLE);
 
-        curntUserInfo = database.getReference("users").child(user.getEmail().replace(".", "_")).child("type");
+        final String userKey= user.getEmail().replace(".", "_");
+        curntUserInfo = database.getReference("users").child(userKey).child("type");
         curntUserInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
